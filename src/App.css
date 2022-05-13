@@ -1,6 +1,46 @@
+:root {
+  --primary-color: #048434;
+  --primary-color-light: #c7fcde;
+  --primary-color-dark: #046328;
+  --secondary-color: #fff;
+  --txt-color: #424b54;
+  --border-color: rgba(148, 161, 179, 0.5);
+}
+
+html {
+  font-size: 62.5%;
+}
+
+/* reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Roboto", sans-serif;
+}
+
+p {
+  color: var(--txt-color);
+}
+
 .App {
   height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+/* Utils */
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.t5 {
+  font-size: 1.2rem;
+}
+
+.pointer {
+  cursor: pointer;
 }
