@@ -1,6 +1,6 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import { Home, Login } from "../pages";
+import { Home, Login, NotFound } from "../pages";
 import PrivateRoutes from "./PrivateRoutes";
 
 const AllRoutes = () => {
@@ -15,6 +15,7 @@ const AllRoutes = () => {
         }
       />
       <Route path="/login" element={<Login />} />
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 };

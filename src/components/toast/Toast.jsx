@@ -1,8 +1,8 @@
 import "./Toast.css";
 import React from "react";
 import { FcOk, FcHighPriority } from "react-icons/fc";
-import { GrFormClose } from "react-icons/gr";
 import toast from "react-hot-toast";
+import { IoCloseOutline } from "react-icons/io5";
 
 const Toast = ({ id, msg, isSuccess }) => {
   const closeToast = () => {
@@ -14,14 +14,14 @@ const Toast = ({ id, msg, isSuccess }) => {
   return (
     <div className="toast-container flex-center pd-1x ">
       {isSuccess ? (
-        <FcOk className="t3" />
+        <FcOk className="t2" />
       ) : (
         <span className="error-icon flex-center">
-          <FcHighPriority className="t3" />
+          <FcHighPriority className="t2" />
         </span>
       )}
       <p className="t4 toast-msg mg-left-2x">{msg}</p>
-      <GrFormClose
+      <IoCloseOutline
         className="t3 mg-left-2x pointer toast-close"
         onClick={closeToast}
       />
