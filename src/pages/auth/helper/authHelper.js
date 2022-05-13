@@ -1,11 +1,12 @@
-import { LOG_OUT, SIGN_UP_API, LOG_IN_API } from "../../../utils/Constant";
+import { API } from "../../../utils/Constant";
 import { removeToken, setUserToken } from "../../../utils/tokenHelper";
 import { POST_AUTH } from "../../../utils/axiosHelper";
 import { callToast } from "../../../components/toast/Toast";
+import { logOut } from "../../../store/authSlice";
 
 export const userLogIn = async (payload) => {
   try {
-    const res = await POST_AUTH(LOG_IN_API, payload);
+    const res = await POST_AUTH(API.LOGIN, payload);
     if (res?.status === 200 || res?.status === 201) {
       setUserToken(res?.data.encodedToken);
       callToast("Login successfull!");
@@ -18,10 +19,10 @@ export const userLogIn = async (payload) => {
   }
 };
 
-export const userLogout = (authDispatch) => {
+export const userLogout = (dispatch) => {
   try {
     removeToken();
-    authDispatch({ type: LOG_OUT });
+    dispatch(logOut());
     callToast("Logged out successfullly!");
   } catch (err) {
     console.log(err);
@@ -30,7 +31,7 @@ export const userLogout = (authDispatch) => {
 
 export const userSignUp = async (payload) => {
   try {
-    const res = await POST_AUTH(SIGN_UP_API, payload);
+    const res = await POST_AUTH(API.SIGNUP, payload);
     if (res?.status === 200 || res?.status === 201) {
       setUserToken(res?.data.encodedToken);
       callToast("Signup successfull! Login to continue!");

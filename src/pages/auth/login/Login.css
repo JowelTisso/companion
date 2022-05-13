@@ -19,3 +19,17 @@
 .login-heading {
   color: var(--txt-color);
 }
+
+.secondary-txt-container {
+  text-align: center;
+  margin-left: 1rem;
+}
+
+.txt-secondary {
+  display: inline-block;
+}
+
+.txt-separator {
+  margin-left: 1rem;
+  margin-right: 1rem;
+}
