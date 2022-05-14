@@ -1,0 +1,13 @@
+.password-container {
+  display: flex;
+  gap: 1rem;
+}
+
+.password-field {
+  flex: 1;
+}
+
+.signup-section {
+  height: 90vh;
+  gap: 2rem;
+}
