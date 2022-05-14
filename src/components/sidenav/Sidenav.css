@@ -1,0 +1,7 @@
+.sidenav {
+  width: 20%;
+  position: fixed;
+  top: 4rem;
+  left: 0;
+  bottom: 0;
+}
