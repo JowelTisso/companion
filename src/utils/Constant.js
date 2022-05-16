@@ -5,6 +5,7 @@ export const USER_TOKEN = "USER_TOKEN";
 export const API = Object.freeze({
   LOGIN: "/api/auth/login",
   SIGNUP: "/api/auth/signup",
+  ALL_POST: "/api/posts",
 });
 
 // Routes

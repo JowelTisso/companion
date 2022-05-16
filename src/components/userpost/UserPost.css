@@ -1,0 +1,40 @@
+.post-card-user {
+  background-color: var(--secondary-color);
+  border-radius: 1.5rem;
+  box-shadow: 0px 0px 1px 0px var(--border-color);
+  width: 100%;
+}
+
+.post-card-user .item-user {
+  height: auto;
+}
+
+.post-time {
+  color: var(--txt-color-light);
+  font-weight: 400;
+  font-size: 1.2rem;
+}
+
+.post-menu {
+  margin-left: auto;
+  color: var(--txt-color-light);
+  padding: 3px;
+  border-radius: 50%;
+}
+
+.post-menu:hover {
+  background-color: var(--border-color-light);
+}
+
+.post-img {
+  border-radius: 10px;
+  object-fit: cover;
+  max-width: 100%;
+  max-height: 60rem;
+}
+
+.post-icon-user-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 4rem;
+}

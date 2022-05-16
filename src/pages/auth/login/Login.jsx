@@ -32,7 +32,7 @@ const Login = () => {
   const fillTestCredentials = () => {
     setCredentials((state) => ({
       ...state,
-      username: "testcase",
+      username: "joweltisso",
       password: "test123",
     }));
   };
@@ -64,7 +64,7 @@ const Login = () => {
   return (
     <div className="login-wrapper flex-center">
       <section className="logo-section">
-        <img className="logo" src={logo} alt="logo" />
+        <img src={logo} alt="logo" />
       </section>
       <section className="login-section">
         <p className="login-heading t2 text-center">Welcome</p>
