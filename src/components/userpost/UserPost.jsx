@@ -7,9 +7,23 @@ import {
   IoChatboxOutline,
   IoShareSocialOutline,
   IoBookmarkOutline,
+  IoBookmark,
 } from "react-icons/io5";
+import { useDispatch, useSelector } from "react-redux";
+import { updateBookmarks } from "../../store/userSlice";
 
-const UserPost = ({ content, images }) => {
+const UserPost = ({ content, images, _id }) => {
+  const bookmarks = useSelector((state) => state.user.bookmarks);
+  const dispatch = useDispatch();
+
+  const isBookmarked = bookmarks.some((currPost) => currPost._id === _id);
+
+  const removeBookmark = () => {
+    if (isBookmarked) {
+      //
+    }
+  };
+
   return (
     <div className="post-card-user pd-2x">
       <section className="item-user">
@@ -41,7 +55,11 @@ const UserPost = ({ content, images }) => {
           <IoHeartOutline className="t3 post-icon pointer" />
           <IoChatboxOutline className="t3 post-icon pointer" />
           <IoShareSocialOutline className="t3 post-icon pointer" />
-          <IoBookmarkOutline className="t3 post-icon pointer" />
+          {isBookmarked ? (
+            <IoBookmark className="t3 post-icon pointer" />
+          ) : (
+            <IoBookmarkOutline className="t3 post-icon pointer" />
+          )}
         </span>
       </section>
     </div>

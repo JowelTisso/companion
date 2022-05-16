@@ -26,7 +26,7 @@ const Header = () => {
         <SearchInput applySearch={applySearch} />
         <Button
           variant="contained"
-          size={"large"}
+          size={"medium"}
           onClick={() => {
             userLogout(dispatch);
           }}

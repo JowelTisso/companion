@@ -11,7 +11,6 @@ import { toggleModal } from "../../store/homeSlice";
 
 import { navList } from "./data";
 import { useLocation, useNavigate } from "react-router-dom";
-import { ROUTES } from "../../utils/Constant";
 
 const Sidenav = () => {
   const dispatch = useDispatch();
