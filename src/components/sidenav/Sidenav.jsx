@@ -1,53 +1,18 @@
 import "./Sidenav.css";
 import React from "react";
-import { Avatar } from "@mui/material";
+import { Avatar, Button } from "@mui/material";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import {
-  TiHomeOutline,
-  TiContacts,
-  TiImageOutline,
-  TiClipboard,
-  TiUserOutline,
-  TiCogOutline,
-} from "react-icons/ti";
+import { useDispatch } from "react-redux";
+import { toggleModal } from "../../store/homeSlice";
+
+import { navList } from "./data";
 
 const Sidenav = () => {
-  const navList = [
-    {
-      name: "Home",
-      to: "/",
-      icon: () => <TiHomeOutline className="t3 nav-icon" />,
-    },
-    {
-      name: "People",
-      to: "/",
-      icon: () => <TiContacts className="t3 nav-icon" />,
-    },
-    {
-      name: "Photo",
-      to: "/",
-      icon: () => <TiImageOutline className="t3 nav-icon" />,
-    },
-    {
-      name: "Feed",
-      to: "/",
-      icon: () => <TiClipboard className="t3 nav-icon" />,
-    },
-    {
-      name: "Profile",
-      to: "/",
-      icon: () => <TiUserOutline className="t3 nav-icon" />,
-    },
-    {
-      name: "Setting",
-      to: "/",
-      icon: () => <TiCogOutline className="t3 nav-icon" />,
-    },
-  ];
+  const dispatch = useDispatch();
 
   return (
     <aside className="sidenav flex-center pd-2x">
@@ -70,7 +35,7 @@ const Sidenav = () => {
       <nav className="nav-item pd-2x">
         <List>
           {navList.map(({ name, icon }) => (
-            <ListItem disablePadding className="pd-top-1x">
+            <ListItem key={name} disablePadding className="pd-top-1x">
               <ListItemButton>
                 <ListItemIcon>{icon()}</ListItemIcon>
                 <ListItemText primary={name} />
@@ -79,6 +44,14 @@ const Sidenav = () => {
           ))}
         </List>
       </nav>
+      <Button
+        variant="contained"
+        size={"large"}
+        onClick={() => dispatch(toggleModal())}
+        sx={{ borderRadius: 3, boxShadow: "none" }}
+      >
+        Create new post
+      </Button>
     </aside>
   );
 };

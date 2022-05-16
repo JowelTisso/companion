@@ -2,3 +2,16 @@
   min-height: 100vh;
   width: 100%;
 }
+
+.userpost {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.modal-content {
+  position: absolute;
+  top: 20%;
+  right: 30%;
+  width: 60rem;
+}
