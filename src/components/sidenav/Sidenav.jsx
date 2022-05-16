@@ -28,8 +28,8 @@ const Sidenav = () => {
           />
         </Avatar>
         <div className="pd-left-2x">
-          <p className="t4 username">Jowel Tisso</p>
-          <p className="t4 userid">@joweltisso</p>
+          <p className="t4 username txt-overflow">Jowel Tisso</p>
+          <p className="t4 userid txt-overflow">@joweltisso</p>
         </div>
       </section>
       <nav className="nav-item pd-2x">

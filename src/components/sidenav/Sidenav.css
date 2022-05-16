@@ -8,6 +8,7 @@
   justify-content: flex-start;
   gap: 2rem;
 }
+
 .nav-item {
   background-color: var(--secondary-color);
   border-radius: 1.5rem;

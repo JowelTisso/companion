@@ -1,7 +1,41 @@
 .rightnav {
-  width: 22%;
+  width: 24%;
   position: fixed;
-  top: 4rem;
+  top: 6rem;
   right: 0;
   bottom: 0;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 1rem;
+  overflow: scroll;
+}
+.rightnav::-webkit-scrollbar {
+  display: none;
+}
+
+.section-title {
+  font-weight: 500;
+}
+
+.right-nav .item-user {
+  box-shadow: none;
+}
+
+.follow-btn-container {
+  margin-left: auto;
+}
+
+.txt-overflow {
+  height: 2.1rem;
+  width: 14rem;
+  overflow: hidden;
+}
+
+.notification-container {
+  width: 100%;
+}
+
+.notification-content {
+  background-color: lightblue;
 }
