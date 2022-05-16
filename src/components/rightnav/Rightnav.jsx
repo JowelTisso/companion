@@ -39,8 +39,8 @@ const Rightnav = () => {
     <aside className="rightnav flex-center pd-2x">
       <p className="t4 section-title"> Suggestions</p>
       <section className="nav-item right-nav">
-        {users.map(({ firstName, lastName, username, avatar }) => (
-          <main className="item-user pd-2x">
+        {users.map(({ firstName, lastName, username, avatar, _id }) => (
+          <main className="item-user pd-2x" key={_id}>
             <Avatar
               sx={{ borderRadius: 2, width: 45, height: 45 }}
               variant="rounded"

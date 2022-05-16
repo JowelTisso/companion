@@ -1,41 +1,60 @@
+import { TiHomeOutline, TiUserOutline } from "react-icons/ti";
 import {
-  TiHomeOutline,
-  TiContacts,
-  TiImageOutline,
-  TiClipboard,
-  TiUserOutline,
-  TiCogOutline,
-} from "react-icons/ti";
+  IoBookmarkOutline,
+  IoNotificationsOutline,
+  IoRocketOutline,
+} from "react-icons/io5";
+import { ROUTES } from "../../utils/Constant";
 
 export const navList = [
   {
     name: "Home",
-    to: "/",
-    icon: () => <TiHomeOutline className="t3 nav-icon" />,
+    to: ROUTES.HOME,
+    icon: (currentRoute) => (
+      <TiHomeOutline
+        className="t3 nav-icon"
+        color={currentRoute === ROUTES.HOME ? "#048434" : "gray"}
+      />
+    ),
   },
   {
-    name: "People",
-    to: "/",
-    icon: () => <TiContacts className="t3 nav-icon" />,
+    name: "Explore  ",
+    to: ROUTES.EXPLORE,
+    icon: (currentRoute) => (
+      <IoRocketOutline
+        className="t3 nav-icon"
+        color={currentRoute === ROUTES.EXPLORE ? "#048434" : "gray"}
+      />
+    ),
   },
   {
-    name: "Photo",
-    to: "/",
-    icon: () => <TiImageOutline className="t3 nav-icon" />,
+    name: "Bookmarks",
+    to: ROUTES.BOOKMARK,
+    icon: (currentRoute) => (
+      <IoBookmarkOutline
+        className="t3 nav-icon"
+        color={currentRoute === ROUTES.BOOKMARK ? "#048434" : "gray"}
+      />
+    ),
   },
   {
-    name: "Explore",
-    to: "/",
-    icon: () => <TiClipboard className="t3 nav-icon" />,
+    name: "Notifications",
+    to: ROUTES.NOTIFICATION,
+    icon: (currentRoute) => (
+      <IoNotificationsOutline
+        className="t3 nav-icon"
+        color={currentRoute === ROUTES.NOTIFICATION ? "#048434" : "gray"}
+      />
+    ),
   },
   {
     name: "Profile",
-    to: "/",
-    icon: () => <TiUserOutline className="t3 nav-icon" />,
-  },
-  {
-    name: "Setting",
-    to: "/",
-    icon: () => <TiCogOutline className="t3 nav-icon" />,
+    to: ROUTES.PROFILE,
+    icon: (currentRoute) => (
+      <TiUserOutline
+        className="t3 nav-icon"
+        color={currentRoute === ROUTES.PROFILE ? "#048434" : "gray"}
+      />
+    ),
   },
 ];
