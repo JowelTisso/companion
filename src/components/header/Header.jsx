@@ -39,7 +39,7 @@ const Header = () => {
         </Button>
         <Avatar sx={{ borderRadius: 2 }} variant="rounded">
           <img
-            src="https://i.pravatar.cc/300"
+            src="https://i.pravatar.cc/150?img=60"
             alt="profile avatar"
             className="avatar pointer"
           />

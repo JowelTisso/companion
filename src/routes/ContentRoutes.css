@@ -1,6 +1,7 @@
 .content-wrapper {
   display: flex;
   flex-direction: row;
+  background-color: var(--bg-color-light);
 }
 
 .main-wrapper {

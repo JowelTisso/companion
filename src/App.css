@@ -4,8 +4,10 @@
   --primary-color-dark: #046328;
   --secondary-color: #fff;
   --txt-color: #424b54;
-  --border-color: rgba(148, 161, 179, 0.5);
-  --border-color-light: rgb(245, 247, 248);
+  --txt-color-light: #a1a5aa;
+  --border-color: #d0d4d9;
+  --border-color-light: #f5f7f8;
+  --bg-color-light: #f7f7f7;
   --danger-color: #f14b4b;
 }
 
