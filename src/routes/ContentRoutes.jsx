@@ -13,7 +13,9 @@ const ContentRoutes = ({ children }) => {
         <Header />
         <section className="content-wrapper">
           <Sidenav />
-          <main className="main-wrapper">{children}</main>
+          <main className="main-wrapper pd-top-2x pd-bottom-4x">
+            {children}
+          </main>
           <Rightnav />
         </section>
       </>

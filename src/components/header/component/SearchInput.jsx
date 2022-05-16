@@ -7,7 +7,7 @@ const SearchInput = ({ applySearch }) => {
       <IoSearchOutline className="search-icon" />
       <input
         type="text"
-        className="input-simple "
+        className="input-simple"
         placeholder="Search"
         onKeyUp={applySearch}
       />

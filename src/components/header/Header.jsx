@@ -11,10 +11,7 @@ const Header = () => {
   const dispatch = useDispatch();
 
   const applySearch = ({ key, target }) => {
-    // if (key === "Enter") {
-    //   const filteredBySearch = filterByTitle(target.value, products);
-    //   filterDispatch({ type: PRODUCT_DATA, payload: filteredBySearch });
-    // }
+    //
   };
 
   return (
