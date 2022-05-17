@@ -14,6 +14,7 @@ import { addBookmark, removeBookmark } from "../../store/bookmarkSlice";
 import { usePopover } from "../popmenu/PopMenu";
 import { deletePost } from "../../store/postSlice";
 import { callToast } from "../toast/Toast";
+import { toggleModal, updateEditPostData } from "../../store/homeSlice";
 
 const UserPost = ({
   content,
@@ -57,6 +58,16 @@ const UserPost = ({
     }
   };
 
+  const editPostHandler = () => {
+    if (username === currentUsername) {
+      dispatch(toggleModal());
+      dispatch(updateEditPostData({ isEditModal: true, content, postId: _id }));
+      handleClosePopover();
+    } else {
+      callToast("You are not authorized to edit this post!", false);
+    }
+  };
+
   return (
     <div className="post-card-user pd-2x">
       <section className="item-user">
@@ -88,7 +99,7 @@ const UserPost = ({
             <IoEllipsisHorizontal className="t3" />
           </IconButton>
           <PopMenuWrapper>
-            <ListItemButton onClick={() => console.log("edit")}>
+            <ListItemButton onClick={editPostHandler}>
               <p className="post-menu-option">EDIT</p>
             </ListItemButton>
             <ListItemButton onClick={deletePostHandler}>

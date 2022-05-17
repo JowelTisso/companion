@@ -4,12 +4,18 @@ import { Avatar, Button } from "@mui/material";
 import { IoImageOutline } from "react-icons/io5";
 import { MdOutlineEmojiEmotions } from "react-icons/md";
 import { AiOutlineFileGif } from "react-icons/ai";
-import { createPost } from "../../store/postSlice";
+import { createPost, editPost } from "../../store/postSlice";
 import { callToast } from "../toast/Toast";
+import { useSelector } from "react-redux";
+import { toggleModal, updateEditPostData } from "../../store/homeSlice";
 
 const CreatePost = ({ dispatch }) => {
+  const { isEditModal, content, postId } = useSelector(
+    (state) => state.home.editPostData
+  );
+
   const [postData, setPostData] = useState({
-    content: "",
+    content: isEditModal ? content : "",
     images: null,
   });
 
@@ -19,7 +25,13 @@ const CreatePost = ({ dispatch }) => {
 
   const postHandler = () => {
     if (postData.content) {
-      dispatch(createPost(postData));
+      if (isEditModal) {
+        dispatch(editPost({ postId, postData }));
+        dispatch(toggleModal());
+        dispatch(updateEditPostData({ isEditModal: false, content: "" }));
+      } else {
+        dispatch(createPost(postData));
+      }
     } else {
       callToast("Nothing to post!", false);
     }
@@ -39,6 +51,7 @@ const CreatePost = ({ dispatch }) => {
           type="text"
           className="post-input t4"
           placeholder="What's in your mind?"
+          value={postData.content}
           onChange={onChangeHandler}
         />
         <section className="post-actions-container">

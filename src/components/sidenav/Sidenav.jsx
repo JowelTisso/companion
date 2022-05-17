@@ -22,6 +22,10 @@ const Sidenav = () => {
   const location = useLocation();
   const currentRoute = location.pathname;
 
+  const newPostHandler = () => {
+    dispatch(toggleModal());
+  };
+
   return (
     <aside className="sidenav flex-center pd-2x">
       <section className="nav-item item-user pd-2x">
@@ -67,7 +71,7 @@ const Sidenav = () => {
       <Button
         variant="contained"
         size={"large"}
-        onClick={() => dispatch(toggleModal())}
+        onClick={newPostHandler}
         sx={{ borderRadius: 3, boxShadow: "none" }}
       >
         Create new post

@@ -36,6 +36,21 @@ export const createPost = createAsyncThunk(
   }
 );
 
+export const editPost = createAsyncThunk(
+  "post/editPost",
+  async ({ postId, postData }, { rejectWithValue }) => {
+    try {
+      const res = await POST(`${API.EDIT_POST}/${postId}`, { postData });
+      if (res?.status === 200 || res?.status === 201) {
+        return res?.data.posts;
+      }
+    } catch (err) {
+      console.log(err);
+      rejectWithValue(err.message);
+    }
+  }
+);
+
 export const deletePost = createAsyncThunk(
   "post/deletePost",
   async (postId, { rejectWithValue }) => {
@@ -81,6 +96,19 @@ const postSlice = createSlice({
       state.posts = action.payload;
     },
     [createPost.rejected]: (state, action) => {
+      state.status = "rejected";
+      state.error = action.payload;
+    },
+
+    //   edit post
+    [editPost.pending]: (state) => {
+      state.status = "loading";
+    },
+    [editPost.fulfilled]: (state, action) => {
+      state.status = "fullfilled";
+      state.posts = action.payload;
+    },
+    [editPost.rejected]: (state, action) => {
       state.status = "rejected";
       state.error = action.payload;
     },

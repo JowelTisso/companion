@@ -4,7 +4,7 @@ import CreatePost from "../../components/post/CreatePost";
 import UserPost from "../../components/userpost/UserPost";
 import { Modal } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import { toggleModal } from "../../store/homeSlice";
+import { toggleModal, updateEditPostData } from "../../store/homeSlice";
 import { loadPosts, updatePosts } from "../../store/postSlice";
 import Spinner from "../../components/spinner/Spinner";
 import { IoOptionsOutline } from "react-icons/io5";
@@ -26,6 +26,7 @@ const Home = () => {
 
   const handleClose = () => {
     dispatch(toggleModal());
+    dispatch(updateEditPostData({ isEditModal: false, content: "" }));
   };
 
   const sortByDate = (posts) => {
