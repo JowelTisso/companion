@@ -10,9 +10,13 @@ import { useDispatch } from "react-redux";
 import { toggleModal } from "../../store/homeSlice";
 
 import { navList } from "./data";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const Sidenav = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const currentRoute = location.pathname;
 
   return (
     <aside className="sidenav flex-center pd-2x">
@@ -34,11 +38,23 @@ const Sidenav = () => {
       </section>
       <nav className="nav-item pd-2x">
         <List>
-          {navList.map(({ name, icon }) => (
+          {navList.map(({ name, icon, to }) => (
             <ListItem key={name} disablePadding className="pd-top-1x">
-              <ListItemButton>
-                <ListItemIcon>{icon()}</ListItemIcon>
-                <ListItemText primary={name} />
+              <ListItemButton
+                sx={{
+                  borderLeft:
+                    currentRoute === to ? "2px solid #048434" : "none",
+                }}
+                onClick={() => navigate(to)}
+              >
+                <ListItemIcon>{icon(currentRoute)}</ListItemIcon>
+                <ListItemText
+                  primary={name}
+                  primaryTypographyProps={{
+                    fontSize: 16,
+                    color: currentRoute === to ? "#048434" : "gray",
+                  }}
+                />
               </ListItemButton>
             </ListItem>
           ))}

@@ -35,7 +35,7 @@ const Home = () => {
       <CreatePost />
       <section className="userpost mg-top-4x">
         {posts.map((post) => (
-          <UserPost {...post} key={post.id} />
+          <UserPost {...post} key={post._id} />
         ))}
       </section>
       <Modal open={home.isModal} onClose={handleClose}>

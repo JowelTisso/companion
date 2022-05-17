@@ -1,15 +1,36 @@
 import "./UserPost.css";
 import React from "react";
-import { Avatar } from "@mui/material";
+import { Avatar, IconButton } from "@mui/material";
 import {
   IoEllipsisHorizontal,
   IoHeartOutline,
   IoChatboxOutline,
   IoShareSocialOutline,
   IoBookmarkOutline,
+  IoBookmark,
 } from "react-icons/io5";
+import { useDispatch, useSelector } from "react-redux";
+import { addBookmark, removeBookmark } from "../../store/bookmarkSlice";
 
-const UserPost = ({ content, images }) => {
+const UserPost = ({ content, images, _id }) => {
+  const { bookmarks, bookmarkStatus, bookmarkError } = useSelector(
+    (state) => state.bookmark
+  );
+  const dispatch = useDispatch();
+
+  const isLoading = bookmarkStatus === "loading";
+
+  const isBookmarked =
+    bookmarks.length > 0 ? bookmarks?.some((post) => post._id === _id) : false;
+
+  const bookmarkHandler = () => {
+    if (!isBookmarked) {
+      dispatch(addBookmark(_id));
+    } else {
+      dispatch(removeBookmark(_id));
+    }
+  };
+
   return (
     <div className="post-card-user pd-2x">
       <section className="item-user">
@@ -38,10 +59,26 @@ const UserPost = ({ content, images }) => {
             ))}
         </main>
         <span className="post-icon-user-container mg-top-2x">
-          <IoHeartOutline className="t3 post-icon pointer" />
-          <IoChatboxOutline className="t3 post-icon pointer" />
-          <IoShareSocialOutline className="t3 post-icon pointer" />
-          <IoBookmarkOutline className="t3 post-icon pointer" />
+          <IconButton aria-label="like the post">
+            <IoHeartOutline className="t3 post-icon pointer" />
+          </IconButton>
+          <IconButton aria-label="add comment">
+            <IoChatboxOutline className="t3 post-icon pointer" />
+          </IconButton>
+          <IconButton aria-label="share the post">
+            <IoShareSocialOutline className="t3 post-icon pointer" />
+          </IconButton>
+          <IconButton
+            aria-label="add to bookmark"
+            onClick={bookmarkHandler}
+            disabled={isLoading}
+          >
+            {isBookmarked ? (
+              <IoBookmark className="t3 post-icon pointer" />
+            ) : (
+              <IoBookmarkOutline className="t3 post-icon pointer" />
+            )}
+          </IconButton>
         </span>
       </section>
     </div>
