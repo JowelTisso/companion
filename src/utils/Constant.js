@@ -7,6 +7,8 @@ export const API = Object.freeze({
   SIGNUP: "/api/auth/signup",
   ALL_POST: "/api/posts",
   ALL_BOOKMARKS: "/api/users/bookmark",
+  ADD_BOOKMARK: "/api/users/bookmark",
+  REMOVE_BOOKMARK: "/api/users/remove-bookmark",
 });
 
 // Routes

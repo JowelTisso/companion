@@ -1,4 +1,5 @@
 import axios from "axios";
+import { callToast } from "../components/toast/Toast";
 import { getUserToken } from "./tokenHelper";
 
 /**
@@ -15,7 +16,7 @@ export const GET = async (url, auth = false) => {
       return await axios.get(url);
     }
   } catch (err) {
-    console.log(err);
+    callToast(err.message, false);
   }
 };
 
@@ -29,7 +30,7 @@ export const POST = async (url, body) => {
       headers: { authorization: getUserToken() },
     });
   } catch (err) {
-    console.log(err);
+    callToast(err.message, false);
   }
 };
 
@@ -42,7 +43,7 @@ export const POST_AUTH = async (url, body) => {
   try {
     return await axios.post(url, body);
   } catch (err) {
-    console.log(err);
+    callToast(err.message, false);
   }
 };
 
@@ -57,6 +58,6 @@ export const DELETE = async (url, body) => {
       headers: { authorization: getUserToken() },
     });
   } catch (err) {
-    console.log(err);
+    callToast(err.message, false);
   }
 };
