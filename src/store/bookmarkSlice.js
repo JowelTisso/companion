@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { callToast } from "../components/toast/Toast";
 import { GET, POST } from "../utils/axiosHelper";
 import { API } from "../utils/Constant";
 
@@ -28,6 +29,7 @@ export const addBookmark = createAsyncThunk(
     try {
       const res = await POST(`${API.ADD_BOOKMARK}/${postId}`, {});
       if (res?.status === 200 || res?.status === 201) {
+        callToast("Bookmark added!");
         return res?.data.bookmarks;
       }
     } catch (err) {
@@ -42,6 +44,7 @@ export const removeBookmark = createAsyncThunk(
     try {
       const res = await POST(`${API.REMOVE_BOOKMARK}/${postId}`, {});
       if (res?.status === 200 || res?.status === 201) {
+        callToast("Bookmark removed!");
         return res?.data.bookmarks;
       }
     } catch (err) {
