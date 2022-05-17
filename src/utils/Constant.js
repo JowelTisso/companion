@@ -6,6 +6,8 @@ export const API = Object.freeze({
   LOGIN: "/api/auth/login",
   SIGNUP: "/api/auth/signup",
   ALL_POST: "/api/posts",
+  ADD_POST: "/api/posts",
+  EDIT_POST: "/api/posts/edit",
   ALL_BOOKMARKS: "/api/users/bookmark",
   ADD_BOOKMARK: "/api/users/bookmark",
   REMOVE_BOOKMARK: "/api/users/remove-bookmark",

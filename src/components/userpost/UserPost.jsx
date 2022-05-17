@@ -1,6 +1,6 @@
 import "./UserPost.css";
 import React from "react";
-import { Avatar, IconButton } from "@mui/material";
+import { Avatar, IconButton, ListItemButton } from "@mui/material";
 import {
   IoEllipsisHorizontal,
   IoHeartOutline,
@@ -11,12 +11,19 @@ import {
 } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
 import { addBookmark, removeBookmark } from "../../store/bookmarkSlice";
+import { usePopover } from "../popmenu/PopMenu";
 
-const UserPost = ({ content, images, _id }) => {
+const UserPost = ({ content, images, _id, createdAt }) => {
   const { bookmarks, bookmarkStatus, bookmarkError } = useSelector(
     (state) => state.bookmark
   );
   const dispatch = useDispatch();
+  const { id, openPopover, PopMenuWrapper, handleClosePopover } = usePopover();
+
+  const date = new Date(createdAt).getDate();
+  const month = new Date(createdAt).toLocaleString("default", {
+    month: "long",
+  });
 
   const isLoading = bookmarkStatus === "loading";
 
@@ -46,9 +53,28 @@ const UserPost = ({ content, images, _id }) => {
         </Avatar>
         <div className="pd-left-2x">
           <p className="t4 username">Jowel Tisso</p>
-          <p className="post-time">12 hours ago</p>
+          <p className="post-time">
+            {month} {date}
+          </p>
         </div>
-        <IoEllipsisHorizontal className="t3 post-menu pointer" />
+
+        <span className="post-menu">
+          <IconButton
+            aria-describedby={id}
+            onClick={openPopover}
+            sx={{ padding: "3px" }}
+          >
+            <IoEllipsisHorizontal className="t3" />
+          </IconButton>
+          <PopMenuWrapper>
+            <ListItemButton onClick={() => console.log("edit")}>
+              <p className="post-menu-option">EDIT</p>
+            </ListItemButton>
+            <ListItemButton onClick={() => console.log("delete")}>
+              <p className="post-menu-option">DELETE</p>
+            </ListItemButton>
+          </PopMenuWrapper>
+        </span>
       </section>
       <section className="post-content mg-top-2x">
         <p className="t4 post-txt">{content}</p>

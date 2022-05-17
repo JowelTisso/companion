@@ -1,11 +1,15 @@
 import "./Sidenav.css";
 import React from "react";
-import { Avatar, Button } from "@mui/material";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
+import {
+  Avatar,
+  Button,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+} from "@mui/material";
+
 import { useDispatch } from "react-redux";
 import { toggleModal } from "../../store/homeSlice";
 
