@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { GET, POST } from "../utils/axiosHelper";
+import { DELETE, GET, POST } from "../utils/axiosHelper";
 import { API } from "../utils/Constant";
 
 const initialState = {
@@ -40,7 +40,7 @@ export const deletePost = createAsyncThunk(
   "post/deletePost",
   async (postId, { rejectWithValue }) => {
     try {
-      const res = await POST(`${API.ALL_POST}/${postId}`, {});
+      const res = await DELETE(`${API.ALL_POST}/${postId}`, {});
       if (res?.status === 200 || res?.status === 201) {
         return res?.data.posts;
       }

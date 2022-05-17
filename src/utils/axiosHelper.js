@@ -54,9 +54,13 @@ export const POST_AUTH = async (url, body) => {
  */
 export const DELETE = async (url, body) => {
   try {
-    return await axios.delete(url, body, {
-      headers: { authorization: getUserToken() },
-    });
+    return await axios.delete(
+      url,
+      {
+        headers: { authorization: getUserToken() },
+      },
+      body
+    );
   } catch (err) {
     callToast(err.message, false);
   }

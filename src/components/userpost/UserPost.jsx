@@ -12,8 +12,19 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { addBookmark, removeBookmark } from "../../store/bookmarkSlice";
 import { usePopover } from "../popmenu/PopMenu";
+import { deletePost } from "../../store/postSlice";
+import { callToast } from "../toast/Toast";
 
-const UserPost = ({ content, images, _id, createdAt }) => {
+const UserPost = ({
+  content,
+  images,
+  _id,
+  createdAt,
+  currentUsername,
+  username,
+  firstName,
+  lastName,
+}) => {
   const { bookmarks, bookmarkStatus, bookmarkError } = useSelector(
     (state) => state.bookmark
   );
@@ -38,6 +49,14 @@ const UserPost = ({ content, images, _id, createdAt }) => {
     }
   };
 
+  const deletePostHandler = () => {
+    if (username === currentUsername) {
+      dispatch(deletePost(_id));
+    } else {
+      callToast("You are not authorized to delete this post!", false);
+    }
+  };
+
   return (
     <div className="post-card-user pd-2x">
       <section className="item-user">
@@ -52,9 +71,11 @@ const UserPost = ({ content, images, _id, createdAt }) => {
           />
         </Avatar>
         <div className="pd-left-2x">
-          <p className="t4 username">Jowel Tisso</p>
+          <p className="t4 username">
+            {firstName} {lastName}
+          </p>
           <p className="post-time">
-            {month} {date}
+            @{username} . {month} {date}
           </p>
         </div>
 
@@ -70,7 +91,7 @@ const UserPost = ({ content, images, _id, createdAt }) => {
             <ListItemButton onClick={() => console.log("edit")}>
               <p className="post-menu-option">EDIT</p>
             </ListItemButton>
-            <ListItemButton onClick={() => console.log("delete")}>
+            <ListItemButton onClick={deletePostHandler}>
               <p className="post-menu-option">DELETE</p>
             </ListItemButton>
           </PopMenuWrapper>

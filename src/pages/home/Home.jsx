@@ -13,6 +13,7 @@ import { usePopover } from "../../components/popmenu/PopMenu";
 
 const Home = () => {
   const { posts, status } = useSelector((state) => state.post);
+  const { user } = useSelector((state) => state.auth);
   const { isModal } = useSelector((state) => state.home);
   const dispatch = useDispatch();
   const { id, openPopover, PopMenuWrapper, handleClosePopover } = usePopover();
@@ -57,7 +58,14 @@ const Home = () => {
       </div>
 
       <section className="userpost mg-top-1x">
-        {posts && posts?.map((post) => <UserPost {...post} key={post._id} />)}
+        {posts &&
+          posts?.map((post) => (
+            <UserPost
+              {...post}
+              key={post._id}
+              currentUsername={user.username}
+            />
+          ))}
       </section>
       <Modal open={isModal} onClose={handleClose}>
         <main className="modal-content flex-center">
