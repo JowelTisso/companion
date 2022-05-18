@@ -1,5 +1,5 @@
 import "./UserPost.css";
-import React from "react";
+import React, { useEffect } from "react";
 import { Avatar, IconButton, ListItemButton } from "@mui/material";
 import {
   IoEllipsisHorizontal,
@@ -16,6 +16,8 @@ import { usePopover } from "../popmenu/PopMenu";
 import { deletePost, dislikePost, likePost } from "../../store/postSlice";
 import { callToast } from "../toast/Toast";
 import { toggleModal, updateEditPostData } from "../../store/homeSlice";
+import { API } from "../../utils/Constant";
+import { followUserCall } from "./service/userService";
 
 const UserPost = ({
   content,
@@ -27,9 +29,12 @@ const UserPost = ({
   firstName,
   lastName,
   likes,
+  userId,
 }) => {
   const { bookmarks, bookmarkStatus } = useSelector((state) => state.bookmark);
   const { likeStatus } = useSelector((state) => state.post);
+  const { user } = useSelector((state) => state.auth);
+
   const dispatch = useDispatch();
   const { id, openPopover, PopMenuWrapper, handleClosePopover } = usePopover();
 
@@ -86,6 +91,25 @@ const UserPost = ({
     }
   };
 
+  const isFollowing = user.following.some(
+    (followedUser) => followedUser._id === userId
+  );
+
+  const followHandler = async () => {
+    if (isFollowing) {
+      followUserCall(API.UNFOLLOW_USER, userId, dispatch);
+    } else {
+      followUserCall(API.FOLLOW_USER, userId, dispatch);
+    }
+    handleClosePopover();
+  };
+
+  useEffect(() => {
+    // To the popup menu on scroll
+    window.addEventListener("scroll", handleClosePopover);
+    return () => window.removeEventListener("scroll", handleClosePopover);
+  }, []);
+
   return (
     <div className="post-card-user pd-2x">
       <section className="item-user">
@@ -117,12 +141,22 @@ const UserPost = ({
             <IoEllipsisHorizontal className="t3" />
           </IconButton>
           <PopMenuWrapper>
-            <ListItemButton onClick={editPostHandler}>
-              <p className="post-menu-option">EDIT</p>
-            </ListItemButton>
-            <ListItemButton onClick={deletePostHandler}>
-              <p className="post-menu-option">DELETE</p>
-            </ListItemButton>
+            {currentUsername === username ? (
+              <>
+                <ListItemButton onClick={editPostHandler}>
+                  <p className="post-menu-option">EDIT</p>
+                </ListItemButton>
+                <ListItemButton onClick={deletePostHandler}>
+                  <p className="post-menu-option">DELETE</p>
+                </ListItemButton>
+              </>
+            ) : (
+              <ListItemButton onClick={followHandler}>
+                <p className="post-menu-option">
+                  {isFollowing ? "Unfollow" : "Follow"}
+                </p>
+              </ListItemButton>
+            )}
           </PopMenuWrapper>
         </span>
       </section>

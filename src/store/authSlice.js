@@ -28,8 +28,15 @@ const authSlice = createSlice({
         user: action.payload.user,
       };
     },
+
+    updateUser: (state, action) => {
+      return {
+        ...state,
+        user: action.payload.user,
+      };
+    },
   },
 });
 
-export const { logIn, logOut, signUp } = authSlice.actions;
+export const { logIn, logOut, signUp, updateUser } = authSlice.actions;
 export default authSlice.reducer;

@@ -18,12 +18,6 @@ const Home = () => {
   const dispatch = useDispatch();
   const { id, openPopover, PopMenuWrapper, handleClosePopover } = usePopover();
 
-  useEffect(() => {
-    if (status === "idle") {
-      dispatch(loadPosts());
-    }
-  }, [dispatch, status]);
-
   const handleClose = () => {
     dispatch(toggleModal());
     dispatch(updateEditPostData({ isEditModal: false, content: "" }));
@@ -45,9 +39,22 @@ const Home = () => {
     handleClosePopover();
   };
 
+  useEffect(() => {
+    if (status === "idle") {
+      dispatch(loadPosts());
+    }
+  }, [dispatch, status]);
+
+  useEffect(() => {
+    // To the popup menu on scroll
+    window.addEventListener("scroll", handleClosePopover);
+    return () => window.removeEventListener("scroll", handleClosePopover);
+  }, []);
+
   if (status === "loading") {
     return <Spinner loading={true} />;
   }
+
   return (
     <div className="home-wrapper">
       <CreatePost dispatch={dispatch} />

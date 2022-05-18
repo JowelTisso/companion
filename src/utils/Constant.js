@@ -13,15 +13,17 @@ export const API = Object.freeze({
   ALL_BOOKMARKS: "/api/users/bookmark",
   ADD_BOOKMARK: "/api/users/bookmark",
   REMOVE_BOOKMARK: "/api/users/remove-bookmark",
+  FOLLOW_USER: "/api/users/follow",
+  UNFOLLOW_USER: "/api/users/unfollow",
 });
 
 // Routes
 export const ROUTES = Object.freeze({
+  HOME: "/",
   LOGIN: "/login",
   SIGNUP: "/signup",
-  HOME: "/",
   EXPLORE: "/explore",
+  PROFILE: "/profile",
   BOOKMARK: "/bookmark",
   NOTIFICATION: "/notification",
-  PROFILE: "/profile",
 });
