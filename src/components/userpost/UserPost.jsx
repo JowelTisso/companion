@@ -28,9 +28,7 @@ const UserPost = ({
   lastName,
   likes,
 }) => {
-  const { bookmarks, bookmarkStatus, bookmarkError } = useSelector(
-    (state) => state.bookmark
-  );
+  const { bookmarks, bookmarkStatus } = useSelector((state) => state.bookmark);
   const { likeStatus } = useSelector((state) => state.post);
   const dispatch = useDispatch();
   const { id, openPopover, PopMenuWrapper, handleClosePopover } = usePopover();
@@ -137,20 +135,26 @@ const UserPost = ({
             ))}
         </main>
         <span className="post-icon-user-container mg-top-2x">
-          <IconButton
-            aria-label="like the post"
-            onClick={likeHandler}
-            disabled={isLiking}
-          >
-            {isLiked ? (
-              <IoHeart className="t3 post-icon pointer" color="#f14b4b" />
-            ) : (
-              <IoHeartOutline className="t3 post-icon pointer" />
-            )}
-          </IconButton>
-          <IconButton aria-label="add comment">
-            <IoChatboxOutline className="t3 post-icon pointer" />
-          </IconButton>
+          <span className="flex-center">
+            <IconButton
+              aria-label="like the post"
+              onClick={likeHandler}
+              disabled={isLiking}
+            >
+              {isLiked ? (
+                <IoHeart className="t3 post-icon pointer" color="#f14b4b" />
+              ) : (
+                <IoHeartOutline className="t3 post-icon pointer" />
+              )}
+            </IconButton>
+            <p className="t4">{likes.likeCount}</p>
+          </span>
+          <span className="flex-center">
+            <IconButton aria-label="add comment">
+              <IoChatboxOutline className="t3 post-icon pointer" />
+            </IconButton>
+            <p className="t4">26</p>
+          </span>
           <IconButton aria-label="share the post">
             <IoShareSocialOutline className="t3 post-icon pointer" />
           </IconButton>

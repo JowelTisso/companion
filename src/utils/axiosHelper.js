@@ -43,7 +43,7 @@ export const POST_AUTH = async (url, body) => {
   try {
     return await axios.post(url, body);
   } catch (err) {
-    callToast(err.message, false);
+    callToast(err.response.data.errors[0], false);
   }
 };
 

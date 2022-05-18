@@ -11,8 +11,6 @@ export const userLogIn = async (payload) => {
     if (res?.status === 200 || res?.status === 201) {
       setUserToken(res?.data.encodedToken);
       callToast("Login successfull!");
-    } else {
-      callToast("Failed to login", false);
     }
     return res;
   } catch (err) {
