@@ -17,13 +17,11 @@
 
 .post-menu {
   margin-left: auto;
-  color: var(--txt-color-light);
-  padding: 3px;
-  border-radius: 50%;
 }
 
-.post-menu:hover {
-  background-color: var(--border-color-light);
+.post-menu-option {
+  font-size: 1.3rem;
+  padding: 5px 1.5rem;
 }
 
 .post-img {

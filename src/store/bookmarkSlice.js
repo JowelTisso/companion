@@ -11,7 +11,7 @@ const initialState = {
 
 export const loadBookmarks = createAsyncThunk(
   "bookmark/loadBookmarks",
-  async (arg, { rejectWithValue }) => {
+  async (_, { rejectWithValue }) => {
     try {
       const res = await GET(API.ALL_BOOKMARKS, true);
       if (res?.status === 200 || res?.status === 201) {

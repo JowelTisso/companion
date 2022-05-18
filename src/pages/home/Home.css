@@ -15,3 +15,18 @@
   right: 30%;
   width: 60rem;
 }
+
+.filter-container {
+  width: 100%;
+  text-align: end;
+}
+
+.filter-icon {
+  color: var(--txt-color);
+  margin-left: auto;
+}
+
+.filter-option {
+  font-size: 1.3rem;
+  padding: 1rem 2rem;
+}

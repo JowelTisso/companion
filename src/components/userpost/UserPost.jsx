@@ -1,6 +1,6 @@
 import "./UserPost.css";
 import React from "react";
-import { Avatar, IconButton } from "@mui/material";
+import { Avatar, IconButton, ListItemButton } from "@mui/material";
 import {
   IoEllipsisHorizontal,
   IoHeartOutline,
@@ -11,12 +11,31 @@ import {
 } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
 import { addBookmark, removeBookmark } from "../../store/bookmarkSlice";
+import { usePopover } from "../popmenu/PopMenu";
+import { deletePost } from "../../store/postSlice";
+import { callToast } from "../toast/Toast";
+import { toggleModal, updateEditPostData } from "../../store/homeSlice";
 
-const UserPost = ({ content, images, _id }) => {
+const UserPost = ({
+  content,
+  images,
+  _id,
+  createdAt,
+  currentUsername,
+  username,
+  firstName,
+  lastName,
+}) => {
   const { bookmarks, bookmarkStatus, bookmarkError } = useSelector(
     (state) => state.bookmark
   );
   const dispatch = useDispatch();
+  const { id, openPopover, PopMenuWrapper, handleClosePopover } = usePopover();
+
+  const date = new Date(createdAt).getDate();
+  const month = new Date(createdAt).toLocaleString("default", {
+    month: "long",
+  });
 
   const isLoading = bookmarkStatus === "loading";
 
@@ -28,6 +47,24 @@ const UserPost = ({ content, images, _id }) => {
       dispatch(addBookmark(_id));
     } else {
       dispatch(removeBookmark(_id));
+    }
+  };
+
+  const deletePostHandler = () => {
+    if (username === currentUsername) {
+      dispatch(deletePost(_id));
+    } else {
+      callToast("You are not authorized to delete this post!", false);
+    }
+  };
+
+  const editPostHandler = () => {
+    if (username === currentUsername) {
+      dispatch(toggleModal());
+      dispatch(updateEditPostData({ isEditModal: true, content, postId: _id }));
+      handleClosePopover();
+    } else {
+      callToast("You are not authorized to edit this post!", false);
     }
   };
 
@@ -45,10 +82,31 @@ const UserPost = ({ content, images, _id }) => {
           />
         </Avatar>
         <div className="pd-left-2x">
-          <p className="t4 username">Jowel Tisso</p>
-          <p className="post-time">12 hours ago</p>
+          <p className="t4 username">
+            {firstName} {lastName}
+          </p>
+          <p className="post-time">
+            @{username} . {month} {date}
+          </p>
         </div>
-        <IoEllipsisHorizontal className="t3 post-menu pointer" />
+
+        <span className="post-menu">
+          <IconButton
+            aria-describedby={id}
+            onClick={openPopover}
+            sx={{ padding: "3px" }}
+          >
+            <IoEllipsisHorizontal className="t3" />
+          </IconButton>
+          <PopMenuWrapper>
+            <ListItemButton onClick={editPostHandler}>
+              <p className="post-menu-option">EDIT</p>
+            </ListItemButton>
+            <ListItemButton onClick={deletePostHandler}>
+              <p className="post-menu-option">DELETE</p>
+            </ListItemButton>
+          </PopMenuWrapper>
+        </span>
       </section>
       <section className="post-content mg-top-2x">
         <p className="t4 post-txt">{content}</p>
