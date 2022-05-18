@@ -12,7 +12,7 @@ const homeSlice = createSlice({
   },
   reducers: {
     toggleModal: (state, action) => {
-      state.isModal = !state.isModal;
+      state.isModal = action.payload ? action.payload.isOpen : !state.isModal;
     },
     updateEditPostData: (state, action) => {
       state.editPostData.isEditModal = action.payload.isEditModal;
