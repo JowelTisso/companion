@@ -31,7 +31,7 @@ const CreatePost = ({ dispatch }) => {
         dispatch(updateEditPostData({ isEditModal: false, content: "" }));
       } else {
         dispatch(createPost(postData));
-        dispatch(toggleModal());
+        dispatch(toggleModal({ isOpen: false }));
       }
     } else {
       callToast("Nothing to post!", false);

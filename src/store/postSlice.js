@@ -6,6 +6,7 @@ const initialState = {
   posts: [],
   status: "idle",
   error: null,
+  likeStatus: "idle",
 };
 
 export const loadPosts = createAsyncThunk(
@@ -56,6 +57,34 @@ export const deletePost = createAsyncThunk(
   async (postId, { rejectWithValue }) => {
     try {
       const res = await DELETE(`${API.ALL_POST}/${postId}`, {});
+      if (res?.status === 200 || res?.status === 201) {
+        return res?.data.posts;
+      }
+    } catch (err) {
+      rejectWithValue(err.message);
+    }
+  }
+);
+
+export const likePost = createAsyncThunk(
+  "post/likePost",
+  async (postId, { rejectWithValue }) => {
+    try {
+      const res = await POST(`${API.LIKE_POST}/${postId}`, {});
+      if (res?.status === 200 || res?.status === 201) {
+        return res?.data.posts;
+      }
+    } catch (err) {
+      rejectWithValue(err.message);
+    }
+  }
+);
+
+export const dislikePost = createAsyncThunk(
+  "post/dislikePost",
+  async (postId, { rejectWithValue }) => {
+    try {
+      const res = await POST(`${API.DISLIKE_POST}/${postId}`, {});
       if (res?.status === 200 || res?.status === 201) {
         return res?.data.posts;
       }
@@ -123,6 +152,32 @@ const postSlice = createSlice({
     },
     [deletePost.rejected]: (state, action) => {
       state.status = "rejected";
+      state.error = action.payload;
+    },
+
+    //   like post
+    [likePost.pending]: (state) => {
+      state.likeStatus = "loading";
+    },
+    [likePost.fulfilled]: (state, action) => {
+      state.likeStatus = "fullfilled";
+      state.posts = action.payload;
+    },
+    [likePost.rejected]: (state, action) => {
+      state.likeStatus = "rejected";
+      state.error = action.payload;
+    },
+
+    //   like post
+    [dislikePost.pending]: (state) => {
+      state.likeStatus = "loading";
+    },
+    [dislikePost.fulfilled]: (state, action) => {
+      state.likeStatus = "fullfilled";
+      state.posts = action.payload;
+    },
+    [dislikePost.rejected]: (state, action) => {
+      state.likeStatus = "rejected";
       state.error = action.payload;
     },
   },

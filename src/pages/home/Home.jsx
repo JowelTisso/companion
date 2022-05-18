@@ -37,6 +37,14 @@ const Home = () => {
     handleClosePopover();
   };
 
+  const sortByLikes = (posts) => {
+    const sortedPosts = [...posts].sort((a, b) => {
+      return new Date(b.likes.likeCount) - new Date(a.likes.likeCount);
+    });
+    dispatch(updatePosts({ posts: sortedPosts }));
+    handleClosePopover();
+  };
+
   if (status === "loading") {
     return <Spinner loading={true} />;
   }
@@ -52,8 +60,8 @@ const Home = () => {
           <ListItemButton onClick={() => sortByDate(posts)}>
             <p className="filter-option">Sort by date</p>
           </ListItemButton>
-          <ListItemButton>
-            <p className="filter-option">Fliter by trending</p>
+          <ListItemButton onClick={() => sortByLikes(posts)}>
+            <p className="filter-option">Sort by trending</p>
           </ListItemButton>
         </PopMenuWrapper>
       </div>

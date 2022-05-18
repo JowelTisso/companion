@@ -3,6 +3,7 @@ import React from "react";
 import { Avatar, IconButton, ListItemButton } from "@mui/material";
 import {
   IoEllipsisHorizontal,
+  IoHeart,
   IoHeartOutline,
   IoChatboxOutline,
   IoShareSocialOutline,
@@ -12,23 +13,23 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { addBookmark, removeBookmark } from "../../store/bookmarkSlice";
 import { usePopover } from "../popmenu/PopMenu";
-import { deletePost } from "../../store/postSlice";
+import { deletePost, dislikePost, likePost } from "../../store/postSlice";
 import { callToast } from "../toast/Toast";
 import { toggleModal, updateEditPostData } from "../../store/homeSlice";
 
 const UserPost = ({
   content,
   images,
-  _id,
+  _id: postId,
   createdAt,
   currentUsername,
   username,
   firstName,
   lastName,
+  likes,
 }) => {
-  const { bookmarks, bookmarkStatus, bookmarkError } = useSelector(
-    (state) => state.bookmark
-  );
+  const { bookmarks, bookmarkStatus } = useSelector((state) => state.bookmark);
+  const { likeStatus } = useSelector((state) => state.post);
   const dispatch = useDispatch();
   const { id, openPopover, PopMenuWrapper, handleClosePopover } = usePopover();
 
@@ -37,22 +38,29 @@ const UserPost = ({
     month: "long",
   });
 
-  const isLoading = bookmarkStatus === "loading";
+  const isBookmarking = bookmarkStatus === "loading";
+  const isLiking = likeStatus === "loading";
 
   const isBookmarked =
-    bookmarks.length > 0 ? bookmarks?.some((post) => post._id === _id) : false;
+    bookmarks.length > 0
+      ? bookmarks?.some((post) => post._id === postId)
+      : false;
+
+  const isLiked = likes.likedBy?.some(
+    (likedUser) => likedUser.username === currentUsername
+  );
 
   const bookmarkHandler = () => {
-    if (!isBookmarked) {
-      dispatch(addBookmark(_id));
+    if (isBookmarked) {
+      dispatch(removeBookmark(postId));
     } else {
-      dispatch(removeBookmark(_id));
+      dispatch(addBookmark(postId));
     }
   };
 
   const deletePostHandler = () => {
     if (username === currentUsername) {
-      dispatch(deletePost(_id));
+      dispatch(deletePost(postId));
     } else {
       callToast("You are not authorized to delete this post!", false);
     }
@@ -61,10 +69,20 @@ const UserPost = ({
   const editPostHandler = () => {
     if (username === currentUsername) {
       dispatch(toggleModal());
-      dispatch(updateEditPostData({ isEditModal: true, content, postId: _id }));
+      dispatch(
+        updateEditPostData({ isEditModal: true, content, postId: postId })
+      );
       handleClosePopover();
     } else {
       callToast("You are not authorized to edit this post!", false);
+    }
+  };
+
+  const likeHandler = () => {
+    if (isLiked) {
+      dispatch(dislikePost(postId));
+    } else {
+      dispatch(likePost(postId));
     }
   };
 
@@ -117,19 +135,33 @@ const UserPost = ({
             ))}
         </main>
         <span className="post-icon-user-container mg-top-2x">
-          <IconButton aria-label="like the post">
-            <IoHeartOutline className="t3 post-icon pointer" />
-          </IconButton>
-          <IconButton aria-label="add comment">
-            <IoChatboxOutline className="t3 post-icon pointer" />
-          </IconButton>
+          <span className="flex-center">
+            <IconButton
+              aria-label="like the post"
+              onClick={likeHandler}
+              disabled={isLiking}
+            >
+              {isLiked ? (
+                <IoHeart className="t3 post-icon pointer" color="#f14b4b" />
+              ) : (
+                <IoHeartOutline className="t3 post-icon pointer" />
+              )}
+            </IconButton>
+            <p className="t4">{likes.likeCount}</p>
+          </span>
+          <span className="flex-center">
+            <IconButton aria-label="add comment">
+              <IoChatboxOutline className="t3 post-icon pointer" />
+            </IconButton>
+            <p className="t4">26</p>
+          </span>
           <IconButton aria-label="share the post">
             <IoShareSocialOutline className="t3 post-icon pointer" />
           </IconButton>
           <IconButton
             aria-label="add to bookmark"
             onClick={bookmarkHandler}
-            disabled={isLoading}
+            disabled={isBookmarking}
           >
             {isBookmarked ? (
               <IoBookmark className="t3 post-icon pointer" />

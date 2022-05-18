@@ -45,3 +45,7 @@ p {
 .pointer {
   cursor: pointer;
 }
+
+.danger-color {
+  color: var(--danger-color);
+}
