@@ -14,9 +14,12 @@ const CreatePost = ({ dispatch }) => {
     (state) => state.home.editPostData
   );
 
+  const { user } = useSelector((state) => state.auth);
+
   const [postData, setPostData] = useState({
     content: isEditModal ? content : "",
     images: null,
+    userId: user._id,
   });
 
   const onChangeHandler = ({ target }) => {
