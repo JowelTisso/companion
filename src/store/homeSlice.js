@@ -8,6 +8,7 @@ const homeSlice = createSlice({
       isEditModal: false,
       content: "",
       postId: "",
+      isBookmarked: false,
     },
   },
   reducers: {
@@ -18,6 +19,7 @@ const homeSlice = createSlice({
       state.editPostData.isEditModal = action.payload.isEditModal;
       state.editPostData.content = action.payload.content;
       state.editPostData.postId = action.payload.postId;
+      state.editPostData.isBookmarked = action.payload.isBookmarked;
     },
   },
 });

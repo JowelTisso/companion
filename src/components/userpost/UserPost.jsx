@@ -24,16 +24,15 @@ const UserPost = ({
   images,
   _id: postId,
   createdAt,
-  currentUsername,
   username,
   firstName,
   lastName,
   likes,
   userId,
+  user,
 }) => {
   const { bookmarks, bookmarkStatus } = useSelector((state) => state.bookmark);
   const { likeStatus } = useSelector((state) => state.post);
-  const { user } = useSelector((state) => state.auth);
 
   const dispatch = useDispatch();
   const { id, openPopover, PopMenuWrapper, handleClosePopover } = usePopover();
@@ -47,12 +46,12 @@ const UserPost = ({
   const isLiking = likeStatus === "loading";
 
   const isBookmarked =
-    bookmarks.length > 0
+    bookmarks?.length > 0
       ? bookmarks?.some((post) => post._id === postId)
       : false;
 
   const isLiked = likes.likedBy?.some(
-    (likedUser) => likedUser.username === currentUsername
+    (likedUser) => likedUser.username === user.username
   );
 
   const isFollowing = user.following.some(
@@ -68,30 +67,57 @@ const UserPost = ({
   };
 
   const deletePostHandler = () => {
-    if (username === currentUsername) {
+    if (username === user.username) {
       dispatch(deletePost(postId));
+      if (isBookmarked) {
+        dispatch(removeBookmark(postId));
+        dispatch(addBookmark(postId));
+      }
     } else {
       callToast("You are not authorized to delete this post!", false);
     }
   };
 
   const editPostHandler = () => {
-    if (username === currentUsername) {
+    if (username === user.username) {
       dispatch(toggleModal());
       dispatch(
         updateEditPostData({ isEditModal: true, content, postId: postId })
       );
+      if (isBookmarked) {
+        dispatch(
+          updateEditPostData({
+            isEditModal: true,
+            content,
+            postId: postId,
+            isBookmarked: true,
+          })
+        );
+      } else {
+        dispatch(
+          updateEditPostData({
+            isEditModal: true,
+            content,
+            postId: postId,
+            isBookmarked: false,
+          })
+        );
+      }
       handleClosePopover();
     } else {
       callToast("You are not authorized to edit this post!", false);
     }
   };
 
-  const likeHandler = () => {
+  const likeHandler = async () => {
     if (isLiked) {
       dispatch(dislikePost(postId));
     } else {
       dispatch(likePost(postId));
+    }
+    if (isBookmarked) {
+      dispatch(removeBookmark(postId));
+      dispatch(addBookmark(postId));
     }
   };
 
@@ -141,7 +167,7 @@ const UserPost = ({
             <IoEllipsisHorizontal className="t3" />
           </IconButton>
           <PopMenuWrapper>
-            {currentUsername === username ? (
+            {user.username === username ? (
               <>
                 <ListItemButton onClick={editPostHandler}>
                   <p className="post-menu-option">EDIT</p>
@@ -164,7 +190,7 @@ const UserPost = ({
         <p className="t4 post-txt">{content}</p>
         <main className="post-img-container mg-top-2x">
           {images &&
-            images.map((img, id) => (
+            images?.map((img, id) => (
               <img key={id} src={img} alt="post image" className="post-img" />
             ))}
         </main>

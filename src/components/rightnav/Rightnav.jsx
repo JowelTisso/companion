@@ -74,9 +74,7 @@ const Rightnav = () => {
       <p className="t4 section-title"> Suggestions</p>
       <section className="nav-item suggestions">
         {users?.map((user) => (
-          <>
-            <UserItem {...user} key={user._id} />
-          </>
+          <UserItem {...user} key={user._id} />
         ))}
       </section>
       <p className="t4 section-title"> Notifications</p>

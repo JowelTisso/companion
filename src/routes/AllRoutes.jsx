@@ -1,6 +1,6 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import { Bookmark, Home, Login, NotFound, Signup } from "../pages";
+import { Bookmark, Explore, Home, Login, NotFound, Signup } from "../pages";
 import PrivateRoutes from "./PrivateRoutes";
 import ContentRoutes from "./ContentRoutes";
 
@@ -21,6 +21,14 @@ const AllRoutes = () => {
           element={
             <PrivateRoutes>
               <Bookmark />
+            </PrivateRoutes>
+          }
+        />
+        <Route
+          path="/explore"
+          element={
+            <PrivateRoutes>
+              <Explore />
             </PrivateRoutes>
           }
         />

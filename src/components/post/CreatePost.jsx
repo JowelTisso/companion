@@ -8,9 +8,10 @@ import { createPost, editPost } from "../../store/postSlice";
 import { callToast } from "../toast/Toast";
 import { useSelector } from "react-redux";
 import { toggleModal, updateEditPostData } from "../../store/homeSlice";
+import { addBookmark, removeBookmark } from "../../store/bookmarkSlice";
 
 const CreatePost = ({ dispatch }) => {
-  const { isEditModal, content, postId } = useSelector(
+  const { isEditModal, content, postId, isBookmarked } = useSelector(
     (state) => state.home.editPostData
   );
 
@@ -30,8 +31,18 @@ const CreatePost = ({ dispatch }) => {
     if (postData.content) {
       if (isEditModal) {
         dispatch(editPost({ postId, postData }));
+        if (isBookmarked) {
+          dispatch(removeBookmark(postId));
+          dispatch(addBookmark(postId));
+        }
         dispatch(toggleModal());
-        dispatch(updateEditPostData({ isEditModal: false, content: "" }));
+        dispatch(
+          updateEditPostData({
+            isEditModal: false,
+            content: "",
+            isBookmarked: false,
+          })
+        );
       } else {
         dispatch(createPost(postData));
         dispatch(toggleModal({ isOpen: false }));
