@@ -2,9 +2,7 @@ import "./Home.css";
 import React, { useEffect } from "react";
 import CreatePost from "../../components/post/CreatePost";
 import UserPost from "../../components/userpost/UserPost";
-import { Modal } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import { toggleModal, updateEditPostData } from "../../store/homeSlice";
 import { updatePosts } from "../../store/postSlice";
 import Spinner from "../../components/spinner/Spinner";
 import { IoOptionsOutline } from "react-icons/io5";
@@ -14,14 +12,8 @@ import { usePopover } from "../../components/popmenu/PopMenu";
 const Home = () => {
   const { posts, status } = useSelector((state) => state.post);
   const { user } = useSelector((state) => state.auth);
-  // const { isModal } = useSelector((state) => state.home);
   const dispatch = useDispatch();
   const { id, openPopover, PopMenuWrapper, handleClosePopover } = usePopover();
-
-  const handleClose = () => {
-    dispatch(toggleModal());
-    dispatch(updateEditPostData({ isEditModal: false, content: "" }));
-  };
 
   const sortByDate = () => {
     const sortedPosts = [...posts].sort((a, b) => {
@@ -73,12 +65,6 @@ const Home = () => {
             <UserPost {...post} key={post._id} user={user} />
           ))}
       </section>
-
-      {/* <Modal open={isModal} onClose={handleClose}>
-        <main className="modal-content flex-center">
-          <CreatePost dispatch={dispatch} />
-        </main>
-      </Modal> */}
     </div>
   );
 };
