@@ -168,7 +168,7 @@ const postSlice = createSlice({
       state.error = action.payload;
     },
 
-    //   like post
+    //   dislike post
     [dislikePost.pending]: (state) => {
       state.likeStatus = "loading";
     },
