@@ -18,7 +18,16 @@
   font-weight: 500;
 }
 
-.right-nav .item-user {
+.suggestions {
+  height: 40rem;
+  overflow-y: scroll;
+}
+
+.suggestions::-webkit-scrollbar {
+  width: 1px;
+}
+
+.suggestions .item-user {
   box-shadow: none;
 }
 
@@ -34,6 +43,12 @@
 
 .notification-container {
   width: 100%;
+  height: 20rem;
+  overflow-y: scroll;
+}
+
+.notification-container::-webkit-scrollbar {
+  width: 1px;
 }
 
 .notification-content {

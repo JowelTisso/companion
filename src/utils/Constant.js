@@ -15,6 +15,7 @@ export const API = Object.freeze({
   REMOVE_BOOKMARK: "/api/users/remove-bookmark",
   FOLLOW_USER: "/api/users/follow",
   UNFOLLOW_USER: "/api/users/unfollow",
+  ALL_USER: "/api/users",
 });
 
 // Routes

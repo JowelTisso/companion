@@ -55,6 +55,10 @@ const UserPost = ({
     (likedUser) => likedUser.username === currentUsername
   );
 
+  const isFollowing = user.following.some(
+    (followedUser) => followedUser._id === userId
+  );
+
   const bookmarkHandler = () => {
     if (isBookmarked) {
       dispatch(removeBookmark(postId));
@@ -90,10 +94,6 @@ const UserPost = ({
       dispatch(likePost(postId));
     }
   };
-
-  const isFollowing = user.following.some(
-    (followedUser) => followedUser._id === userId
-  );
 
   const followHandler = async () => {
     if (isFollowing) {
