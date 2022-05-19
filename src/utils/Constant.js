@@ -10,6 +10,7 @@ export const API = Object.freeze({
   EDIT_POST: "/api/posts/edit",
   LIKE_POST: "/api/posts/like",
   DISLIKE_POST: "/api/posts/dislike",
+  USER_POST: "/api/posts/user",
   ALL_BOOKMARKS: "/api/users/bookmark",
   ADD_BOOKMARK: "/api/users/bookmark",
   REMOVE_BOOKMARK: "/api/users/remove-bookmark",

@@ -30,17 +30,16 @@ const Header = () => {
           onClick={() => {
             userLogout(dispatch);
           }}
-          sx={{ borderRadius: 3, boxShadow: "none" }}
+          sx={{ borderRadius: 3, boxShadow: "none", height: "40px" }}
         >
           Logout
         </Button>
-        <Avatar sx={{ borderRadius: 2 }} variant="rounded">
-          <img
-            src="https://i.pravatar.cc/150?img=60"
-            alt="profile avatar"
-            className="avatar pointer"
-          />
-        </Avatar>
+        <Avatar
+          sx={{ width: 40, height: 40 }}
+          src="https://i.pravatar.cc/150?img=60"
+          alt="profile avatar"
+          className=" pointer"
+        />
       </div>
     </header>
   );

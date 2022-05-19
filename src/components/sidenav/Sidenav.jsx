@@ -30,15 +30,11 @@ const Sidenav = () => {
     <aside className="sidenav flex-center pd-2x">
       <section className="nav-item item-user pd-2x">
         <Avatar
-          sx={{ borderRadius: 2, width: 45, height: 45 }}
-          variant="rounded"
-        >
-          <img
-            src="https://i.pravatar.cc/150?img=60"
-            alt="profile avatar"
-            className="avatar pointer"
-          />
-        </Avatar>
+          sx={{ width: 50, height: 50 }}
+          src="https://i.pravatar.cc/150?img=60"
+          alt="profile avatar"
+          className=" pointer"
+        />
         <div className="pd-left-2x">
           <p className="t4 username txt-overflow">Jowel Tisso</p>
           <p className="t4 userid txt-overflow">@joweltisso</p>

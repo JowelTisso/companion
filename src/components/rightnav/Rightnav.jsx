@@ -12,6 +12,8 @@ const Rightnav = () => {
   const { user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
+  const notificationNames = ["Goku", "vegeta", "kakashi", "yu zhong"];
+
   const UserItem = ({ firstName, lastName, username, avatar, _id: userId }) => {
     const isFollowing = user.following.some(
       (followedUser) => followedUser._id === userId
@@ -24,14 +26,15 @@ const Rightnav = () => {
         followUserCall(API.FOLLOW_USER, userId, dispatch);
       }
     };
+
     return (
       <main className="item-user pd-2x">
         <Avatar
-          sx={{ borderRadius: 2, width: 45, height: 45 }}
-          variant="rounded"
-        >
-          <img src={avatar} alt="profile avatar" className="avatar pointer" />
-        </Avatar>
+          sx={{ width: 45, height: 45 }}
+          src={avatar}
+          alt="profile avatar"
+          className=" pointer"
+        />
         <div className="pd-left-2x">
           <p className="t4 username txt-overflow">
             {firstName} {lastName}
@@ -79,24 +82,11 @@ const Rightnav = () => {
       </section>
       <p className="t4 section-title"> Notifications</p>
       <section className="notification-container">
-        <p className="t4 notification-content nav-item pd-2x">
-          <BsDot /> Goku started following you
-        </p>
-        <p className="t4 notification-content nav-item pd-2x mg-top-1x">
-          <BsDot /> Vegeta started following you
-        </p>
-        <p className="t4 notification-content nav-item pd-2x mg-top-1x">
-          <BsDot /> Kakashi started following you
-        </p>
-        <p className="t4 notification-content nav-item pd-2x">
-          <BsDot /> Goku started following you
-        </p>
-        <p className="t4 notification-content nav-item pd-2x mg-top-1x">
-          <BsDot /> Vegeta started following you
-        </p>
-        <p className="t4 notification-content nav-item pd-2x mg-top-1x">
-          <BsDot /> Kakashi started following you
-        </p>
+        {notificationNames.map((user) => (
+          <p className="t4 notification-content nav-item pd-2x" key={user}>
+            <BsDot /> {user} started following you
+          </p>
+        ))}
       </section>
     </aside>
   );
