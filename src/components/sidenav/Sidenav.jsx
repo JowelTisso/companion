@@ -10,20 +10,31 @@ import {
   ListItemText,
 } from "@mui/material";
 
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { toggleModal } from "../../store/homeSlice";
 
 import { navList } from "./data";
 import { useLocation, useNavigate } from "react-router-dom";
+import { ROUTES } from "../../utils/Constant";
+import { getUser, getUserPosts } from "../../store/profileSlice";
 
 const Sidenav = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
   const currentRoute = location.pathname;
+  const { user } = useSelector((state) => state.auth);
 
   const newPostHandler = () => {
     dispatch(toggleModal());
+  };
+
+  const goToProfile = (to) => {
+    if (to === ROUTES.PROFILE) {
+      dispatch(getUser(user._id));
+      dispatch(getUserPosts(user.username));
+    }
+    navigate(to);
   };
 
   return (
@@ -31,13 +42,16 @@ const Sidenav = () => {
       <section className="nav-item item-user pd-2x">
         <Avatar
           sx={{ width: 50, height: 50 }}
-          src="https://i.pravatar.cc/150?img=60"
+          src={user.avatar}
           alt="profile avatar"
           className=" pointer"
+          onClick={() => goToProfile(ROUTES.PROFILE)}
         />
         <div className="pd-left-2x">
-          <p className="t4 username txt-overflow">Jowel Tisso</p>
-          <p className="t4 userid txt-overflow">@joweltisso</p>
+          <p className="t4 username txt-overflow">
+            {user.firstName} {user.lastName}
+          </p>
+          <p className="t4 userid txt-overflow">@{user.username}</p>
         </div>
       </section>
       <nav className="nav-item pd-2x">
@@ -49,7 +63,7 @@ const Sidenav = () => {
                   borderLeft:
                     currentRoute === to ? "2px solid #048434" : "none",
                 }}
-                onClick={() => navigate(to)}
+                onClick={() => goToProfile(to)}
               >
                 <ListItemIcon>{icon(currentRoute)}</ListItemIcon>
                 <ListItemText
