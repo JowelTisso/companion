@@ -1,0 +1,46 @@
+.profile-banner {
+  height: 25rem;
+  background-size: cover;
+  display: flex;
+  padding: 1rem;
+  border-radius: 10px;
+  position: relative;
+}
+
+.profile-img {
+  position: absolute;
+  left: 3rem;
+  bottom: -5rem;
+  outline: 5px solid var(--bg-color-light);
+  border-radius: 50%;
+}
+
+.edit-btn {
+  text-align: end;
+}
+
+.edit-btn Button:hover {
+  border: 2px solid gray;
+}
+
+.user-info .t3 {
+  line-height: 2.5rem;
+}
+
+.follower-container {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.follower-container .t4 {
+  color: var(--txt-color-light);
+}
+
+.follower-count {
+  font-weight: 500;
+  color: var(--txt-color);
+}
+
+.user-posts-section .section-title {
+  font-size: 2rem;
+}

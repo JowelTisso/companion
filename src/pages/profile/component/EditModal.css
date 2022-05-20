@@ -1,0 +1,45 @@
+.profile-modal-content {
+  position: absolute;
+  top: 5%;
+  right: 30%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.edit-profile-container::-webkit-scrollbar {
+  display: none;
+}
+
+.edit-profile-container {
+  height: 60rem;
+  width: 60rem;
+  border-radius: 15px;
+  background-color: var(--secondary-color);
+  overflow: auto;
+}
+
+.field-container {
+  margin-top: 5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.field-name {
+  display: flex;
+  gap: 2rem;
+}
+
+.name-field {
+  flex: 1;
+}
+
+.save-btn-container {
+  text-align: end;
+  padding-right: 2rem;
+}
+
+.file-chooser {
+  visibility: hidden;
+}

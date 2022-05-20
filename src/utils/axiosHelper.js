@@ -16,7 +16,7 @@ export const GET = async (url, auth = false) => {
       return await axios.get(url);
     }
   } catch (err) {
-    callToast(err.response.data.errors[0], false);
+    callToast(err?.response?.data?.errors[0], false);
   }
 };
 
@@ -30,7 +30,7 @@ export const POST = async (url, body) => {
       headers: { authorization: getUserToken() },
     });
   } catch (err) {
-    callToast(err.response.data.errors[0], false);
+    callToast(err?.response?.data?.errors[0], false);
   }
 };
 
@@ -43,7 +43,7 @@ export const POST_AUTH = async (url, body) => {
   try {
     return await axios.post(url, body);
   } catch (err) {
-    callToast(err.response.data.errors[0], false);
+    callToast(err?.response?.data?.errors[0], false);
   }
 };
 
@@ -62,6 +62,6 @@ export const DELETE = async (url, body) => {
       body
     );
   } catch (err) {
-    callToast(err.response.data.errors[0], false);
+    callToast(err?.response?.data?.errors[0], false);
   }
 };

@@ -1,5 +1,5 @@
 import "./ContentRoutes.css";
-import React from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Header from "../components/header/Header";
 import Rightnav from "../components/rightnav/Rightnav";
@@ -7,6 +7,7 @@ import Sidenav from "../components/sidenav/Sidenav";
 import { toggleModal, updateEditPostData } from "../store/homeSlice";
 import { Modal } from "@mui/material";
 import CreatePost from "../components/post/CreatePost";
+import { getUser, getUserPosts } from "../store/profileSlice";
 
 const ContentRoutes = ({ children }) => {
   const auth = useSelector((state) => state.auth);
@@ -17,6 +18,13 @@ const ContentRoutes = ({ children }) => {
     dispatch(toggleModal());
     dispatch(updateEditPostData({ isEditModal: false, content: "" }));
   };
+
+  useEffect(() => {
+    if (auth.token) {
+      dispatch(getUser(auth?.user._id));
+      dispatch(getUserPosts(auth?.user.username));
+    }
+  }, [auth.token]);
 
   if (auth.token) {
     return (

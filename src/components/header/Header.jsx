@@ -1,17 +1,27 @@
 import "./Header.css";
 import React from "react";
 import { Avatar, Button } from "@mui/material";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { userLogout } from "../../pages/auth/helper/authHelper";
 import logo from "../../assets/logo2.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import SearchInput from "./component/SearchInput";
+import { getUser, getUserPosts } from "../../store/profileSlice";
+import { ROUTES } from "../../utils/Constant";
 
 const Header = () => {
+  const { user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const applySearch = ({ key, target }) => {
     //
+  };
+
+  const goToProfile = () => {
+    dispatch(getUser(user._id));
+    dispatch(getUserPosts(user.username));
+    navigate(ROUTES.PROFILE);
   };
 
   return (
@@ -25,22 +35,22 @@ const Header = () => {
       <div className="right-header-section">
         <SearchInput applySearch={applySearch} />
         <Button
-          variant="contained"
+          variant="outlined"
           size={"large"}
           onClick={() => {
             userLogout(dispatch);
           }}
-          sx={{ borderRadius: 3, boxShadow: "none" }}
+          sx={{ borderRadius: 3, boxShadow: "none", height: "35px", border: 2 }}
         >
           Logout
         </Button>
-        <Avatar sx={{ borderRadius: 2 }} variant="rounded">
-          <img
-            src="https://i.pravatar.cc/150?img=60"
-            alt="profile avatar"
-            className="avatar pointer"
-          />
-        </Avatar>
+        <Avatar
+          sx={{ width: 35, height: 35 }}
+          src={user.avatar}
+          alt="profile avatar"
+          className=" pointer"
+          onClick={goToProfile}
+        />
       </div>
     </header>
   );

@@ -9,6 +9,9 @@ import { callToast } from "../toast/Toast";
 import { useSelector } from "react-redux";
 import { toggleModal, updateEditPostData } from "../../store/homeSlice";
 import { addBookmark, removeBookmark } from "../../store/bookmarkSlice";
+import { ROUTES } from "../../utils/Constant";
+import { useLocation } from "react-router-dom";
+import { getUserPosts } from "../../store/profileSlice";
 
 const CreatePost = ({ dispatch }) => {
   const { isEditModal, content, postId, isBookmarked } = useSelector(
@@ -16,12 +19,15 @@ const CreatePost = ({ dispatch }) => {
   );
 
   const { user } = useSelector((state) => state.auth);
+  const { userProfile } = useSelector((state) => state.profile);
 
   const [postData, setPostData] = useState({
     content: isEditModal ? content : "",
     images: null,
     userId: user._id,
   });
+
+  const location = useLocation();
 
   const onChangeHandler = ({ target }) => {
     setPostData((state) => ({ ...state, content: target.value }));
@@ -46,6 +52,13 @@ const CreatePost = ({ dispatch }) => {
       } else {
         dispatch(createPost(postData));
         dispatch(toggleModal({ isOpen: false }));
+      }
+
+      if (
+        location.pathname === ROUTES.PROFILE &&
+        userProfile._id === user._id
+      ) {
+        dispatch(getUserPosts(userProfile.username));
       }
     } else {
       callToast("Nothing to post!", false);
