@@ -20,6 +20,7 @@ import { API } from "../../utils/Constant";
 import { followUserCall } from "./service/userService";
 
 const UserPost = ({
+  avatar,
   content,
   images,
   _id: postId,
@@ -140,15 +141,10 @@ const UserPost = ({
     <div className="post-card-user pd-2x">
       <section className="item-user">
         <Avatar
-          sx={{ borderRadius: 2, width: 40, height: 40 }}
-          variant="rounded"
-        >
-          <img
-            src="https://i.pravatar.cc/150?img=60"
-            alt="profile avatar"
-            className="avatar pointer"
-          />
-        </Avatar>
+          sx={{ width: 50, height: 50 }}
+          src={avatar}
+          alt="profile avatar"
+        />
         <div className="pd-left-2x">
           <p className="t4 username">
             {firstName} {lastName}

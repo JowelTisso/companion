@@ -24,7 +24,7 @@ const ContentRoutes = ({ children }) => {
       dispatch(getUser(auth?.user._id));
       dispatch(getUserPosts(auth?.user.username));
     }
-  }, [dispatch, auth.user]);
+  }, [auth.token]);
 
   if (auth.token) {
     return (

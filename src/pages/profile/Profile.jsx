@@ -2,7 +2,10 @@ import "./Profile.css";
 import React from "react";
 import { Avatar, Button, Link } from "@mui/material";
 import UserPost from "../../components/userpost/UserPost";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { API } from "../../utils/Constant";
+import { followUserCall } from "../../components/userpost/service/userService";
+import { getUser } from "../../store/profileSlice";
 
 const Profile = () => {
   const { user } = useSelector((state) => state.auth);
@@ -17,13 +20,52 @@ const Profile = () => {
       bio,
       website,
       backgroundImg,
+      _id: userProfileId,
     },
     userPosts,
     status,
   } = useSelector((state) => state.profile);
 
+  const dispatch = useDispatch();
+
   const followersCount = followers?.length;
   const followingCount = following?.length;
+
+  const isFollowing = user.following.some(
+    (followedUser) => followedUser._id === userProfileId
+  );
+
+  const profileBtnName = () => {
+    if (user._id === userProfileId) {
+      return "Edit profile";
+    }
+    if (isFollowing) {
+      return "Unfollow";
+    } else {
+      return "Follow";
+    }
+  };
+
+  const followHandler = async () => {
+    if (isFollowing) {
+      followUserCall(API.UNFOLLOW_USER, userProfileId, dispatch);
+    } else {
+      followUserCall(API.FOLLOW_USER, userProfileId, dispatch);
+    }
+    dispatch(getUser(userProfileId));
+  };
+
+  const editProfileHandler = () => {
+    console.log("edit peofile");
+  };
+
+  const profileBtnHandler = () => {
+    if (user._id === userProfileId) {
+      editProfileHandler();
+    } else {
+      followHandler();
+    }
+  };
 
   return (
     <div className="home-wrapper">
@@ -51,8 +93,9 @@ const Profile = () => {
               color: "#424b54",
               borderRadius: 5,
             }}
+            onClick={profileBtnHandler}
           >
-            Edit profile
+            {profileBtnName()}
           </Button>
         </div>
 
