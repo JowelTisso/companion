@@ -131,7 +131,7 @@ const Profile = () => {
 
       <section className="user-posts-section pd-1x">
         <p className="t3 section-title mg-left-1x mg-top-2x">Your posts</p>
-        <main className="mg-top-2x">
+        <main className="userpost mg-top-2x">
           {userPosts?.length > 0 ? (
             userPosts?.map((post) => (
               <UserPost {...post} key={post._id} user={user} />

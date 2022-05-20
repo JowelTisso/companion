@@ -16,8 +16,10 @@ import { usePopover } from "../popmenu/PopMenu";
 import { deletePost, dislikePost, likePost } from "../../store/postSlice";
 import { callToast } from "../toast/Toast";
 import { toggleModal, updateEditPostData } from "../../store/homeSlice";
-import { API } from "../../utils/Constant";
+import { API, ROUTES } from "../../utils/Constant";
 import { followUserCall } from "./service/userService";
+import { useLocation } from "react-router-dom";
+import { getUserPosts } from "../../store/profileSlice";
 
 const UserPost = ({
   avatar,
@@ -34,8 +36,10 @@ const UserPost = ({
 }) => {
   const { bookmarks, bookmarkStatus } = useSelector((state) => state.bookmark);
   const { likeStatus } = useSelector((state) => state.post);
+  const { userProfile } = useSelector((state) => state.profile);
 
   const dispatch = useDispatch();
+  const location = useLocation();
   const { id, openPopover, PopMenuWrapper, handleClosePopover } = usePopover();
 
   const date = new Date(createdAt).getDate();
@@ -73,6 +77,13 @@ const UserPost = ({
       if (isBookmarked) {
         dispatch(removeBookmark(postId));
         dispatch(addBookmark(postId));
+      }
+      if (
+        location.pathname === ROUTES.PROFILE &&
+        userProfile._id === user._id
+      ) {
+        dispatch(getUserPosts(userProfile.username));
+        handleClosePopover();
       }
     } else {
       callToast("You are not authorized to delete this post!", false);
