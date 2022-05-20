@@ -7,6 +7,7 @@ const initialState = {
   status: "idle",
   error: null,
   userPosts: [],
+  isModalOpen: false,
 };
 
 export const getUser = createAsyncThunk(
@@ -44,6 +45,9 @@ const profileSlice = createSlice({
     updateProfile: (state, action) => {
       state.userProfile = action.payload.userProfile;
     },
+    toggleEditProfileModal: (state, action) => {
+      state.isModalOpen = !state.isModalOpen;
+    },
   },
   extraReducers: {
     //   get user
@@ -74,5 +78,5 @@ const profileSlice = createSlice({
   },
 });
 
-export const { updateProfile } = profileSlice.actions;
+export const { updateProfile, toggleEditProfileModal } = profileSlice.actions;
 export default profileSlice.reducer;

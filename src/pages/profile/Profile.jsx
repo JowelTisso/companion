@@ -1,11 +1,12 @@
 import "./Profile.css";
-import React from "react";
-import { Avatar, Button, Link } from "@mui/material";
+import React, { useState } from "react";
+import { Avatar, Button, Link, Modal } from "@mui/material";
 import UserPost from "../../components/userpost/UserPost";
 import { useSelector, useDispatch } from "react-redux";
 import { API } from "../../utils/Constant";
 import { followUserCall } from "../../components/userpost/service/userService";
-import { getUser } from "../../store/profileSlice";
+import { getUser, toggleEditProfileModal } from "../../store/profileSlice";
+import EditModal from "./component/EditModal";
 
 const Profile = () => {
   const { user } = useSelector((state) => state.auth);
@@ -24,6 +25,7 @@ const Profile = () => {
     },
     userPosts,
     status,
+    isModalOpen,
   } = useSelector((state) => state.profile);
 
   const dispatch = useDispatch();
@@ -56,7 +58,7 @@ const Profile = () => {
   };
 
   const editProfileHandler = () => {
-    console.log("edit peofile");
+    dispatch(toggleEditProfileModal());
   };
 
   const profileBtnHandler = () => {
@@ -65,6 +67,10 @@ const Profile = () => {
     } else {
       followHandler();
     }
+  };
+
+  const handleClose = () => {
+    dispatch(toggleEditProfileModal());
   };
 
   return (
@@ -76,7 +82,7 @@ const Profile = () => {
             backgroundImage: `url(${backgroundImg})`,
           }}
         >
-          <span className="profile-img pointer">
+          <span className="profile-img ">
             <Avatar
               sx={{ width: 120, height: 120 }}
               src={avatar}
@@ -141,6 +147,12 @@ const Profile = () => {
           )}
         </main>
       </section>
+
+      <Modal open={isModalOpen} onClose={handleClose}>
+        <main className="profile-modal-content flex-center">
+          <EditModal />
+        </main>
+      </Modal>
     </div>
   );
 };

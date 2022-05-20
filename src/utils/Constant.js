@@ -17,6 +17,7 @@ export const API = Object.freeze({
   FOLLOW_USER: "/api/users/follow",
   UNFOLLOW_USER: "/api/users/unfollow",
   ALL_USER: "/api/users",
+  EDIT_USER: "/api/users/edit",
 });
 
 // Routes
