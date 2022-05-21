@@ -4,6 +4,7 @@ import homeReducer from "./homeSlice";
 import bookmarkSlice from "./bookmarkSlice";
 import postSlice from "./postSlice";
 import profileSlice from "./profileSlice";
+import commentSlice from "./commentSlice";
 
 const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ const store = configureStore({
     bookmark: bookmarkSlice,
     post: postSlice,
     profile: profileSlice,
+    comment: commentSlice,
   },
 });
 

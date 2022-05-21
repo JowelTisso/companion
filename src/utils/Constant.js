@@ -18,6 +18,10 @@ export const API = Object.freeze({
   UNFOLLOW_USER: "/api/users/unfollow",
   ALL_USER: "/api/users",
   EDIT_USER: "/api/users/edit",
+  ALL_COMMENTS: "/api/comments",
+  ADD_COMMENT: "/api/comments/add",
+  EDIT_COMMENT: "/api/comments/edit",
+  DELETE_COMMENT: "/api/comments/delete",
 });
 
 // Routes
@@ -29,4 +33,5 @@ export const ROUTES = Object.freeze({
   PROFILE: "/profile",
   BOOKMARK: "/bookmark",
   NOTIFICATION: "/notification",
+  POST: "/post",
 });

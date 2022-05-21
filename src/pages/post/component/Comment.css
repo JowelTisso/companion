@@ -1,0 +1,11 @@
+.comment-card {
+  background-color: var(--secondary-color);
+}
+
+.comment-card .item-user {
+  height: auto;
+}
+
+.comment-card .post-content {
+  margin-left: 6.5rem;
+}

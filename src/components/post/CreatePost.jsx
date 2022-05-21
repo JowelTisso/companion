@@ -67,13 +67,11 @@ const CreatePost = ({ dispatch }) => {
 
   return (
     <div className="post-card pd-2x">
-      <Avatar sx={{ borderRadius: 2, width: 45, height: 45 }} variant="rounded">
-        <img
-          src="https://i.pravatar.cc/150?img=60"
-          alt="profile avatar"
-          className="avatar pointer"
-        />
-      </Avatar>
+      <Avatar
+        sx={{ width: 50, height: 50 }}
+        src={user.avatar}
+        alt="profile avatar"
+      />
       <div className="post-details">
         <textarea
           type="text"
