@@ -1,0 +1,15 @@
+.new-comment-card {
+  background-color: var(--secondary-color);
+  border-radius: 15px;
+  display: flex;
+  width: 100%;
+}
+
+.new-comment-card .post-input {
+  height: 6rem;
+}
+
+.new-comment-card .post-actions-container {
+  text-align: end;
+  justify-content: end;
+}

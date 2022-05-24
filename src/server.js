@@ -25,6 +25,12 @@ import {
   unfollowUserHandler,
   editUserHandler,
 } from "./backend/controllers/UserController";
+import {
+  addPostCommentHandler,
+  deletePostCommentHandler,
+  editPostCommentHandler,
+  getPostCommentsHandler,
+} from "./backend/controllers/CommentsControlller";
 
 export function makeServer({ environment = "development" } = {}) {
   return new Server({
@@ -49,7 +55,7 @@ export function makeServer({ environment = "development" } = {}) {
           bookmarks: [],
         })
       );
-      posts.forEach((item) => server.create("post", { ...item }));
+      posts.forEach((item) => server.create("post", { ...item, comments: [] }));
     },
 
     routes() {
@@ -87,6 +93,21 @@ export function makeServer({ environment = "development" } = {}) {
         "/users/unfollow/:followUserId/",
         unfollowUserHandler.bind(this)
       );
+
+      // comments routes (public)
+      this.get("/comments/:postId", getPostCommentsHandler.bind(this));
+
+      // comments routes (private)
+      this.post("/comments/add/:postId", addPostCommentHandler.bind(this));
+      this.post(
+        "/comments/edit/:postId/:commentId",
+        editPostCommentHandler.bind(this)
+      );
+      this.post(
+        "/comments/delete/:postId/:commentId",
+        deletePostCommentHandler.bind(this)
+      );
+
       this.passthrough(
         "https://api.cloudinary.com/v1_1/dlt3d53ac/image/upload"
       );

@@ -8,6 +8,7 @@ import {
   NotFound,
   Profile,
   Signup,
+  SinglePost,
 } from "../pages";
 import PrivateRoutes from "./PrivateRoutes";
 import ContentRoutes from "./ContentRoutes";
@@ -45,6 +46,14 @@ const AllRoutes = () => {
           element={
             <PrivateRoutes>
               <Profile />
+            </PrivateRoutes>
+          }
+        />
+        <Route
+          path="/post/:postId"
+          element={
+            <PrivateRoutes>
+              <SinglePost />
             </PrivateRoutes>
           }
         />

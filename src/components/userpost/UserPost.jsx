@@ -18,8 +18,9 @@ import { callToast } from "../toast/Toast";
 import { toggleModal, updateEditPostData } from "../../store/homeSlice";
 import { API, ROUTES } from "../../utils/Constant";
 import { followUserCall } from "./service/userService";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { getUserPosts } from "../../store/profileSlice";
+import { loadCommentPost } from "../../store/commentSlice";
 
 const UserPost = ({
   avatar,
@@ -33,6 +34,7 @@ const UserPost = ({
   likes,
   userId,
   user,
+  comments,
 }) => {
   const { bookmarks, bookmarkStatus } = useSelector((state) => state.bookmark);
   const { likeStatus } = useSelector((state) => state.post);
@@ -41,6 +43,7 @@ const UserPost = ({
   const dispatch = useDispatch();
   const location = useLocation();
   const { id, openPopover, PopMenuWrapper, handleClosePopover } = usePopover();
+  const navigate = useNavigate();
 
   const date = new Date(createdAt).getDate();
   const month = new Date(createdAt).toLocaleString("default", {
@@ -59,7 +62,7 @@ const UserPost = ({
     (likedUser) => likedUser.username === user.username
   );
 
-  const isFollowing = user.following.some(
+  const isFollowing = user.following?.some(
     (followedUser) => followedUser._id === userId
   );
 
@@ -131,6 +134,9 @@ const UserPost = ({
       dispatch(removeBookmark(postId));
       dispatch(addBookmark(postId));
     }
+    if (location.pathname.includes("/post")) {
+      dispatch(loadCommentPost(postId));
+    }
   };
 
   const followHandler = async () => {
@@ -142,8 +148,12 @@ const UserPost = ({
     handleClosePopover();
   };
 
+  const navigateToPost = () => {
+    navigate(`${ROUTES.POST}/${postId}`);
+  };
+
   useEffect(() => {
-    // To the popup menu on scroll
+    // To close the popup menu on scroll
     window.addEventListener("scroll", handleClosePopover);
     return () => window.removeEventListener("scroll", handleClosePopover);
   }, []);
@@ -165,33 +175,35 @@ const UserPost = ({
           </p>
         </div>
 
-        <span className="post-menu">
-          <IconButton
-            aria-describedby={id}
-            onClick={openPopover}
-            sx={{ padding: "3px" }}
-          >
-            <IoEllipsisHorizontal className="t3" />
-          </IconButton>
-          <PopMenuWrapper>
-            {user.username === username ? (
-              <>
-                <ListItemButton onClick={editPostHandler}>
-                  <p className="post-menu-option">EDIT</p>
+        {!location.pathname.includes("/post") && (
+          <span className="post-menu">
+            <IconButton
+              aria-describedby={id}
+              onClick={openPopover}
+              sx={{ padding: "3px" }}
+            >
+              <IoEllipsisHorizontal className="t3" />
+            </IconButton>
+            <PopMenuWrapper>
+              {user.username === username ? (
+                <>
+                  <ListItemButton onClick={editPostHandler}>
+                    <p className="post-menu-option">EDIT</p>
+                  </ListItemButton>
+                  <ListItemButton onClick={deletePostHandler}>
+                    <p className="post-menu-option">DELETE</p>
+                  </ListItemButton>
+                </>
+              ) : (
+                <ListItemButton onClick={followHandler}>
+                  <p className="post-menu-option">
+                    {isFollowing ? "Unfollow" : "Follow"}
+                  </p>
                 </ListItemButton>
-                <ListItemButton onClick={deletePostHandler}>
-                  <p className="post-menu-option">DELETE</p>
-                </ListItemButton>
-              </>
-            ) : (
-              <ListItemButton onClick={followHandler}>
-                <p className="post-menu-option">
-                  {isFollowing ? "Unfollow" : "Follow"}
-                </p>
-              </ListItemButton>
-            )}
-          </PopMenuWrapper>
-        </span>
+              )}
+            </PopMenuWrapper>
+          </span>
+        )}
       </section>
       <section className="post-content mg-top-2x">
         <p className="t4 post-txt">{content}</p>
@@ -217,10 +229,10 @@ const UserPost = ({
             <p className="t4">{likes.likeCount}</p>
           </span>
           <span className="flex-center">
-            <IconButton aria-label="add comment">
+            <IconButton aria-label="add comment" onClick={navigateToPost}>
               <IoChatboxOutline className="t3 post-icon pointer" />
             </IconButton>
-            <p className="t4">26</p>
+            <p className="t4">{comments.length}</p>
           </span>
           <IconButton aria-label="share the post">
             <IoShareSocialOutline className="t3 post-icon pointer" />
