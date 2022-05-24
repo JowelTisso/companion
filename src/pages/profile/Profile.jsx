@@ -1,5 +1,5 @@
 import "./Profile.css";
-import React, { useState } from "react";
+import React from "react";
 import { Avatar, Button, Link, Modal } from "@mui/material";
 import UserPost from "../../components/userpost/UserPost";
 import { useSelector, useDispatch } from "react-redux";
