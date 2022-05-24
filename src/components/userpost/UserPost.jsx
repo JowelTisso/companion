@@ -34,6 +34,7 @@ const UserPost = ({
   likes,
   userId,
   user,
+  comments,
 }) => {
   const { bookmarks, bookmarkStatus } = useSelector((state) => state.bookmark);
   const { likeStatus } = useSelector((state) => state.post);
@@ -61,7 +62,7 @@ const UserPost = ({
     (likedUser) => likedUser.username === user.username
   );
 
-  const isFollowing = user.following.some(
+  const isFollowing = user.following?.some(
     (followedUser) => followedUser._id === userId
   );
 
@@ -231,7 +232,7 @@ const UserPost = ({
             <IconButton aria-label="add comment" onClick={navigateToPost}>
               <IoChatboxOutline className="t3 post-icon pointer" />
             </IconButton>
-            <p className="t4">26</p>
+            <p className="t4">{comments.length}</p>
           </span>
           <IconButton aria-label="share the post">
             <IoShareSocialOutline className="t3 post-icon pointer" />

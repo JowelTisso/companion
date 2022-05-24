@@ -7,7 +7,7 @@ import { useDispatch } from "react-redux";
 import {
   deleteComment,
   toggleModal,
-  updateSelectedCommentId,
+  updateSelectedComment,
 } from "../../../store/commentSlice";
 
 const Comment = ({
@@ -20,6 +20,7 @@ const Comment = ({
   user,
   _id,
   postId,
+  comment,
 }) => {
   const date = new Date(createdAt).getDate();
   const month = new Date(createdAt).toLocaleString("default", {
@@ -30,7 +31,7 @@ const Comment = ({
   const { id, openPopover, PopMenuWrapper, handleClosePopover } = usePopover();
 
   const editCommentHandler = () => {
-    dispatch(updateSelectedCommentId({ id: _id }));
+    dispatch(updateSelectedComment({ comment: comment }));
     dispatch(toggleModal());
     handleClosePopover();
   };

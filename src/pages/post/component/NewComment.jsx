@@ -5,12 +5,16 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   addComment,
   editComment,
+  loadCommentPost,
   toggleModal,
 } from "../../../store/commentSlice";
 import { useParams } from "react-router-dom";
+import { loadPosts } from "../../../store/postSlice";
 
-const NewComment = ({ edit = false, selectedCommentId = "" }) => {
-  const [commentData, setCommentData] = useState("");
+const NewComment = ({ edit = false, selectedComment = {} }) => {
+  const [commentData, setCommentData] = useState(
+    edit ? selectedComment.content : ""
+  );
   const { user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
@@ -26,7 +30,7 @@ const NewComment = ({ edit = false, selectedCommentId = "" }) => {
         dispatch(
           editComment({
             postId,
-            selectedCommentId,
+            selectedCommentId: selectedComment._id,
             commentData: { content: commentData },
           })
         );
@@ -34,6 +38,8 @@ const NewComment = ({ edit = false, selectedCommentId = "" }) => {
       } else {
         dispatch(addComment({ postId, commentData: { content: commentData } }));
       }
+      dispatch(loadCommentPost(postId));
+      dispatch(loadPosts());
     }
   };
 

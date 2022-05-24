@@ -1,5 +1,5 @@
 import "./SinglePost.css";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import UserPost from "../../components/userpost/UserPost";
 import { useDispatch, useSelector } from "react-redux";
@@ -16,7 +16,7 @@ import { Modal } from "@mui/material";
 const SinglePost = () => {
   const { postId } = useParams();
   const { user } = useSelector((state) => state.auth);
-  const { commentPost, comments, status, isModalOpen, selectedCommentId } =
+  const { commentPost, comments, status, isModalOpen, selectedComment } =
     useSelector((state) => state.comment);
 
   const dispatch = useDispatch();
@@ -39,11 +39,17 @@ const SinglePost = () => {
       {commentPost && <UserPost {...commentPost} user={user} />}
       <NewComment />
       {comments?.map((comment) => (
-        <Comment {...comment} key={comment._id} user={user} postId={postId} />
+        <Comment
+          {...comment}
+          key={comment._id}
+          user={user}
+          postId={postId}
+          comment={comment}
+        />
       ))}
       <Modal open={isModalOpen} onClose={closeHandler}>
         <main className="modal-content flex-center">
-          <NewComment edit={true} selectedCommentId={selectedCommentId} />
+          <NewComment edit={true} selectedComment={selectedComment} />
         </main>
       </Modal>
     </div>

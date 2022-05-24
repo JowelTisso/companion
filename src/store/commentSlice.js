@@ -8,7 +8,7 @@ const initialState = {
   status: "idle",
   error: null,
   isModalOpen: false,
-  selectedCommentId: "",
+  selectedComment: null,
 };
 
 export const loadCommentPost = createAsyncThunk(
@@ -104,8 +104,8 @@ const commentSlice = createSlice({
     toggleModal: (state, action) => {
       state.isModalOpen = !state.isModalOpen;
     },
-    updateSelectedCommentId: (state, action) => {
-      state.selectedCommentId = action.payload.id;
+    updateSelectedComment: (state, action) => {
+      state.selectedComment = action.payload.comment;
     },
   },
   extraReducers: {
@@ -180,6 +180,6 @@ export const {
   updateComments,
   updateCommentPost,
   toggleModal,
-  updateSelectedCommentId,
+  updateSelectedComment,
 } = commentSlice.actions;
 export default commentSlice.reducer;
