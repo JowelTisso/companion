@@ -24,9 +24,11 @@ export const loadBookmarks = createAsyncThunk(
 
 export const addBookmark = createAsyncThunk(
   "bookmark/addBookmark",
-  async (postId, { rejectWithValue }) => {
+  async ({ postId, bookmarkUserId }, { rejectWithValue }) => {
     try {
-      const res = await POST(`${API.ADD_BOOKMARK}/${postId}`, {});
+      const res = await POST(`${API.ADD_BOOKMARK}/${postId}`, {
+        bookmarkUserId,
+      });
       if (res?.status === 200 || res?.status === 201) {
         return res?.data.bookmarks;
       }

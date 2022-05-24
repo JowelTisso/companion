@@ -107,7 +107,7 @@ export const getBookmarkPostsHandler = function (schema, request) {
 
 export const bookmarkPostHandler = function (schema, request) {
   const { postId } = request.params;
-  const post = schema.posts.findBy({ _id: postId }).attrs;
+  let post = schema.posts.findBy({ _id: postId }).attrs;
   const user = requiresAuth.call(this, request);
   try {
     if (!user) {
@@ -121,6 +121,7 @@ export const bookmarkPostHandler = function (schema, request) {
         }
       );
     }
+    const { bookmarkUserId } = JSON.parse(request.requestBody);
     const isBookmarked = user.bookmarks.some(
       (currPost) => currPost._id === postId
     );
@@ -131,6 +132,7 @@ export const bookmarkPostHandler = function (schema, request) {
         { errors: ["This Post is already bookmarked"] }
       );
     }
+    post = { ...post, bookmarkUserId: bookmarkUserId };
     user.bookmarks.push(JSON.parse(JSON.stringify(post)));
     this.db.users.update(
       { _id: user._id },

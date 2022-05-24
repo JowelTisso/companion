@@ -25,6 +25,7 @@ const CreatePost = ({ dispatch }) => {
     content: isEditModal ? content : "",
     images: null,
     userId: user._id,
+    avatar: user.avatar,
   });
 
   const location = useLocation();
@@ -39,7 +40,7 @@ const CreatePost = ({ dispatch }) => {
         dispatch(editPost({ postId, postData }));
         if (isBookmarked) {
           dispatch(removeBookmark(postId));
-          dispatch(addBookmark(postId));
+          dispatch(addBookmark({ postId, bookmarkUserId: user._id }));
         }
         dispatch(toggleModal());
         dispatch(

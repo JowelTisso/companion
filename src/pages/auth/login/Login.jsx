@@ -78,6 +78,7 @@ const Login = () => {
           label="Password"
           variant="outlined"
           value={password}
+          type="password"
           onChange={passwordChangeHandler}
         />
         <Button

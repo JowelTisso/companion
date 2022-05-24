@@ -4,7 +4,11 @@ import { useDispatch, useSelector } from "react-redux";
 import Header from "../components/header/Header";
 import Rightnav from "../components/rightnav/Rightnav";
 import Sidenav from "../components/sidenav/Sidenav";
-import { toggleModal, updateEditPostData } from "../store/homeSlice";
+import {
+  loadAllUsers,
+  toggleModal,
+  updateEditPostData,
+} from "../store/homeSlice";
 import { Modal } from "@mui/material";
 import CreatePost from "../components/post/CreatePost";
 import { getUser, getUserPosts } from "../store/profileSlice";
@@ -25,6 +29,10 @@ const ContentRoutes = ({ children }) => {
       dispatch(getUserPosts(auth?.user.username));
     }
   }, [auth.token]);
+
+  useEffect(() => {
+    dispatch(loadAllUsers());
+  }, []);
 
   if (auth.token) {
     return (

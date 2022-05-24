@@ -6,10 +6,13 @@ import { userSignUp } from "../helper/authHelper";
 import { useNavigate } from "react-router-dom";
 import { callToast } from "../../../components/toast/Toast";
 import { ROUTES } from "../../../utils/Constant";
+import { useDispatch } from "react-redux";
+import { loadAllUsers } from "../../../store/homeSlice";
 
 const Signup = () => {
   const defaultCredential = {
-    fullname: "",
+    firstName: "",
+    lastName: "",
     username: "",
     email: "",
     password: "",
@@ -17,11 +20,16 @@ const Signup = () => {
   };
   const [credentials, setCredentials] = useState(defaultCredential);
 
-  const { username, password, fullname, email, confirmPassword } = credentials;
+  const { username, password, firstName, lastName, email, confirmPassword } =
+    credentials;
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  const fullnameChangeHandler = ({ target }) => {
-    setCredentials((state) => ({ ...state, fullname: target.value }));
+  const firstNameChangeHandler = ({ target }) => {
+    setCredentials((state) => ({ ...state, firstName: target.value }));
+  };
+  const lastNameChangeHandler = ({ target }) => {
+    setCredentials((state) => ({ ...state, lastName: target.value }));
   };
   const usernameChangeHandler = ({ target }) => {
     setCredentials((state) => ({ ...state, username: target.value }));
@@ -38,19 +46,25 @@ const Signup = () => {
 
   const signupHandler = async () => {
     try {
-      if (username && password && email && fullname) {
-        if (password === confirmPassword) {
-          const res = await userSignUp({
-            username,
-            password,
-            fullname,
-            email,
-          });
-          if (res?.status === 200 || res?.status === 201) {
-            setCredentials(defaultCredential);
+      if (username && password && email && firstName && lastName) {
+        if (email.includes("@")) {
+          if (password === confirmPassword) {
+            const res = await userSignUp({
+              username,
+              password,
+              firstName,
+              lastName,
+              email,
+            });
+            if (res?.status === 200 || res?.status === 201) {
+              setCredentials(defaultCredential);
+              dispatch(loadAllUsers());
+            }
+          } else {
+            callToast("Password doesn't match!", false);
           }
         } else {
-          callToast("Password doesn't match!", false);
+          callToast("Input an valid email!", false);
         }
       } else {
         callToast("All fields are required!", false);
@@ -67,12 +81,22 @@ const Signup = () => {
       </section>
       <section className="login-section signup-section">
         <p className="login-heading t2 text-center">Become a companion</p>
-        <TextField
-          label="Fullname"
-          variant="outlined"
-          value={fullname}
-          onChange={fullnameChangeHandler}
-        />
+        <section className="flex-container">
+          <TextField
+            className="flex-field"
+            label="First name"
+            variant="outlined"
+            value={firstName}
+            onChange={firstNameChangeHandler}
+          />
+          <TextField
+            className="flex-field"
+            label="Last name"
+            variant="outlined"
+            value={lastName}
+            onChange={lastNameChangeHandler}
+          />
+        </section>
         <TextField
           label="Username"
           variant="outlined"
@@ -85,19 +109,21 @@ const Signup = () => {
           value={email}
           onChange={emailChangeHandler}
         />
-        <section className="password-container">
+        <section className="flex-container">
           <TextField
-            className="password-field"
+            className="flex-field"
             label="Password"
             variant="outlined"
             value={password}
+            type="password"
             onChange={passwordChangeHandler}
           />
           <TextField
-            className="password-field"
+            className="flex-field"
             label="Confirm password"
             variant="outlined"
             value={confirmPassword}
+            type="password"
             onChange={confirmPasswordChangeHandler}
           />
         </section>

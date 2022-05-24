@@ -1,9 +1,9 @@
-.password-container {
+.flex-container {
   display: flex;
   gap: 1rem;
 }
 
-.password-field {
+.flex-field {
   flex: 1;
 }
 
