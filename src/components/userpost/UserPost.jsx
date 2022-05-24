@@ -1,5 +1,5 @@
 import "./UserPost.css";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Avatar, IconButton, ListItemButton } from "@mui/material";
 import {
   IoEllipsisHorizontal,
@@ -36,9 +36,12 @@ const UserPost = ({
   user,
   comments,
 }) => {
+  const [postUser, setPostUser] = useState({});
+
   const { bookmarks, bookmarkStatus } = useSelector((state) => state.bookmark);
   const { likeStatus } = useSelector((state) => state.post);
   const { userProfile } = useSelector((state) => state.profile);
+  const { allUsers } = useSelector((state) => state.home);
 
   const dispatch = useDispatch();
   const location = useLocation();
@@ -153,6 +156,14 @@ const UserPost = ({
   };
 
   useEffect(() => {
+    // To get post user data
+    (() => {
+      const user = allUsers.find((user) => user._id === userId);
+      setPostUser(user);
+    })();
+  }, [allUsers]);
+
+  useEffect(() => {
     // To close the popup menu on scroll
     window.addEventListener("scroll", handleClosePopover);
     return () => window.removeEventListener("scroll", handleClosePopover);
@@ -163,15 +174,15 @@ const UserPost = ({
       <section className="item-user">
         <Avatar
           sx={{ width: 50, height: 50 }}
-          src={avatar}
+          src={postUser?.avatar}
           alt="profile avatar"
         />
         <div className="pd-left-2x">
           <p className="t4 username">
-            {firstName} {lastName}
+            {postUser?.firstName} {postUser?.lastName}
           </p>
           <p className="post-time">
-            @{username} . {month} {date}
+            @{postUser?.username} . {month} {date}
           </p>
         </div>
 

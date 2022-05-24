@@ -9,6 +9,8 @@ import { callToast } from "../../../components/toast/Toast";
 import { getUser, toggleEditProfileModal } from "../../../store/profileSlice";
 import { MdModeEdit } from "react-icons/md";
 import { uploadImages } from "./service";
+import { loadPosts } from "../../../store/postSlice";
+import { loadAllUsers } from "../../../store/homeSlice";
 
 const EditModal = () => {
   const {
@@ -56,41 +58,50 @@ const EditModal = () => {
   };
 
   const onSubmit = async () => {
-    if (profileData.firstName && profileData.lastName && profileData.username) {
-      setFormValidation((data) => ({
-        ...data,
-        firstName: { error: false, msg: "" },
-        lastName: { error: false, msg: "" },
-        username: { error: false, msg: "" },
-      }));
-      console.log(profileData);
-      const res = await POST(API.EDIT_USER, { userData: profileData });
-      if (res?.status === 200 || res?.status === 201) {
-        dispatch(updateUser({ user: res?.data?.user }));
-        dispatch(getUser(userProfileId));
-        dispatch(toggleEditProfileModal());
-        callToast("Your profile has been updated successfully!");
-      } else {
-        callToast("Unable to update profile!", false);
+    try {
+      if (
+        profileData.firstName &&
+        profileData.lastName &&
+        profileData.username
+      ) {
+        setFormValidation((data) => ({
+          ...data,
+          firstName: { error: false, msg: "" },
+          lastName: { error: false, msg: "" },
+          username: { error: false, msg: "" },
+        }));
+        const res = await POST(API.EDIT_USER, { userData: profileData });
+        if (res?.status === 200 || res?.status === 201) {
+          dispatch(updateUser({ user: res?.data?.user }));
+          dispatch(getUser(userProfileId));
+          dispatch(toggleEditProfileModal());
+          dispatch(loadPosts());
+          dispatch(loadAllUsers());
+          callToast("Your profile has been updated successfully!");
+        } else {
+          callToast("Unable to update profile!", false);
+        }
       }
-    }
-    if (!profileData.firstName) {
-      setFormValidation((data) => ({
-        ...data,
-        firstName: { error: true, msg: "This is required!" },
-      }));
-    }
-    if (!profileData.lastName) {
-      setFormValidation((data) => ({
-        ...data,
-        lastName: { error: true, msg: "This is required!" },
-      }));
-    }
-    if (!profileData.username) {
-      setFormValidation((data) => ({
-        ...data,
-        username: { error: true, msg: "This is required!" },
-      }));
+      if (!profileData.firstName) {
+        setFormValidation((data) => ({
+          ...data,
+          firstName: { error: true, msg: "This is required!" },
+        }));
+      }
+      if (!profileData.lastName) {
+        setFormValidation((data) => ({
+          ...data,
+          lastName: { error: true, msg: "This is required!" },
+        }));
+      }
+      if (!profileData.username) {
+        setFormValidation((data) => ({
+          ...data,
+          username: { error: true, msg: "This is required!" },
+        }));
+      }
+    } catch (err) {
+      console.log(err);
     }
   };
 

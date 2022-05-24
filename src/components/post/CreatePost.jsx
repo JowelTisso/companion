@@ -25,6 +25,7 @@ const CreatePost = ({ dispatch }) => {
     content: isEditModal ? content : "",
     images: null,
     userId: user._id,
+    avatar: user.avatar,
   });
 
   const location = useLocation();

@@ -18,6 +18,7 @@ const SinglePost = () => {
   const { user } = useSelector((state) => state.auth);
   const { commentPost, comments, status, isModalOpen, selectedComment } =
     useSelector((state) => state.comment);
+  const { allUsers } = useSelector((state) => state.home);
 
   const dispatch = useDispatch();
 
@@ -29,6 +30,8 @@ const SinglePost = () => {
     dispatch(loadCommentPost(postId));
     dispatch(loadComments(postId));
   }, []);
+
+  console.log(comments[0]);
 
   if (status === "loading") {
     return <Spinner loading={true} />;
@@ -45,6 +48,7 @@ const SinglePost = () => {
           user={user}
           postId={postId}
           comment={comment}
+          allUsers={allUsers}
         />
       ))}
       <Modal open={isModalOpen} onClose={closeHandler}>
