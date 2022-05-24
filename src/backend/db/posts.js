@@ -8,7 +8,7 @@ import { formatDate } from "../utils/authUtils";
 
 export const posts = [
   {
-    _id: uuid(),
+    _id: "post123",
     content: "Roadmap to become a full stack web3 developer in 180 days.",
     images: ["https://picsum.photos/id/1/800/600"],
     likes: {
@@ -25,7 +25,7 @@ export const posts = [
     updatedAt: formatDate(),
   },
   {
-    _id: uuid(),
+    _id: "post345",
     content:
       "Love the idea behind this. A clear goal and how to achieve it. I believe as you go, you would realize that you need more time with some. And sometimes, I may intend to spend selected hours learning but end up spending more. Wish you the best!👍🏾",
     images: null,
@@ -33,7 +33,7 @@ export const posts = [
       likeCount: 2,
       likedBy: [
         {
-          _id: "a914876b-62be-4f5b-872c-05b30d85a10a",
+          _id: "jowel123",
           firstName: "jowel",
           lastName: "tisso",
           username: "joweltisso",
@@ -46,7 +46,7 @@ export const posts = [
           id: "1",
         },
         {
-          _id: "a4a08c7e-7f3a-4dd1-b43f-6e22854c9c6a",
+          _id: "goku123",
           createdAt: "2022-05-18T16:35:54+05:30",
           updatedAt: "2022-05-18T16:35:54+05:30",
           username: "songoku",

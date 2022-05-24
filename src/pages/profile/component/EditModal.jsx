@@ -29,7 +29,7 @@ const EditModal = () => {
   const dispatch = useDispatch();
 
   const [profileData, setProfileData] = useState({
-    avatar: "",
+    avatar: avatar || "",
     firstName: "",
     lastName: "",
     username: "",
@@ -134,7 +134,7 @@ const EditModal = () => {
           <div className="badge-container">
             <Avatar
               sx={{ width: 120, height: 120 }}
-              src={avatar}
+              src={profileData.avatar}
               alt="profile avatar"
             />
             <label htmlFor="profilePic">

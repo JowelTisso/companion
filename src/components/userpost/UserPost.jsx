@@ -58,7 +58,9 @@ const UserPost = ({
 
   const isBookmarked =
     bookmarks?.length > 0
-      ? bookmarks?.some((post) => post._id === postId)
+      ? bookmarks?.some(
+          (post) => post._id === postId && post.bookmarkUserId === user._id
+        )
       : false;
 
   const isLiked = likes.likedBy?.some(
@@ -73,7 +75,7 @@ const UserPost = ({
     if (isBookmarked) {
       dispatch(removeBookmark(postId));
     } else {
-      dispatch(addBookmark(postId));
+      dispatch(addBookmark({ postId, bookmarkUserId: user._id }));
     }
   };
 
@@ -82,7 +84,7 @@ const UserPost = ({
       dispatch(deletePost(postId));
       if (isBookmarked) {
         dispatch(removeBookmark(postId));
-        dispatch(addBookmark(postId));
+        dispatch(addBookmark({ postId, bookmarkUserId: user._id }));
       }
       if (
         location.pathname === ROUTES.PROFILE &&
@@ -135,7 +137,7 @@ const UserPost = ({
     }
     if (isBookmarked) {
       dispatch(removeBookmark(postId));
-      dispatch(addBookmark(postId));
+      dispatch(addBookmark({ postId, bookmarkUserId: user._id }));
     }
     if (location.pathname.includes("/post")) {
       dispatch(loadCommentPost(postId));
