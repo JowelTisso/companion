@@ -31,8 +31,6 @@ const SinglePost = () => {
     dispatch(loadComments(postId));
   }, []);
 
-  console.log(comments[0]);
-
   if (status === "loading") {
     return <Spinner loading={true} />;
   }
