@@ -47,20 +47,24 @@ const Signup = () => {
   const signupHandler = async () => {
     try {
       if (username && password && email && firstName && lastName) {
-        if (password === confirmPassword) {
-          const res = await userSignUp({
-            username,
-            password,
-            firstName,
-            lastName,
-            email,
-          });
-          if (res?.status === 200 || res?.status === 201) {
-            setCredentials(defaultCredential);
-            dispatch(loadAllUsers());
+        if (email.includes("@")) {
+          if (password === confirmPassword) {
+            const res = await userSignUp({
+              username,
+              password,
+              firstName,
+              lastName,
+              email,
+            });
+            if (res?.status === 200 || res?.status === 201) {
+              setCredentials(defaultCredential);
+              dispatch(loadAllUsers());
+            }
+          } else {
+            callToast("Password doesn't match!", false);
           }
         } else {
-          callToast("Password doesn't match!", false);
+          callToast("Input an valid email!", false);
         }
       } else {
         callToast("All fields are required!", false);

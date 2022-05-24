@@ -28,6 +28,8 @@ const Profile = () => {
     isModalOpen,
   } = useSelector((state) => state.profile);
 
+  const defaultBackgroundImg = "https://picsum.photos/id/10/1000/500";
+
   const dispatch = useDispatch();
 
   const followersCount = followers?.length;
@@ -79,7 +81,7 @@ const Profile = () => {
         <div
           className="profile-banner mg-top-1x"
           style={{
-            backgroundImage: `url(${backgroundImg})`,
+            backgroundImage: `url(${backgroundImg || defaultBackgroundImg})`,
           }}
         >
           <span className="profile-img ">

@@ -26,6 +26,8 @@ const EditModal = () => {
     },
   } = useSelector((state) => state.profile);
 
+  const defaultBackgroundImg = "https://picsum.photos/id/10/1000/500";
+
   const dispatch = useDispatch();
 
   const [profileData, setProfileData] = useState({
@@ -127,7 +129,7 @@ const EditModal = () => {
       <div
         className="profile-banner"
         style={{
-          backgroundImage: `url(${backgroundImg})`,
+          backgroundImage: `url(${backgroundImg || defaultBackgroundImg})`,
         }}
       >
         <span className="profile-img ">
