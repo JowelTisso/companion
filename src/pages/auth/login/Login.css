@@ -33,3 +33,16 @@
   margin-left: 1rem;
   margin-right: 1rem;
 }
+
+@media screen and (max-width: 640px) {
+  .logo-section {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .login-section {
+    margin: 0;
+    box-shadow: none;
+  }
+}

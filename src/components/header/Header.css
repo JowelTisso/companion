@@ -60,3 +60,24 @@
 .search-icon-mb {
   display: none;
 }
+
+@media only screen and (max-width: 680px) {
+  .right-header-section .input-container {
+    width: 5rem;
+  }
+
+  .search-icon-container input {
+    display: none;
+  }
+
+  .search-icon {
+    color: var(--txt-color);
+    font-size: 2.2rem;
+  }
+}
+
+@media only screen and (max-width: 460px) {
+  .logo-title {
+    display: none;
+  }
+}
