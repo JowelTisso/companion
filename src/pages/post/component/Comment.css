@@ -9,3 +9,7 @@
 .comment-card .post-content {
   margin-left: 6.5rem;
 }
+
+.comment-card .post-txt {
+  word-break: break-all;
+}
