@@ -16,6 +16,34 @@ export const getAllpostsHandler = function () {
 };
 
 /**
+ * This handler handles gets paginated posts from the db.
+ * send GET Request at /api/posts/:page
+ * */
+
+export const getPaginatedPostHandler = function (schema, request) {
+  try {
+    const posts = this.db.posts;
+    const page = parseInt(request.params.page);
+    const limit = 5;
+    const startIndex = (page - 1) * limit;
+    const endIndex = page * limit;
+    const results = {};
+    endIndex < posts.length && (results.nextPage = page + 1);
+    startIndex > 0 && (results.prevPage = page - 1);
+    results.posts = posts.slice(startIndex, endIndex);
+    return new Response(200, {}, { paginatedPosts: results });
+  } catch (error) {
+    return new Response(
+      500,
+      {},
+      {
+        error,
+      }
+    );
+  }
+};
+
+/**
  * This handler gets post by postId in the db.
  * send GET Request at /api/posts/:postId
  * */

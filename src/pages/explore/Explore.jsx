@@ -34,9 +34,6 @@ const Explore = () => {
           <li className="list-item" onClick={sortByLikes}>
             Trending
           </li>
-          {/* <li className="list-item">Technology</li> */}
-          {/* <li className="list-item">Sports</li> */}
-          {/* <li className="list-item">News</li> */}
         </ul>
       </nav>
       <section className="userpost mg-top-1x">

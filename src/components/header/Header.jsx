@@ -8,14 +8,18 @@ import { Link, useNavigate } from "react-router-dom";
 import SearchInput from "./component/SearchInput";
 import { getUser, getUserPosts } from "../../store/profileSlice";
 import { ROUTES } from "../../utils/Constant";
+import { GET } from "../../utils/axiosHelper";
 
 const Header = () => {
   const { user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const applySearch = ({ key, target }) => {
-    //
+  const applySearch = async ({ key, target }) => {
+    if (key === "Enter") {
+      const res = await GET("/api/posts/3");
+      console.log(res);
+    }
   };
 
   const goToProfile = () => {
@@ -40,7 +44,7 @@ const Header = () => {
           onClick={() => {
             userLogout(dispatch);
           }}
-          sx={{ borderRadius: 3, boxShadow: "none", height: "35px", border: 2 }}
+          sx={{ borderRadius: 3, boxShadow: "none", height: "35px" }}
         >
           Logout
         </Button>
