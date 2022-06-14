@@ -42,19 +42,21 @@ const Rightnav = () => {
 
     return (
       <main className="item-user pd-2x">
-        <Avatar
-          sx={{ width: 45, height: 45 }}
-          src={avatar}
-          alt="profile avatar"
-          className=" pointer"
-          onClick={goToProfile}
-        />
-        <div className="pd-left-2x">
-          <p className="t4 username txt-overflow">
-            {firstName} {lastName}
-          </p>
-          <p className="t4 userid txt-overflow">@{username}</p>
-        </div>
+        <section className="item-user-info">
+          <Avatar
+            sx={{ width: 45, height: 45 }}
+            src={avatar}
+            alt="profile avatar"
+            className=" pointer"
+            onClick={goToProfile}
+          />
+          <div className="user-info-container pd-left-2x">
+            <p className="t4 username txt-overflow">
+              {firstName} {lastName}
+            </p>
+            <p className="t4 userid txt-overflow">@{username}</p>
+          </div>
+        </section>
         <div className="follow-btn-container flex-center">
           <Button
             variant="contained"

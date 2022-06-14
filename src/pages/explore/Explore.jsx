@@ -24,19 +24,21 @@ const Explore = () => {
   };
 
   return (
-    <div className="home-wrapper">
+    <div className="home-wrapper explore-wrapper">
       <p className="t4 section-title">Explore</p>
-      <ul className="list tabs mg-top-1x">
-        <li className="list-item" onClick={sortByDate}>
-          Latest
-        </li>
-        <li className="list-item" onClick={sortByLikes}>
-          Trending
-        </li>
-        <li className="list-item">Technology</li>
-        <li className="list-item">Sports</li>
-        <li className="list-item">News</li>
-      </ul>
+      <nav className="tabs mg-top-1x">
+        <ul className="list">
+          <li className="list-item" onClick={sortByDate}>
+            Latest
+          </li>
+          <li className="list-item" onClick={sortByLikes}>
+            Trending
+          </li>
+          {/* <li className="list-item">Technology</li> */}
+          {/* <li className="list-item">Sports</li> */}
+          {/* <li className="list-item">News</li> */}
+        </ul>
+      </nav>
       <section className="userpost mg-top-1x">
         {posts?.length > 0 ? (
           posts?.map((post) => (

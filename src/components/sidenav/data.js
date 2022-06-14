@@ -12,7 +12,7 @@ export const navList = [
     to: ROUTES.HOME,
     icon: (currentRoute) => (
       <TiHomeOutline
-        className="t3 nav-icon"
+        className="t3"
         color={currentRoute === ROUTES.HOME ? "#048434" : "gray"}
       />
     ),
@@ -22,18 +22,8 @@ export const navList = [
     to: ROUTES.EXPLORE,
     icon: (currentRoute) => (
       <IoRocketOutline
-        className="t3 nav-icon"
+        className="t3"
         color={currentRoute === ROUTES.EXPLORE ? "#048434" : "gray"}
-      />
-    ),
-  },
-  {
-    name: "Bookmarks",
-    to: ROUTES.BOOKMARK,
-    icon: (currentRoute) => (
-      <IoBookmarkOutline
-        className="t3 nav-icon"
-        color={currentRoute === ROUTES.BOOKMARK ? "#048434" : "gray"}
       />
     ),
   },
@@ -42,8 +32,18 @@ export const navList = [
     to: ROUTES.NOTIFICATION,
     icon: (currentRoute) => (
       <IoNotificationsOutline
-        className="t3 nav-icon"
+        className="t3"
         color={currentRoute === ROUTES.NOTIFICATION ? "#048434" : "gray"}
+      />
+    ),
+  },
+  {
+    name: "Bookmarks",
+    to: ROUTES.BOOKMARK,
+    icon: (currentRoute) => (
+      <IoBookmarkOutline
+        className="t3"
+        color={currentRoute === ROUTES.BOOKMARK ? "#048434" : "gray"}
       />
     ),
   },
@@ -52,7 +52,7 @@ export const navList = [
     to: ROUTES.PROFILE,
     icon: (currentRoute) => (
       <TiUserOutline
-        className="t3 nav-icon"
+        className="t3"
         color={currentRoute === ROUTES.PROFILE ? "#048434" : "gray"}
       />
     ),

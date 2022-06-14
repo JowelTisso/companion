@@ -1,7 +1,8 @@
 .profile-modal-content {
   position: absolute;
-  top: 5%;
-  right: 30%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -42,4 +43,22 @@
 
 .file-chooser {
   visibility: hidden;
+}
+
+@media only screen and (max-width: 680px) {
+  .profile-modal-content {
+    width: 50rem;
+  }
+}
+
+@media only screen and (max-width: 540px) {
+  .profile-modal-content {
+    width: 40rem;
+  }
+}
+
+@media only screen and (max-width: 440px) {
+  .profile-modal-content {
+    width: 38rem;
+  }
 }
