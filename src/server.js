@@ -66,10 +66,9 @@ export function makeServer({ environment = "development" } = {}) {
       this.post("/auth/login", loginHandler.bind(this));
 
       // post routes (public)
-      this.get("/posts", getAllpostsHandler.bind(this));
+      this.get("/posts", getPaginatedPostHandler.bind(this));
       this.get("/posts/:postId", getPostHandler.bind(this));
       this.get("/posts/user/:username", getAllUserPostsHandler.bind(this));
-      this.get("/posts/:page", getPaginatedPostHandler.bind(this));
 
       // post routes (private)
       this.post("/posts", createPostHandler.bind(this));
