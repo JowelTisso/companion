@@ -1,5 +1,5 @@
 import "./Explore.css";
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import UserPost from "../../components/userpost/UserPost";
 import { loadMorePosts, updatePosts } from "../../store/postSlice";
@@ -28,6 +28,11 @@ const Explore = () => {
     dispatch(updatePosts({ posts: sortedPosts }));
   };
 
+  useEffect(() => {
+    // To scroll window to top
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <div className="home-wrapper explore-wrapper">
       <p className="t4 section-title">Explore</p>
@@ -43,27 +48,17 @@ const Explore = () => {
       </nav>
       <section className="userpost mg-top-1x">
         {posts?.length > 0 ? (
-          posts?.map((post, i) => {
-            // console.log(posts.length, i + 1);
-            return posts.length === i + 1 ? (
-              <UserPost
-                ref={lastPostRef}
-                {...post}
-                key={post._id}
-                user={user}
-              />
-            ) : (
-              <UserPost {...post} key={post._id} user={user} />
-            );
-          })
+          posts?.map((post) => (
+            <UserPost {...post} key={post._id} user={user} />
+          ))
         ) : (
           <p className="t4">There is no content to explore!</p>
         )}
-        {loadingMore && (
-          <div className="flex-center">
+        <div className="flex-center" ref={lastPostRef}>
+          {loadingMore && (
             <BeatLoader color="#048434" loading={true} size={20} />
-          </div>
-        )}
+          )}
+        </div>
       </section>
     </div>
   );

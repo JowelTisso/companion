@@ -8,6 +8,9 @@ const initialState = {
   error: null,
   userPosts: [],
   isModalOpen: false,
+  currentPageNumber: 1,
+  hasMore: false,
+  loadingMore: false,
 };
 
 export const getUser = createAsyncThunk(
@@ -28,9 +31,23 @@ export const getUserPosts = createAsyncThunk(
   "profile/getUserPosts",
   async (username, { rejectWithValue }) => {
     try {
-      const res = await GET(`${API.USER_POST}/${username}`);
+      const res = await GET(`${API.USER_POST}/${username}?page=1`);
       if (res?.status === 200 || res?.status === 201) {
-        return res?.data.posts;
+        return res?.data.paginatedPosts;
+      }
+    } catch (err) {
+      rejectWithValue(err.message);
+    }
+  }
+);
+
+export const getMoreUserPosts = createAsyncThunk(
+  "profile/getMoreUserPosts",
+  async ({ username, pageNumber }, { rejectWithValue }) => {
+    try {
+      const res = await GET(`${API.USER_POST}/${username}?page=${pageNumber}`);
+      if (res?.status === 200 || res?.status === 201) {
+        return res?.data.paginatedPosts;
       }
     } catch (err) {
       rejectWithValue(err.message);
@@ -69,10 +86,34 @@ const profileSlice = createSlice({
     },
     [getUserPosts.fulfilled]: (state, action) => {
       state.status = "fullfilled";
-      state.userPosts = action.payload;
+      state.userPosts = action.payload.posts;
+      if (action.payload?.nextPage) {
+        state.hasMore = true;
+      }
     },
     [getUserPosts.rejected]: (state, action) => {
       state.status = "rejected";
+      state.error = action.payload;
+    },
+
+    //   get more user posts
+    [getMoreUserPosts.pending]: (state) => {
+      state.loadingMore = true;
+    },
+    [getMoreUserPosts.fulfilled]: (state, action) => {
+      state.status = "fullfilled";
+      state.loadingMore = false;
+      action.payload.posts.map((post) => state.userPosts.push(post));
+      state.currentPageNumber += 1;
+      if (action.payload?.nextPage) {
+        state.hasMore = true;
+      } else {
+        state.hasMore = false;
+      }
+    },
+    [getMoreUserPosts.rejected]: (state, action) => {
+      state.status = "rejected";
+      state.loadingMore = false;
       state.error = action.payload;
     },
   },

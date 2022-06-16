@@ -1,22 +1,29 @@
 import "./Bookmark.css";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import UserPost from "../../components/userpost/UserPost";
 import { useDispatch, useSelector } from "react-redux";
-import { loadBookmarks } from "../../store/bookmarkSlice";
+import { loadBookmarks, loadMoreBookmarks } from "../../store/bookmarkSlice";
+import { useInfiniteScrolling } from "../../utils/infinteScrolling";
+import { BeatLoader } from "react-spinners";
 
 const Bookmark = () => {
   const [userBookmarks, setUserBookmarks] = useState([]);
-  const { bookmarks, bookmarkStatus } = useSelector((state) => state.bookmark);
+  const { bookmarks, bookmarkStatus, loadingMore } = useSelector(
+    (state) => state.bookmark
+  );
   const { user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
+
+  const lastPostRef = useRef();
+  useInfiniteScrolling(
+    lastPostRef,
+    loadMoreBookmarks,
+    (state) => state.bookmark
+  );
 
   useEffect(() => {
     if (bookmarkStatus === "idle") {
       dispatch(loadBookmarks());
-      const filteredBookmarks = bookmarks?.filter(
-        (bookmark) => bookmark.username === user.username
-      );
-      setUserBookmarks(filteredBookmarks);
     }
   }, [dispatch, bookmarkStatus]);
 
@@ -26,6 +33,11 @@ const Bookmark = () => {
     );
     setUserBookmarks(filteredBookmarks);
   }, [bookmarks]);
+
+  useEffect(() => {
+    // To scroll window to top
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <div className="home-wrapper">
@@ -38,6 +50,11 @@ const Bookmark = () => {
         ) : (
           <p className="t4">You have not bookmarked any post yet!</p>
         )}
+        <div className="flex-center" ref={lastPostRef}>
+          {loadingMore && (
+            <BeatLoader color="#048434" loading={true} size={20} />
+          )}
+        </div>
       </section>
     </div>
   );

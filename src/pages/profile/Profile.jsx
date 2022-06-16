@@ -1,12 +1,18 @@
 import "./Profile.css";
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { Avatar, Button, Link, Modal } from "@mui/material";
 import UserPost from "../../components/userpost/UserPost";
 import { useSelector, useDispatch } from "react-redux";
 import { API } from "../../utils/Constant";
 import { followUserCall } from "../../components/userpost/service/userService";
-import { getUser, toggleEditProfileModal } from "../../store/profileSlice";
+import {
+  getMoreUserPosts,
+  getUser,
+  toggleEditProfileModal,
+} from "../../store/profileSlice";
 import EditModal from "./component/EditModal";
+import { BeatLoader } from "react-spinners";
+import { useInfiniteScrolling } from "../../utils/infinteScrolling";
 
 const Profile = () => {
   const { user } = useSelector((state) => state.auth);
@@ -26,11 +32,19 @@ const Profile = () => {
     userPosts,
     status,
     isModalOpen,
+    loadingMore,
   } = useSelector((state) => state.profile);
 
   const defaultBackgroundImg = "https://picsum.photos/id/10/1000/500";
 
   const dispatch = useDispatch();
+
+  const loadMorePost = (nextPage) =>
+    getMoreUserPosts({ username, pageNumber: nextPage });
+
+  //Infinite scrolling
+  const lastPostRef = useRef();
+  useInfiniteScrolling(lastPostRef, loadMorePost, (state) => state.profile);
 
   const followersCount = followers?.length;
   const followingCount = following?.length;
@@ -74,6 +88,11 @@ const Profile = () => {
   const handleClose = () => {
     dispatch(toggleEditProfileModal());
   };
+
+  useEffect(() => {
+    // To scroll window to top
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <div className="home-wrapper">
@@ -147,6 +166,11 @@ const Profile = () => {
           ) : (
             <p className="t4">You have not created any post!</p>
           )}
+          <div className="flex-center" ref={lastPostRef}>
+            {loadingMore && (
+              <BeatLoader color="#048434" loading={true} size={20} />
+            )}
+          </div>
         </main>
       </section>
 

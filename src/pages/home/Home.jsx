@@ -37,6 +37,9 @@ const Home = () => {
   };
 
   useEffect(() => {
+    // To scroll window to top
+    window.scrollTo(0, 0);
+
     // To the popup menu on scroll
     window.addEventListener("scroll", handleClosePopover);
     return () => window.removeEventListener("scroll", handleClosePopover);
@@ -66,23 +69,14 @@ const Home = () => {
 
       <section className="userpost mg-top-1x mg-bottom-5x">
         {posts &&
-          posts?.map((post, i) =>
-            posts.length === i + 1 ? (
-              <UserPost
-                ref={lastPostRef}
-                {...post}
-                key={post._id}
-                user={user}
-              />
-            ) : (
-              <UserPost {...post} key={post._id} user={user} />
-            )
-          )}
-        {loadingMore && (
-          <div className="flex-center">
+          posts?.map((post, i) => (
+            <UserPost {...post} key={post._id} user={user} />
+          ))}
+        <div className="flex-center" ref={lastPostRef}>
+          {loadingMore && (
             <BeatLoader color="#048434" loading={true} size={20} />
-          </div>
-        )}
+          )}
+        </div>
       </section>
     </div>
   );

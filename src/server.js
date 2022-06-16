@@ -7,20 +7,19 @@ import {
 } from "./backend/controllers/AuthController";
 import {
   createPostHandler,
-  getAllpostsHandler,
   getPostHandler,
   deletePostHandler,
   editPostHandler,
   likePostHandler,
   dislikePostHandler,
-  getAllUserPostsHandler,
   getPaginatedPostHandler,
+  getPaginatedUserPostsHandler,
 } from "./backend/controllers/PostController";
 import {
   followUserHandler,
   getAllUsersHandler,
   getUserHandler,
-  getBookmarkPostsHandler,
+  getPaginatedBookmarkHandler,
   bookmarkPostHandler,
   removePostFromBookmarkHandler,
   unfollowUserHandler,
@@ -32,6 +31,7 @@ import {
   editPostCommentHandler,
   getPostCommentsHandler,
 } from "./backend/controllers/CommentsControlller";
+import { bookmarks } from "./backend/db/bookmarks";
 
 export function makeServer({ environment = "development" } = {}) {
   return new Server({
@@ -53,7 +53,7 @@ export function makeServer({ environment = "development" } = {}) {
           ...item,
           followers: [],
           following: [],
-          bookmarks: [],
+          bookmarks: item._id === "jowel123" ? [...bookmarks] : [],
         })
       );
       posts.forEach((item) => server.create("post", { ...item, comments: [] }));
@@ -68,7 +68,10 @@ export function makeServer({ environment = "development" } = {}) {
       // post routes (public)
       this.get("/posts", getPaginatedPostHandler.bind(this));
       this.get("/posts/:postId", getPostHandler.bind(this));
-      this.get("/posts/user/:username", getAllUserPostsHandler.bind(this));
+      this.get(
+        "/posts/user/:username",
+        getPaginatedUserPostsHandler.bind(this)
+      );
 
       // post routes (private)
       this.post("/posts", createPostHandler.bind(this));
@@ -83,7 +86,7 @@ export function makeServer({ environment = "development" } = {}) {
 
       // user routes (private)
       this.post("users/edit", editUserHandler.bind(this));
-      this.get("/users/bookmark", getBookmarkPostsHandler.bind(this));
+      this.get("/users/bookmark", getPaginatedBookmarkHandler.bind(this));
       this.post("/users/bookmark/:postId/", bookmarkPostHandler.bind(this));
       this.post(
         "/users/remove-bookmark/:postId/",

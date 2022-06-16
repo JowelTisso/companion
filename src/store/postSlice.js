@@ -123,10 +123,10 @@ const postSlice = createSlice({
     [loadPosts.pending]: (state) => {
       state.status = "loading";
     },
-    [loadPosts.fulfilled]: (state, { payload }) => {
+    [loadPosts.fulfilled]: (state, action) => {
       state.status = "fullfilled";
-      state.posts = payload.posts;
-      if (payload?.nextPage) {
+      state.posts = action.payload.posts;
+      if (action.payload?.nextPage) {
         state.hasMore = true;
       }
     },
@@ -204,12 +204,12 @@ const postSlice = createSlice({
     [loadMorePosts.pending]: (state) => {
       state.loadingMore = true;
     },
-    [loadMorePosts.fulfilled]: (state, { payload }) => {
+    [loadMorePosts.fulfilled]: (state, action) => {
       state.status = "fullfilled";
       state.loadingMore = false;
-      payload.posts.map((post) => state.posts.push(post));
+      action.payload.posts.map((post) => state.posts.push(post));
       state.currentPageNumber += 1;
-      if (payload?.nextPage) {
+      if (action.payload?.nextPage) {
         state.hasMore = true;
       } else {
         state.hasMore = false;

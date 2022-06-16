@@ -100,6 +100,51 @@ export const getBookmarkPostsHandler = function (schema, request) {
     );
   }
 };
+
+/**
+ * This handler handles gets paginated bookmarks from the db.
+ * send GET Request at /api/bookmarks/:page
+ * */
+
+export const getPaginatedBookmarkHandler = function (schema, request) {
+  const user = requiresAuth.call(this, request);
+  try {
+    if (!user) {
+      return new Response(
+        404,
+        {},
+        {
+          errors: [
+            "The username you entered is not Registered. Not Found error",
+          ],
+        }
+      );
+    }
+    const bookmarks = user.bookmarks;
+    const page = parseInt(request.queryParams.page);
+    const limit = 5;
+    const totalPages = Math.round(bookmarks.length / limit);
+    const startIndex = (page - 1) * limit;
+    const endIndex = page * limit;
+    const results = {};
+    endIndex < bookmarks.length && (results.nextPage = page + 1);
+    if (page <= totalPages) {
+      results.bookmarks = bookmarks.slice(startIndex, endIndex);
+    } else {
+      results.bookmarks = [];
+    }
+    return new Response(200, {}, { paginatedBookmarks: results });
+  } catch (error) {
+    return new Response(
+      500,
+      {},
+      {
+        error,
+      }
+    );
+  }
+};
+
 /**
  * This handler handles adding a post to user's bookmarks in the db.
  * send POST Request at /api/users/bookmark/:postId/

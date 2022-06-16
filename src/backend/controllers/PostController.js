@@ -30,7 +30,6 @@ export const getPaginatedPostHandler = function (schema, request) {
     const endIndex = page * limit;
     const results = {};
     endIndex < posts.length && (results.nextPage = page + 1);
-    startIndex > 0 && (results.prevPage = page - 1);
     if (page <= totalPages) {
       results.posts = posts.slice(startIndex, endIndex);
     } else {
@@ -79,6 +78,39 @@ export const getAllUserPostsHandler = function (schema, request) {
   try {
     const posts = schema.posts.where({ username })?.models;
     return new Response(200, {}, { posts });
+  } catch (error) {
+    return new Response(
+      500,
+      {},
+      {
+        error,
+      }
+    );
+  }
+};
+
+/**
+ * This handler gets paginated posts of a user in the db.
+ * send GET Request at /api/posts/user/:username?page=1
+ * */
+
+export const getPaginatedUserPostsHandler = function (schema, request) {
+  const { username } = request.params;
+  try {
+    const posts = schema.posts.where({ username })?.models;
+    const page = parseInt(request.queryParams.page);
+    const limit = 5;
+    const totalPages = Math.ceil(posts.length / limit);
+    const startIndex = (page - 1) * limit;
+    const endIndex = page * limit;
+    const results = {};
+    endIndex < posts.length && (results.nextPage = page + 1);
+    if (page <= totalPages) {
+      results.posts = posts.slice(startIndex, endIndex);
+    } else {
+      results.posts = [];
+    }
+    return new Response(200, {}, { paginatedPosts: results });
   } catch (error) {
     return new Response(
       500,
