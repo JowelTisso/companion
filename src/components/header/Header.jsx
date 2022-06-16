@@ -17,8 +17,6 @@ const Header = () => {
 
   const applySearch = async ({ key, target }) => {
     if (key === "Enter") {
-      const res = await GET("/api/posts?page=1");
-      console.log(res.data.paginatedPosts);
     }
   };
 

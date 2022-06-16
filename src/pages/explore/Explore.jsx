@@ -1,13 +1,18 @@
 import "./Explore.css";
-import React from "react";
+import React, { useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import UserPost from "../../components/userpost/UserPost";
-import { updatePosts } from "../../store/postSlice";
+import { loadMorePosts, updatePosts } from "../../store/postSlice";
+import { BeatLoader } from "react-spinners";
+import { useInfiniteScrolling } from "../../utils/infinteScrolling";
 
 const Explore = () => {
-  const { posts } = useSelector((state) => state.post);
+  const { posts, loadingMore } = useSelector((state) => state.post);
   const { user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
+
+  const lastPostRef = useRef();
+  useInfiniteScrolling(lastPostRef, loadMorePosts, (state) => state.post);
 
   const sortByDate = () => {
     const sortedPosts = [...posts].sort((a, b) => {
@@ -38,11 +43,26 @@ const Explore = () => {
       </nav>
       <section className="userpost mg-top-1x">
         {posts?.length > 0 ? (
-          posts?.map((post) => (
-            <UserPost {...post} key={post._id} user={user} />
-          ))
+          posts?.map((post, i) => {
+            // console.log(posts.length, i + 1);
+            return posts.length === i + 1 ? (
+              <UserPost
+                ref={lastPostRef}
+                {...post}
+                key={post._id}
+                user={user}
+              />
+            ) : (
+              <UserPost {...post} key={post._id} user={user} />
+            );
+          })
         ) : (
           <p className="t4">There is no content to explore!</p>
+        )}
+        {loadingMore && (
+          <div className="flex-center">
+            <BeatLoader color="#048434" loading={true} size={20} />
+          </div>
         )}
       </section>
     </div>

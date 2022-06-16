@@ -1,5 +1,5 @@
 import "./Home.css";
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useEffect, useRef } from "react";
 import CreatePost from "../../components/post/CreatePost";
 import UserPost from "../../components/userpost/UserPost";
 import { useDispatch, useSelector } from "react-redux";
@@ -9,38 +9,16 @@ import { IoOptionsOutline } from "react-icons/io5";
 import { IconButton, ListItemButton } from "@mui/material";
 import { usePopover } from "../../components/popmenu/PopMenu";
 import BeatLoader from "react-spinners/BeatLoader";
+import { useInfiniteScrolling } from "../../utils/infinteScrolling";
 
 const Home = () => {
-  const { posts, status, currentPageNumber, hasMore, loadingMore } =
-    useSelector((state) => state.post);
+  const { posts, status, loadingMore } = useSelector((state) => state.post);
   const { user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const { id, openPopover, PopMenuWrapper, handleClosePopover } = usePopover();
-  const nextPage = currentPageNumber + 1;
-  const observer = useRef();
 
-  const lastPostRef = useCallback(
-    (node) => {
-      if (loadingMore) return;
-      if (observer.current) observer.current.disconnect();
-      observer.current = new IntersectionObserver(
-        (entries) => {
-          if (entries[0].isIntersecting) {
-            if (hasMore) {
-              dispatch(loadMorePosts(nextPage));
-            }
-          }
-        },
-        {
-          threshold: 1,
-          rootMargin: "-50px",
-        }
-      );
-
-      node && observer.current.observe(node);
-    },
-    [nextPage, hasMore, loadingMore]
-  );
+  const lastPostRef = useRef();
+  useInfiniteScrolling(lastPostRef, loadMorePosts, (state) => state.post);
 
   const sortByDate = () => {
     const sortedPosts = [...posts].sort((a, b) => {
