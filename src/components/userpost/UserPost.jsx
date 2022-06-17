@@ -1,5 +1,5 @@
 import "./UserPost.css";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, forwardRef } from "react";
 import { Avatar, IconButton, ListItemButton } from "@mui/material";
 import {
   IoEllipsisHorizontal,
@@ -22,20 +22,20 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { getUserPosts } from "../../store/profileSlice";
 import { loadCommentPost } from "../../store/commentSlice";
 
-const UserPost = ({
-  avatar,
-  content,
-  images,
-  _id: postId,
-  createdAt,
-  username,
-  firstName,
-  lastName,
-  likes,
-  userId,
-  user,
-  comments,
-}) => {
+const UserPost = (
+  {
+    content,
+    images,
+    _id: postId,
+    createdAt,
+    username,
+    likes,
+    userId,
+    user,
+    comments,
+  },
+  ref
+) => {
   const [postUser, setPostUser] = useState({});
 
   const { bookmarks, bookmarkStatus } = useSelector((state) => state.bookmark);
@@ -172,7 +172,7 @@ const UserPost = ({
   }, []);
 
   return (
-    <div className="post-card-user pd-2x">
+    <div className="post-card-user pd-2x" ref={ref}>
       <section className="item-user">
         <Avatar
           sx={{ width: 50, height: 50 }}
@@ -267,4 +267,4 @@ const UserPost = ({
   );
 };
 
-export default UserPost;
+export default forwardRef(UserPost);

@@ -6,15 +6,32 @@ const initialState = {
   bookmarks: [],
   bookmarkStatus: "idle",
   bookmarkError: null,
+  currentPageNumber: 1,
+  hasMore: false,
+  loadingMore: false,
 };
 
 export const loadBookmarks = createAsyncThunk(
   "bookmark/loadBookmarks",
   async (_, { rejectWithValue }) => {
     try {
-      const res = await GET(API.ALL_BOOKMARKS, true);
+      const res = await GET(`${API.ALL_BOOKMARKS}?page=1}`, true);
       if (res?.status === 200 || res?.status === 201) {
-        return res?.data.bookmarks;
+        return res?.data.paginatedBookmarks;
+      }
+    } catch (err) {
+      rejectWithValue(err.message);
+    }
+  }
+);
+
+export const loadMoreBookmarks = createAsyncThunk(
+  "bookmark/loadMoreBookmarks",
+  async (pageNumber, { rejectWithValue }) => {
+    try {
+      const res = await GET(`${API.ALL_BOOKMARKS}?page=${pageNumber}}`, true);
+      if (res?.status === 200 || res?.status === 201) {
+        return res?.data.paginatedBookmarks;
       }
     } catch (err) {
       rejectWithValue(err.message);
@@ -67,7 +84,10 @@ const bookmarkSlice = createSlice({
     },
     [loadBookmarks.fulfilled]: (state, action) => {
       state.bookmarkStatus = "fullfilled";
-      state.bookmarks = action.payload;
+      state.bookmarks = action.payload.bookmarks;
+      if (action.payload?.nextPage) {
+        state.hasMore = true;
+      }
     },
     [loadBookmarks.rejected]: (state, action) => {
       state.bookmarkStatus = "rejected";
@@ -98,6 +118,27 @@ const bookmarkSlice = createSlice({
     [removeBookmark.rejected]: (state, action) => {
       state.bookmarkStatus = "rejected";
       state.bookmarkError = action.payload;
+    },
+
+    //   load more posts
+    [loadMoreBookmarks.pending]: (state) => {
+      state.loadingMore = true;
+    },
+    [loadMoreBookmarks.fulfilled]: (state, action) => {
+      state.status = "fullfilled";
+      state.loadingMore = false;
+      action.payload.bookmarks.map((post) => state.bookmarks.push(post));
+      state.currentPageNumber += 1;
+      if (action.payload?.nextPage) {
+        state.hasMore = true;
+      } else {
+        state.hasMore = false;
+      }
+    },
+    [loadMoreBookmarks.rejected]: (state, action) => {
+      state.status = "rejected";
+      state.loadingMore = false;
+      state.error = action.payload;
     },
   },
 });

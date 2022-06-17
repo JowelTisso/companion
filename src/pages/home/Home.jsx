@@ -1,19 +1,24 @@
 import "./Home.css";
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import CreatePost from "../../components/post/CreatePost";
 import UserPost from "../../components/userpost/UserPost";
 import { useDispatch, useSelector } from "react-redux";
-import { updatePosts } from "../../store/postSlice";
+import { loadMorePosts, updatePosts } from "../../store/postSlice";
 import Spinner from "../../components/spinner/Spinner";
 import { IoOptionsOutline } from "react-icons/io5";
 import { IconButton, ListItemButton } from "@mui/material";
 import { usePopover } from "../../components/popmenu/PopMenu";
+import BeatLoader from "react-spinners/BeatLoader";
+import { useInfiniteScrolling } from "../../utils/infinteScrolling";
 
 const Home = () => {
-  const { posts, status } = useSelector((state) => state.post);
+  const { posts, status, loadingMore } = useSelector((state) => state.post);
   const { user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const { id, openPopover, PopMenuWrapper, handleClosePopover } = usePopover();
+
+  const lastPostRef = useRef();
+  useInfiniteScrolling(lastPostRef, loadMorePosts, (state) => state.post);
 
   const sortByDate = () => {
     const sortedPosts = [...posts].sort((a, b) => {
@@ -32,6 +37,9 @@ const Home = () => {
   };
 
   useEffect(() => {
+    // To scroll window to top
+    window.scrollTo(0, 0);
+
     // To the popup menu on scroll
     window.addEventListener("scroll", handleClosePopover);
     return () => window.removeEventListener("scroll", handleClosePopover);
@@ -59,11 +67,16 @@ const Home = () => {
         </PopMenuWrapper>
       </div>
 
-      <section className="userpost mg-top-1x">
+      <section className="userpost mg-top-1x mg-bottom-5x">
         {posts &&
-          posts?.map((post) => (
+          posts?.map((post, i) => (
             <UserPost {...post} key={post._id} user={user} />
           ))}
+        <div className="flex-center" ref={lastPostRef}>
+          {loadingMore && (
+            <BeatLoader color="#048434" loading={true} size={20} />
+          )}
+        </div>
       </section>
     </div>
   );

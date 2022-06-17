@@ -7,15 +7,32 @@ const initialState = {
   status: "idle",
   error: null,
   likeStatus: "idle",
+  currentPageNumber: 1,
+  hasMore: false,
+  loadingMore: false,
 };
 
 export const loadPosts = createAsyncThunk(
   "post/loadPosts",
   async (_, { rejectWithValue }) => {
     try {
-      const res = await GET(API.ALL_POST);
+      const res = await GET(`${API.ALL_POST}?page=1`);
       if (res?.status === 200 || res?.status === 201) {
-        return res?.data.posts;
+        return res?.data.paginatedPosts;
+      }
+    } catch (err) {
+      rejectWithValue(err.message);
+    }
+  }
+);
+
+export const loadMorePosts = createAsyncThunk(
+  "post/loadMorePosts",
+  async (pageNumber, { rejectWithValue }) => {
+    try {
+      const res = await GET(`${API.ALL_POST}?page=${pageNumber}`);
+      if (res?.status === 200 || res?.status === 201) {
+        return res?.data.paginatedPosts;
       }
     } catch (err) {
       rejectWithValue(err.message);
@@ -46,7 +63,6 @@ export const editPost = createAsyncThunk(
         return res?.data.posts;
       }
     } catch (err) {
-      console.log(err);
       rejectWithValue(err.message);
     }
   }
@@ -109,7 +125,10 @@ const postSlice = createSlice({
     },
     [loadPosts.fulfilled]: (state, action) => {
       state.status = "fullfilled";
-      state.posts = action.payload;
+      state.posts = action.payload.posts;
+      if (action.payload?.nextPage) {
+        state.hasMore = true;
+      }
     },
     [loadPosts.rejected]: (state, action) => {
       state.status = "rejected";
@@ -178,6 +197,27 @@ const postSlice = createSlice({
     },
     [dislikePost.rejected]: (state, action) => {
       state.likeStatus = "rejected";
+      state.error = action.payload;
+    },
+
+    //   load more posts
+    [loadMorePosts.pending]: (state) => {
+      state.loadingMore = true;
+    },
+    [loadMorePosts.fulfilled]: (state, action) => {
+      state.status = "fullfilled";
+      state.loadingMore = false;
+      action.payload.posts.map((post) => state.posts.push(post));
+      state.currentPageNumber += 1;
+      if (action.payload?.nextPage) {
+        state.hasMore = true;
+      } else {
+        state.hasMore = false;
+      }
+    },
+    [loadMorePosts.rejected]: (state, action) => {
+      state.status = "rejected";
+      state.loadingMore = false;
       state.error = action.payload;
     },
   },
