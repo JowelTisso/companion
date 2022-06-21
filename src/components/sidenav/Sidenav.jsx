@@ -55,8 +55,14 @@ const Sidenav = () => {
       </section>
       <nav className="nav-item pd-2x">
         <List className="list">
-          {navList.map(({ name, icon, to }) => (
-            <ListItem key={name} disablePadding className="pd-top-1x ">
+          {navList.map(({ name, icon, to }, i) => (
+            <ListItem
+              key={name}
+              disablePadding
+              className={`pd-top-1x ${i === 1 && "mg-right-5x"} ${
+                i === 2 && "mg-left-5x"
+              }`}
+            >
               <ListItemButton
                 className="list-item"
                 sx={{
