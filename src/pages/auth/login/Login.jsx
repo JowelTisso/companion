@@ -1,19 +1,21 @@
 import "./Login.css";
 import React, { useState } from "react";
 import logo from "../../../assets/logo.png";
-import { TextField, Button } from "@mui/material";
+import { TextField, Button, InputAdornment, IconButton } from "@mui/material";
 import { userLogIn } from "../helper/authHelper";
 import { useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { logIn } from "../../../store/authSlice";
 import { callToast } from "../../../components/toast/Toast";
 import { ROUTES } from "../../../utils/Constant";
+import { IoEye, IoEyeOff } from "react-icons/io5";
 
 const Login = () => {
   const [credentials, setCredentials] = useState({
     username: "",
     password: "",
   });
+  const [showPassword, setShowPassword] = useState(false);
 
   const { username, password } = credentials;
 
@@ -59,6 +61,10 @@ const Login = () => {
     }
   };
 
+  const toggleShowPassword = () => {
+    setShowPassword((isVisible) => !isVisible);
+  };
+
   return (
     <div className="login-wrapper flex-center">
       <section className="logo-section">
@@ -76,8 +82,21 @@ const Login = () => {
           label="Password"
           variant="outlined"
           value={password}
-          type="password"
+          type={showPassword ? "text" : "password"}
           onChange={passwordChangeHandler}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={toggleShowPassword}
+                  edge="end"
+                >
+                  {showPassword ? <IoEyeOff /> : <IoEye />}
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
         />
         <Button
           variant="contained"
@@ -92,11 +111,7 @@ const Login = () => {
             className="t5 text-center pointer txt-secondary"
             onClick={fillTestCredentials}
           >
-            Test credential
-          </p>
-          <span className="txt-separator text-center">|</span>
-          <p className="t5 text-center pointer txt-secondary">
-            Forgot password?
+            Fill test credential
           </p>
         </div>
         <p className="t4 text-center">OR</p>
