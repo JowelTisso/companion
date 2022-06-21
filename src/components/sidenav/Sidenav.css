@@ -152,6 +152,14 @@
     padding: 0px;
   }
 
+  .list-item-mg-right {
+    margin-right: 4rem;
+  }
+
+  .list-item-mg-left {
+    margin-left: 4rem;
+  }
+
   .sidenav .nav-item .list .list-item {
     padding: 0px;
     display: flex;

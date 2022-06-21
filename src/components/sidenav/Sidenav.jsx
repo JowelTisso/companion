@@ -59,8 +59,8 @@ const Sidenav = () => {
             <ListItem
               key={name}
               disablePadding
-              className={`pd-top-1x ${i === 1 && "mg-right-5x"} ${
-                i === 2 && "mg-left-5x"
+              className={`pd-top-1x ${i === 1 && "list-item-mg-right"} ${
+                i === 2 && "list-item-mg-left"
               }`}
             >
               <ListItemButton
