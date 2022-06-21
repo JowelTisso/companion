@@ -5,6 +5,7 @@ import bookmarkSlice from "./bookmarkSlice";
 import postSlice from "./postSlice";
 import profileSlice from "./profileSlice";
 import commentSlice from "./commentSlice";
+import themeSlice from "./themeSlice";
 
 const store = configureStore({
   reducer: {
@@ -14,6 +15,7 @@ const store = configureStore({
     post: postSlice,
     profile: profileSlice,
     comment: commentSlice,
+    theme: themeSlice,
   },
 });
 

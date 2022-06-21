@@ -73,7 +73,7 @@ const Sidenav = () => {
                   className="nav-item-name"
                   primaryTypographyProps={{
                     fontSize: 16,
-                    color: currentRoute === to ? "#048434" : "gray",
+                    color: currentRoute === to ? "#048434" : "#bcbec1",
                   }}
                 />
               </ListItemButton>

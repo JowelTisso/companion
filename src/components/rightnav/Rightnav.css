@@ -20,7 +20,7 @@
 }
 
 .suggestions {
-  height: 40rem;
+  max-height: 90%;
   overflow-y: scroll;
 }
 

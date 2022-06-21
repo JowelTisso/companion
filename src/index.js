@@ -6,8 +6,6 @@ import { makeServer } from "./server";
 import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import store from "./store/store";
-import { ThemeProvider } from "@mui/material";
-import { muiTheme } from "./utils/muiTheme";
 
 // Call make Server
 makeServer();
@@ -16,9 +14,7 @@ ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
       <Provider store={store}>
-        <ThemeProvider theme={muiTheme}>
-          <App />
-        </ThemeProvider>
+        <App />
       </Provider>
     </BrowserRouter>
   </React.StrictMode>,

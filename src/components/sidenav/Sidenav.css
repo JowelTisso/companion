@@ -12,7 +12,6 @@
 .nav-item {
   background-color: var(--secondary-color);
   border-radius: 1.5rem;
-  box-shadow: 0px 0px 1px 0px var(--border-color);
   width: 100%;
 }
 

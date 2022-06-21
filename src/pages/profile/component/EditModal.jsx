@@ -25,6 +25,7 @@ const EditModal = () => {
       _id: userProfileId,
     },
   } = useSelector((state) => state.profile);
+  const { mode } = useSelector((state) => state.theme);
 
   const defaultBackgroundImg = "https://picsum.photos/id/10/1000/500";
 
@@ -125,7 +126,11 @@ const EditModal = () => {
   }, []);
 
   return (
-    <div className="edit-profile-container">
+    <div
+      className={`edit-profile-container ${
+        mode === "dark" && "container-darkmode"
+      }`}
+    >
       <div
         className="profile-banner"
         style={{
@@ -162,7 +167,7 @@ const EditModal = () => {
             id="outlined-basic"
             label="First name"
             variant="outlined"
-            className="name-field"
+            className="txt-field"
             value={profileData.firstName}
             onChange={(e) => onChange("firstName", e)}
           />
@@ -172,7 +177,7 @@ const EditModal = () => {
             id="outlined-basic"
             label="Last name"
             variant="outlined"
-            className="name-field"
+            className="txt-field"
             value={profileData.lastName}
             onChange={(e) => onChange("lastName", e)}
           />

@@ -5,19 +5,19 @@ import { useDispatch, useSelector } from "react-redux";
 import { userLogout } from "../../pages/auth/helper/authHelper";
 import logo from "../../assets/logo2.png";
 import { Link, useNavigate } from "react-router-dom";
-import SearchInput from "./component/SearchInput";
 import { getUser, getUserPosts } from "../../store/profileSlice";
 import { ROUTES } from "../../utils/Constant";
-import { GET } from "../../utils/axiosHelper";
+import { toggleTheme } from "../../store/themeSlice";
+import { IoMoon, IoSunny } from "react-icons/io5";
 
 const Header = () => {
   const { user } = useSelector((state) => state.auth);
+  const { mode } = useSelector((state) => state.theme);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const applySearch = async ({ key, target }) => {
-    if (key === "Enter") {
-    }
+  const toggleThemeFunc = () => {
+    dispatch(toggleTheme());
   };
 
   const goToProfile = () => {
@@ -33,9 +33,18 @@ const Header = () => {
         <Link to={"/"} className=" mg-left-1x pointer logo-title no-deco">
           Companion
         </Link>
+        <span
+          className="mg-left-4x flex-center pointer"
+          onClick={toggleThemeFunc}
+        >
+          {mode === "light" ? (
+            <IoMoon className="t3" color="gray" />
+          ) : (
+            <IoSunny className="t3" color="whitesmoke" />
+          )}
+        </span>
       </div>
       <div className="right-header-section">
-        <SearchInput applySearch={applySearch} />
         <Button
           variant="outlined"
           size={"large"}

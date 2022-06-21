@@ -9,14 +9,6 @@
   gap: 2rem;
 }
 
-.modal-content {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 60rem;
-}
-
 .filter-container {
   width: 100%;
   text-align: end;
@@ -30,22 +22,4 @@
 .filter-option {
   font-size: 1.3rem;
   padding: 1rem 2rem;
-}
-
-@media only screen and (max-width: 680px) {
-  .modal-content {
-    width: 50rem;
-  }
-}
-
-@media only screen and (max-width: 540px) {
-  .modal-content {
-    width: 40rem;
-  }
-}
-
-@media only screen and (max-width: 440px) {
-  .modal-content {
-    width: 38rem;
-  }
 }

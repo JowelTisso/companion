@@ -34,6 +34,7 @@ const Profile = () => {
     isModalOpen,
     loadingMore,
   } = useSelector((state) => state.profile);
+  
 
   const defaultBackgroundImg = "https://picsum.photos/id/10/1000/500";
 
@@ -175,7 +176,7 @@ const Profile = () => {
       </section>
 
       <Modal open={isModalOpen} onClose={handleClose}>
-        <main className="profile-modal-content flex-center">
+        <main className={`profile-modal-content flex-center`}>
           <EditModal />
         </main>
       </Modal>

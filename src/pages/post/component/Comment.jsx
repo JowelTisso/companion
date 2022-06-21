@@ -77,14 +77,14 @@ const Comment = ({
               <IoEllipsisHorizontal className="t3" />
             </IconButton>
             <PopMenuWrapper>
-              <>
+              <ul className="popup-item">
                 <ListItemButton onClick={editCommentHandler}>
                   <p className="post-menu-option">EDIT</p>
                 </ListItemButton>
                 <ListItemButton onClick={deleteCommentHandler}>
                   <p className="post-menu-option">DELETE</p>
                 </ListItemButton>
-              </>
+              </ul>
             </PopMenuWrapper>
           </span>
         )}
