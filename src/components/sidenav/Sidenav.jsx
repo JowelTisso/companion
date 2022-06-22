@@ -16,6 +16,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { ROUTES } from "../../utils/Constant";
 import { getUser, getUserPosts } from "../../store/profileSlice";
 import { IoMdAdd } from "react-icons/io";
+import { Color } from "../../utils/Color";
 
 const Sidenav = () => {
   const dispatch = useDispatch();
@@ -79,7 +80,7 @@ const Sidenav = () => {
                   className="nav-item-name"
                   primaryTypographyProps={{
                     fontSize: 16,
-                    color: currentRoute === to ? "#048434" : "#bcbec1",
+                    color: currentRoute === to ? Color.primary : "#bcbec1",
                   }}
                 />
               </ListItemButton>

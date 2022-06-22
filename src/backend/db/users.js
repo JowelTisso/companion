@@ -4,6 +4,43 @@ import { formatDate } from "../utils/authUtils";
  * You can add default users of your wish with different attributes
  * */
 
+export const jowel_following = [
+  {
+    _id: "goku123",
+    firstName: "Son",
+    lastName: "Goku",
+    username: "songoku",
+    password: "goku",
+    avatar: "https://i.pravatar.cc/150?img=54",
+    bookmarks: [],
+    bio: "Power comes in response to a need, not a desire.",
+    website: "https://github.com/JowelTisso",
+    backgroundImg: "https://picsum.photos/id/10/1000/500",
+    createdAt: "2022-06-22T12:44:26+05:30",
+    updatedAt: "2022-06-22T12:44:26+05:30",
+    followers: [],
+    following: [],
+    id: "2",
+  },
+  {
+    _id: "yuzhong123",
+    firstName: "yu",
+    lastName: "zhong",
+    username: "yuzhong",
+    password: "yuzhong",
+    avatar: "https://i.pravatar.cc/150?img=40",
+    bookmarks: [],
+    bio: "Doubt my intentions as you please, in the end, only the victor will be remembered.",
+    website: "https://github.com/JowelTisso",
+    backgroundImg: "https://picsum.photos/id/10/1000/500",
+    createdAt: "2022-06-22T12:44:26+05:30",
+    updatedAt: "2022-06-22T12:44:26+05:30",
+    followers: [],
+    following: [],
+    id: "3",
+  },
+];
+
 export const users = [
   {
     _id: "jowel123",

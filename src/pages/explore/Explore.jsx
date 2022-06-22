@@ -5,6 +5,7 @@ import UserPost from "../../components/userpost/UserPost";
 import { loadMorePosts, updatePosts } from "../../store/postSlice";
 import { BeatLoader } from "react-spinners";
 import { useInfiniteScrolling } from "../../utils/infinteScrolling";
+import { Color } from "../../utils/Color";
 
 const Explore = () => {
   const { posts, loadingMore } = useSelector((state) => state.post);
@@ -56,7 +57,7 @@ const Explore = () => {
         )}
         <div className="flex-center" ref={lastPostRef}>
           {loadingMore && (
-            <BeatLoader color="#048434" loading={true} size={20} />
+            <BeatLoader color={Color.primary} loading={true} size={20} />
           )}
         </div>
       </section>
