@@ -11,3 +11,9 @@
   height: 90vh;
   gap: 2rem;
 }
+
+.form-section {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
