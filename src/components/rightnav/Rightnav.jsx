@@ -1,7 +1,6 @@
 import "./Rightnav.css";
 import React from "react";
 import { Avatar, Button } from "@mui/material";
-import { BsDot } from "react-icons/bs";
 import { API, ROUTES } from "../../utils/Constant";
 import { followUserCall } from "../userpost/service/userService";
 import { useDispatch, useSelector } from "react-redux";
@@ -15,8 +14,6 @@ const Rightnav = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
-
-  const notificationNames = ["Goku", "vegeta", "kakashi", "yu zhong"];
 
   const UserItem = ({ firstName, lastName, username, avatar, _id: userId }) => {
     const isFollowing = activeUser?.following.some(

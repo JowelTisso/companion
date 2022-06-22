@@ -1,9 +1,5 @@
 import { TiHomeOutline, TiUserOutline } from "react-icons/ti";
-import {
-  IoBookmarkOutline,
-  IoNotificationsOutline,
-  IoRocketOutline,
-} from "react-icons/io5";
+import { IoBookmarkOutline, IoRocketOutline } from "react-icons/io5";
 import { ROUTES } from "../../utils/Constant";
 
 export const navList = [
