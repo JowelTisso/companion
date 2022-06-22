@@ -57,7 +57,8 @@ const Signup = () => {
     });
   };
 
-  const signupHandler = async () => {
+  const signupHandler = async (e) => {
+    e.preventDefault();
     try {
       if (username && password && email && firstName && lastName) {
         if (email.includes("@")) {
@@ -98,73 +99,76 @@ const Signup = () => {
       </section>
       <section className="login-section signup-section">
         <p className="login-heading t2 text-center">Become a companion</p>
-        <section className="flex-container">
+        <form className="form-section" onSubmit={signupHandler}>
+          <section className="flex-container">
+            <TextField
+              className="flex-field"
+              label="First name"
+              variant="outlined"
+              value={firstName}
+              onChange={firstNameChangeHandler}
+            />
+            <TextField
+              className="flex-field"
+              label="Last name"
+              variant="outlined"
+              value={lastName}
+              onChange={lastNameChangeHandler}
+            />
+          </section>
           <TextField
-            className="flex-field"
-            label="First name"
+            label="Username"
             variant="outlined"
-            value={firstName}
-            onChange={firstNameChangeHandler}
+            value={username}
+            onChange={usernameChangeHandler}
           />
           <TextField
-            className="flex-field"
-            label="Last name"
+            label="Email"
             variant="outlined"
-            value={lastName}
-            onChange={lastNameChangeHandler}
+            value={email}
+            onChange={emailChangeHandler}
           />
-        </section>
-        <TextField
-          label="Username"
-          variant="outlined"
-          value={username}
-          onChange={usernameChangeHandler}
-        />
-        <TextField
-          label="Email"
-          variant="outlined"
-          value={email}
-          onChange={emailChangeHandler}
-        />
-        <section className="flex-container">
-          <TextField
-            className="flex-field"
-            label="Password"
-            variant="outlined"
-            value={password}
-            type={showPassword ? "text" : "password"}
-            onChange={passwordChangeHandler}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label="toggle password visibility"
-                    onClick={toggleShowPassword}
-                    edge="end"
-                  >
-                    {showPassword ? <IoEyeOff /> : <IoEye />}
-                  </IconButton>
-                </InputAdornment>
-              ),
-            }}
-          />
-          <TextField
-            className="flex-field"
-            label="Confirm password"
-            variant="outlined"
-            value={confirmPassword}
-            type="password"
-            onChange={confirmPasswordChangeHandler}
-          />
-        </section>
-        <Button
-          variant="contained"
-          size={"large"}
-          className="t3"
-          onClick={signupHandler}
-        >
-          Sign up
-        </Button>
+          <section className="flex-container">
+            <TextField
+              className="flex-field"
+              label="Password"
+              variant="outlined"
+              value={password}
+              type={showPassword ? "text" : "password"}
+              onChange={passwordChangeHandler}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={toggleShowPassword}
+                      edge="end"
+                    >
+                      {showPassword ? <IoEyeOff /> : <IoEye />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+            />
+            <TextField
+              className="flex-field"
+              label="Confirm password"
+              variant="outlined"
+              value={confirmPassword}
+              type="password"
+              onChange={confirmPasswordChangeHandler}
+            />
+          </section>
+          <Button
+            variant="contained"
+            size={"large"}
+            className="t3"
+            type="submit"
+            // onClick={signupHandler}
+          >
+            Sign up
+          </Button>
+        </form>
         <p
           className="t5 text-center txt-secondary pointer"
           onClick={fillTestCredential}

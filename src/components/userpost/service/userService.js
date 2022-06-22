@@ -6,7 +6,6 @@ import { API } from "../../../utils/Constant";
 export const followUserCall = async (apiType, userId, dispatch) => {
   try {
     const res = await POST(`${apiType}/${userId}`, {});
-    console.log(JSON.stringify(res?.data?.user.following));
     if (res?.status === 200 || res?.status === 201) {
       dispatch(updateUser({ user: res?.data?.user }));
       if (apiType === API.FOLLOW_USER) {
