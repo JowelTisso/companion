@@ -1,6 +1,6 @@
 import "./UserPost.css";
 import React, { useEffect, useState, forwardRef } from "react";
-import { Avatar, IconButton, ListItemButton, ListItem } from "@mui/material";
+import { Avatar, IconButton, ListItemButton } from "@mui/material";
 import {
   IoEllipsisHorizontal,
   IoHeart,
@@ -163,7 +163,7 @@ const UserPost = (
       const user = allUsers.find((user) => user._id === userId);
       setPostUser(user);
     })();
-  }, [allUsers]);
+  }, [allUsers, userId]);
 
   useEffect(() => {
     // To close the popup menu on scroll
@@ -225,7 +225,7 @@ const UserPost = (
         <main className="post-img-container mg-top-2x">
           {images &&
             images?.map((img, id) => (
-              <img key={id} src={img} alt="post image" className="post-img" />
+              <img key={id} src={img} alt="post" className="post-img" />
             ))}
         </main>
         <span className="post-icon-user-container mg-top-2x">

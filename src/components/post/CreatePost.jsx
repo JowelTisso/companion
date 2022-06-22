@@ -1,9 +1,6 @@
 import "./CreatePost.css";
 import React, { useState } from "react";
 import { Avatar, Button } from "@mui/material";
-import { IoImageOutline } from "react-icons/io5";
-import { MdOutlineEmojiEmotions } from "react-icons/md";
-import { AiOutlineFileGif } from "react-icons/ai";
 import { createPost, editPost } from "../../store/postSlice";
 import { callToast } from "../toast/Toast";
 import { useSelector } from "react-redux";

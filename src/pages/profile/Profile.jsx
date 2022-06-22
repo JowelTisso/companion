@@ -30,11 +30,9 @@ const Profile = () => {
       _id: userProfileId,
     },
     userPosts,
-    status,
     isModalOpen,
     loadingMore,
   } = useSelector((state) => state.profile);
-  
 
   const defaultBackgroundImg = "https://picsum.photos/id/10/1000/500";
 

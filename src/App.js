@@ -6,11 +6,7 @@ import { toastOption } from "./utils/toastOption";
 import { useDispatch, useSelector } from "react-redux";
 import { loadPosts } from "./store/postSlice";
 import { ThemeProvider } from "@mui/material";
-import {
-  darkThemeVariables,
-  getDesignTokens,
-  lightThemeVariables,
-} from "./utils/muiTheme";
+import { getDesignTokens } from "./utils/muiTheme";
 import { createTheme } from "@mui/material";
 
 function App() {
