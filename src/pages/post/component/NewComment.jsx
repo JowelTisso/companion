@@ -16,6 +16,7 @@ const NewComment = ({ edit = false, selectedComment = {} }) => {
     edit ? selectedComment.content : ""
   );
   const { user } = useSelector((state) => state.auth);
+  const { mode } = useSelector((state) => state.theme);
   const dispatch = useDispatch();
 
   const { postId } = useParams();
@@ -44,7 +45,11 @@ const NewComment = ({ edit = false, selectedComment = {} }) => {
   };
 
   return (
-    <div className="new-comment-card mg-top-2x pd-2x">
+    <div
+      className={`new-comment-card mg-top-2x pd-2x ${
+        mode === "dark" && "container-darkmode"
+      }`}
+    >
       <Avatar
         sx={{ width: 50, height: 50 }}
         src={user.avatar}
@@ -53,7 +58,7 @@ const NewComment = ({ edit = false, selectedComment = {} }) => {
       <div className="post-details">
         <textarea
           type="text"
-          className="post-input t4"
+          className={`post-input t4 ${mode === "dark" && "container-darkmode"}`}
           placeholder="What's in your mind?"
           value={commentData}
           onChange={onChangeHandler}

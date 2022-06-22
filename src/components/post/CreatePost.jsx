@@ -20,6 +20,7 @@ const CreatePost = ({ dispatch }) => {
 
   const { user } = useSelector((state) => state.auth);
   const { userProfile } = useSelector((state) => state.profile);
+  const { mode } = useSelector((state) => state.theme);
 
   const [postData, setPostData] = useState({
     content: isEditModal ? content : "",
@@ -67,7 +68,11 @@ const CreatePost = ({ dispatch }) => {
   };
 
   return (
-    <div className="post-card pd-2x">
+    <div
+      className={`post-card pd-2x ${
+        mode === "dark" ? "container-darkmode" : "post-card-light"
+      }`}
+    >
       <Avatar
         sx={{ width: 50, height: 50 }}
         src={user.avatar}
@@ -76,7 +81,7 @@ const CreatePost = ({ dispatch }) => {
       <div className="post-details">
         <textarea
           type="text"
-          className="post-input t4"
+          className={`post-input t4 ${mode === "dark" && "container-darkmode"}`}
           placeholder="What's in your mind?"
           value={postData.content}
           onChange={onChangeHandler}

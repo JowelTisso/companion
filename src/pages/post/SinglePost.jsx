@@ -19,6 +19,7 @@ const SinglePost = () => {
   const { commentPost, comments, status, isModalOpen, selectedComment } =
     useSelector((state) => state.comment);
   const { allUsers } = useSelector((state) => state.home);
+  const { mode } = useSelector((state) => state.theme);
 
   const dispatch = useDispatch();
 
@@ -50,7 +51,11 @@ const SinglePost = () => {
         />
       ))}
       <Modal open={isModalOpen} onClose={closeHandler}>
-        <main className="modal-content flex-center">
+        <main
+          className={`modal-content flex-center ${
+            mode === "dark" && "container-darkmode"
+          }`}
+        >
           <NewComment edit={true} selectedComment={selectedComment} />
         </main>
       </Modal>

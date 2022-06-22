@@ -1,7 +1,6 @@
 .post-card-user {
   background-color: var(--secondary-color);
   border-radius: 1.5rem;
-  box-shadow: 0px 0px 1px 0px var(--border-color);
   width: 100%;
 }
 
@@ -35,4 +34,9 @@
   display: flex;
   justify-content: space-between;
   gap: 4rem;
+}
+
+.popup-item {
+  background-color: var(--secondary-color-light);
+  color: var(--txt-color-light);
 }

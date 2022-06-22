@@ -1,6 +1,6 @@
 import "./UserPost.css";
 import React, { useEffect, useState, forwardRef } from "react";
-import { Avatar, IconButton, ListItemButton } from "@mui/material";
+import { Avatar, IconButton, ListItemButton, ListItem } from "@mui/material";
 import {
   IoEllipsisHorizontal,
   IoHeart,
@@ -199,20 +199,22 @@ const UserPost = (
             </IconButton>
             <PopMenuWrapper>
               {user.username === username ? (
-                <>
+                <ul className="popup-item">
                   <ListItemButton onClick={editPostHandler}>
                     <p className="post-menu-option">EDIT</p>
                   </ListItemButton>
                   <ListItemButton onClick={deletePostHandler}>
                     <p className="post-menu-option">DELETE</p>
                   </ListItemButton>
-                </>
+                </ul>
               ) : (
-                <ListItemButton onClick={followHandler}>
-                  <p className="post-menu-option">
-                    {isFollowing ? "Unfollow" : "Follow"}
-                  </p>
-                </ListItemButton>
+                <ul className="popup-item">
+                  <ListItemButton onClick={followHandler}>
+                    <p className="post-menu-option">
+                      {isFollowing ? "Unfollow" : "Follow"}
+                    </p>
+                  </ListItemButton>
+                </ul>
               )}
             </PopMenuWrapper>
           </span>

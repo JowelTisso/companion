@@ -58,12 +58,14 @@ const Home = () => {
           <IoOptionsOutline className="t3 filter-icon" />
         </IconButton>
         <PopMenuWrapper>
-          <ListItemButton onClick={sortByDate}>
-            <p className="filter-option">Sort by date</p>
-          </ListItemButton>
-          <ListItemButton onClick={sortByLikes}>
-            <p className="filter-option">Sort by trending</p>
-          </ListItemButton>
+          <ul className="popup-item">
+            <ListItemButton onClick={sortByDate}>
+              <p className="filter-option">Sort by date</p>
+            </ListItemButton>
+            <ListItemButton onClick={sortByLikes}>
+              <p className="filter-option">Sort by trending</p>
+            </ListItemButton>
+          </ul>
         </PopMenuWrapper>
       </div>
 

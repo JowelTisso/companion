@@ -28,7 +28,6 @@ const Login = () => {
   const passwordChangeHandler = ({ target }) => {
     setCredentials((state) => ({ ...state, password: target.value }));
   };
-
   const fillTestCredentials = () => {
     setCredentials((state) => ({
       ...state,
@@ -36,7 +35,6 @@ const Login = () => {
       password: "test123",
     }));
   };
-
   const loginHandler = async () => {
     try {
       if (username && password) {

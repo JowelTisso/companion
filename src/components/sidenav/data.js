@@ -28,16 +28,6 @@ export const navList = [
     ),
   },
   {
-    name: "Notifications",
-    to: ROUTES.NOTIFICATION,
-    icon: (currentRoute) => (
-      <IoNotificationsOutline
-        className="t3"
-        color={currentRoute === ROUTES.NOTIFICATION ? "#048434" : "gray"}
-      />
-    ),
-  },
-  {
     name: "Bookmarks",
     to: ROUTES.BOOKMARK,
     icon: (currentRoute) => (

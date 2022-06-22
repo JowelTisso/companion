@@ -1,5 +1,6 @@
 .comment-card {
   background-color: var(--secondary-color);
+  border-radius: 15px;
 }
 
 .comment-card .item-user {

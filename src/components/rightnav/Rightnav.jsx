@@ -84,14 +84,6 @@ const Rightnav = () => {
             activeUser._id !== user._id && <UserItem {...user} key={user._id} />
         )}
       </section>
-      <p className="t4 section-title"> Notifications</p>
-      <section className="notification-container">
-        {notificationNames.map((user) => (
-          <p className="t4 notification-content nav-item pd-2x" key={user}>
-            <BsDot /> {user} started following you
-          </p>
-        ))}
-      </section>
     </aside>
   );
 };
