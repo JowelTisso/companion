@@ -1,5 +1,5 @@
 import "./Home.css";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import CreatePost from "../../components/post/CreatePost";
 import UserPost from "../../components/userpost/UserPost";
 import { useDispatch, useSelector } from "react-redux";
@@ -10,8 +10,10 @@ import { IconButton, ListItemButton } from "@mui/material";
 import { usePopover } from "../../components/popmenu/PopMenu";
 import BeatLoader from "react-spinners/BeatLoader";
 import { useInfiniteScrolling } from "../../utils/infinteScrolling";
+import { Color } from "../../utils/Color";
 
 const Home = () => {
+  const [homeFeed, setHomeFeed] = useState([]);
   const { posts, status, loadingMore } = useSelector((state) => state.post);
   const { user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
@@ -35,6 +37,20 @@ const Home = () => {
     dispatch(updatePosts({ posts: sortedPosts }));
     handleClosePopover();
   };
+
+  useEffect(() => {
+    (() => {
+      const feed = posts.filter(({ userId }) => {
+        if (userId === user._id) return true;
+        for (let i = 0; i < user.following.length; i++) {
+          if (userId === user.following[i]._id) {
+            return true;
+          }
+        }
+      });
+      setHomeFeed(feed);
+    })();
+  }, [posts]);
 
   useEffect(() => {
     // To scroll window to top
@@ -70,13 +86,13 @@ const Home = () => {
       </div>
 
       <section className="userpost mg-top-1x mg-bottom-5x">
-        {posts &&
-          posts?.map((post, i) => (
+        {homeFeed &&
+          homeFeed?.map((post) => (
             <UserPost {...post} key={post._id} user={user} />
           ))}
         <div className="flex-center" ref={lastPostRef}>
           {loadingMore && (
-            <BeatLoader color="#048434" loading={true} size={20} />
+            <BeatLoader color={Color.primary} loading={true} size={20} />
           )}
         </div>
       </section>

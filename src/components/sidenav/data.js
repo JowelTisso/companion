@@ -1,6 +1,7 @@
 import { TiHomeOutline, TiUserOutline } from "react-icons/ti";
 import { IoBookmarkOutline, IoRocketOutline } from "react-icons/io5";
 import { ROUTES } from "../../utils/Constant";
+import { Color } from "../../utils/Color";
 
 export const navList = [
   {
@@ -9,7 +10,7 @@ export const navList = [
     icon: (currentRoute) => (
       <TiHomeOutline
         className="t3"
-        color={currentRoute === ROUTES.HOME ? "#048434" : "gray"}
+        color={currentRoute === ROUTES.HOME ? Color.primary : "gray"}
       />
     ),
   },
@@ -19,7 +20,7 @@ export const navList = [
     icon: (currentRoute) => (
       <IoRocketOutline
         className="t3"
-        color={currentRoute === ROUTES.EXPLORE ? "#048434" : "gray"}
+        color={currentRoute === ROUTES.EXPLORE ? Color.primary : "gray"}
       />
     ),
   },
@@ -29,7 +30,7 @@ export const navList = [
     icon: (currentRoute) => (
       <IoBookmarkOutline
         className="t3"
-        color={currentRoute === ROUTES.BOOKMARK ? "#048434" : "gray"}
+        color={currentRoute === ROUTES.BOOKMARK ? Color.primary : "gray"}
       />
     ),
   },
@@ -39,7 +40,7 @@ export const navList = [
     icon: (currentRoute) => (
       <TiUserOutline
         className="t3"
-        color={currentRoute === ROUTES.PROFILE ? "#048434" : "gray"}
+        color={currentRoute === ROUTES.PROFILE ? Color.primary : "gray"}
       />
     ),
   },

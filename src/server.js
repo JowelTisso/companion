@@ -1,6 +1,6 @@
 import { Server, Model, RestSerializer } from "miragejs";
 import { posts } from "./backend/db/posts";
-import { users } from "./backend/db/users";
+import { jowel_following, users } from "./backend/db/users";
 import {
   loginHandler,
   signupHandler,
@@ -52,7 +52,7 @@ export function makeServer({ environment = "development" } = {}) {
         server.create("user", {
           ...item,
           followers: [],
-          following: [],
+          following: item._id === "jowel123" ? [...jowel_following] : [],
           bookmarks: item._id === "jowel123" ? [...bookmarks] : [],
         })
       );

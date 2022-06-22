@@ -13,6 +13,7 @@ import {
 import EditModal from "./component/EditModal";
 import { BeatLoader } from "react-spinners";
 import { useInfiniteScrolling } from "../../utils/infinteScrolling";
+import { Color } from "../../utils/Color";
 
 const Profile = () => {
   const { user } = useSelector((state) => state.auth);
@@ -167,7 +168,7 @@ const Profile = () => {
           )}
           <div className="flex-center" ref={lastPostRef}>
             {loadingMore && (
-              <BeatLoader color="#048434" loading={true} size={20} />
+              <BeatLoader color={Color.primary} loading={true} size={20} />
             )}
           </div>
         </main>

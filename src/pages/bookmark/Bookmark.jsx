@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { loadBookmarks, loadMoreBookmarks } from "../../store/bookmarkSlice";
 import { useInfiniteScrolling } from "../../utils/infinteScrolling";
 import { BeatLoader } from "react-spinners";
+import { Color } from "../../utils/Color";
 
 const Bookmark = () => {
   const [userBookmarks, setUserBookmarks] = useState([]);
@@ -52,7 +53,7 @@ const Bookmark = () => {
         )}
         <div className="flex-center" ref={lastPostRef}>
           {loadingMore && (
-            <BeatLoader color="#048434" loading={true} size={20} />
+            <BeatLoader color={Color.primary} loading={true} size={20} />
           )}
         </div>
       </section>
