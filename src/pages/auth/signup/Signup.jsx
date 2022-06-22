@@ -1,13 +1,14 @@
 import "./Signup.css";
 import React, { useState } from "react";
 import logo from "../../../assets/logo.png";
-import { TextField, Button } from "@mui/material";
+import { TextField, Button, InputAdornment, IconButton } from "@mui/material";
 import { userSignUp } from "../helper/authHelper";
 import { useNavigate } from "react-router-dom";
 import { callToast } from "../../../components/toast/Toast";
 import { ROUTES } from "../../../utils/Constant";
 import { useDispatch } from "react-redux";
 import { loadAllUsers } from "../../../store/homeSlice";
+import { IoEye, IoEyeOff } from "react-icons/io5";
 
 const Signup = () => {
   const defaultCredential = {
@@ -19,6 +20,7 @@ const Signup = () => {
     confirmPassword: "",
   };
   const [credentials, setCredentials] = useState(defaultCredential);
+  const [showPassword, setShowPassword] = useState(false);
 
   const { username, password, firstName, lastName, email, confirmPassword } =
     credentials;
@@ -42,6 +44,17 @@ const Signup = () => {
   };
   const confirmPasswordChangeHandler = ({ target }) => {
     setCredentials((state) => ({ ...state, confirmPassword: target.value }));
+  };
+
+  const fillTestCredential = () => {
+    setCredentials({
+      firstName: "John",
+      lastName: "Doe",
+      username: "johndoe",
+      email: "johndoe@gmail.com",
+      password: "john123",
+      confirmPassword: "john123",
+    });
   };
 
   const signupHandler = async () => {
@@ -72,6 +85,10 @@ const Signup = () => {
     } catch (err) {
       console.log(err);
     }
+  };
+
+  const toggleShowPassword = () => {
+    setShowPassword((isVisible) => !isVisible);
   };
 
   return (
@@ -115,8 +132,21 @@ const Signup = () => {
             label="Password"
             variant="outlined"
             value={password}
-            type="password"
+            type={showPassword ? "text" : "password"}
             onChange={passwordChangeHandler}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={toggleShowPassword}
+                    edge="end"
+                  >
+                    {showPassword ? <IoEyeOff /> : <IoEye />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
           />
           <TextField
             className="flex-field"
@@ -135,6 +165,12 @@ const Signup = () => {
         >
           Sign up
         </Button>
+        <p
+          className="t5 text-center txt-secondary pointer"
+          onClick={fillTestCredential}
+        >
+          Fill test credential
+        </p>
         <p className="t4 text-center">OR</p>
         <p className="t5 text-center txt-secondary">Already have an account!</p>
         <Button

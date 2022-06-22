@@ -87,11 +87,6 @@ const CreatePost = ({ dispatch }) => {
           onChange={onChangeHandler}
         />
         <section className="post-actions-container">
-          <span className="post-icon-container pd-left-3x">
-            <IoImageOutline className="t3 post-icon pointer" />
-            <AiOutlineFileGif className="t3 post-icon pointer" />
-            <MdOutlineEmojiEmotions className="t3 post-icon pointer" />
-          </span>
           <Button
             variant="contained"
             size={"medium"}
