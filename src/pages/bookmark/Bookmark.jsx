@@ -23,16 +23,13 @@ const Bookmark = () => {
   );
 
   useEffect(() => {
-    if (bookmarkStatus === "idle") {
-      dispatch(loadBookmarks());
-    }
-  }, [dispatch, bookmarkStatus]);
-
-  useEffect(() => {
     const filteredBookmarks = bookmarks?.filter(
       (bookmark) => bookmark.bookmarkUserId === user._id
     );
-    setUserBookmarks(filteredBookmarks);
+    const sortedPosts = [...filteredBookmarks].sort((a, b) => {
+      return new Date(b.createdAt) - new Date(a.createdAt);
+    });
+    setUserBookmarks(sortedPosts);
   }, [bookmarks]);
 
   useEffect(() => {

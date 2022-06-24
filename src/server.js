@@ -24,6 +24,7 @@ import {
   removePostFromBookmarkHandler,
   unfollowUserHandler,
   editUserHandler,
+  getBookmarkPostsHandler,
 } from "./backend/controllers/UserController";
 import {
   addPostCommentHandler,
@@ -86,6 +87,7 @@ export function makeServer({ environment = "development" } = {}) {
 
       // user routes (private)
       this.post("users/edit", editUserHandler.bind(this));
+      this.get("/users/allbookmark", getBookmarkPostsHandler.bind(this));
       this.get("/users/bookmark", getPaginatedBookmarkHandler.bind(this));
       this.post("/users/bookmark/:postId/", bookmarkPostHandler.bind(this));
       this.post(

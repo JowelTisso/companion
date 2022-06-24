@@ -397,8 +397,8 @@ export const posts = [
     lastName: "Tisso",
     userId: "jowel123",
     avatar: "https://i.pravatar.cc/150?img=60",
-    createdAt: formatDate(),
-    updatedAt: formatDate(),
+    createdAt: "2022-02-18T16:24:10+05:30",
+    updatedAt: "2022-02-18T16:24:10+05:30",
   },
   {
     _id: "post12",
@@ -443,8 +443,8 @@ export const posts = [
     lastName: "Tisso",
     userId: "jowel123",
     avatar: "https://i.pravatar.cc/150?img=60",
-    createdAt: formatDate(),
-    updatedAt: formatDate(),
+    createdAt: "2022-03-01T16:24:10+05:30",
+    updatedAt: "2022-03-01T16:24:10+05:30",
   },
   {
     _id: "post13",
@@ -488,8 +488,8 @@ export const posts = [
     lastName: "Goku",
     userId: "goku123",
     avatar: "https://i.pravatar.cc/150?img=54",
-    createdAt: formatDate(),
-    updatedAt: formatDate(),
+    createdAt: "2022-01-15T16:24:10+05:30",
+    updatedAt: "2022-01-15T16:24:10+05:30",
   },
   {
     _id: "post14",

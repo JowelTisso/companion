@@ -18,7 +18,6 @@ const EditModal = () => {
       avatar,
       firstName,
       lastName,
-      username,
       bio,
       website,
       backgroundImg,
@@ -35,7 +34,6 @@ const EditModal = () => {
     avatar: avatar || "",
     firstName: "",
     lastName: "",
-    username: "",
     bio: "",
     website: "",
     backgroundImg: "",
@@ -50,10 +48,6 @@ const EditModal = () => {
       error: false,
       msg: "",
     },
-    username: {
-      error: false,
-      msg: "",
-    },
   });
 
   const onChange = (type, { target }) => {
@@ -62,16 +56,11 @@ const EditModal = () => {
 
   const onSubmit = async () => {
     try {
-      if (
-        profileData.firstName &&
-        profileData.lastName &&
-        profileData.username
-      ) {
+      if (profileData.firstName && profileData.lastName) {
         setFormValidation((data) => ({
           ...data,
           firstName: { error: false, msg: "" },
           lastName: { error: false, msg: "" },
-          username: { error: false, msg: "" },
         }));
         const res = await POST(API.EDIT_USER, { userData: profileData });
         if (res?.status === 200 || res?.status === 201) {
@@ -97,12 +86,6 @@ const EditModal = () => {
           lastName: { error: true, msg: "This is required!" },
         }));
       }
-      if (!profileData.username) {
-        setFormValidation((data) => ({
-          ...data,
-          username: { error: true, msg: "This is required!" },
-        }));
-      }
     } catch (err) {
       console.log(err);
     }
@@ -118,7 +101,6 @@ const EditModal = () => {
       avatar,
       firstName,
       lastName,
-      username,
       bio,
       website,
       backgroundImg,
@@ -182,15 +164,6 @@ const EditModal = () => {
             onChange={(e) => onChange("lastName", e)}
           />
         </div>
-        <TextField
-          error={formValidation.username.error}
-          helperText={formValidation.username.msg}
-          id="outlined-basic"
-          label="Username"
-          variant="outlined"
-          value={profileData.username}
-          onChange={(e) => onChange("username", e)}
-        />
         <TextField
           id="filled-multiline-flexible"
           label="Bio"

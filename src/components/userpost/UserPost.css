@@ -33,7 +33,11 @@
 .post-icon-user-container {
   display: flex;
   justify-content: space-between;
-  gap: 4rem;
+}
+
+.post-icon-user-container .flex-gap {
+  gap: 2rem;
+  display: flex;
 }
 
 .popup-item {
