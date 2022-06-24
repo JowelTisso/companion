@@ -8,6 +8,7 @@ import { loadPosts } from "./store/postSlice";
 import { ThemeProvider } from "@mui/material";
 import { getDesignTokens } from "./utils/muiTheme";
 import { createTheme } from "@mui/material";
+import { loadAllBookmarks, loadBookmarks } from "./store/bookmarkSlice";
 
 function App() {
   // Update the theme only if the mode changes
@@ -20,6 +21,8 @@ function App() {
   useEffect(() => {
     if (status === "idle") {
       dispatch(loadPosts());
+      dispatch(loadAllBookmarks());
+      dispatch(loadBookmarks());
     }
   }, [dispatch, status]);
 

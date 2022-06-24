@@ -6,7 +6,6 @@ import {
   IoHeart,
   IoHeartOutline,
   IoChatboxOutline,
-  IoShareSocialOutline,
   IoBookmarkOutline,
   IoBookmark,
 } from "react-icons/io5";
@@ -38,7 +37,9 @@ const UserPost = (
 ) => {
   const [postUser, setPostUser] = useState({});
 
-  const { bookmarks, bookmarkStatus } = useSelector((state) => state.bookmark);
+  const { allBookmarks, bookmarkStatus } = useSelector(
+    (state) => state.bookmark
+  );
   const { likeStatus } = useSelector((state) => state.post);
   const { userProfile } = useSelector((state) => state.profile);
   const { allUsers } = useSelector((state) => state.home);
@@ -55,10 +56,9 @@ const UserPost = (
 
   const isBookmarking = bookmarkStatus === "loading";
   const isLiking = likeStatus === "loading";
-
   const isBookmarked =
-    bookmarks?.length > 0
-      ? bookmarks?.some(
+    allBookmarks?.length > 0
+      ? allBookmarks?.some(
           (post) => post._id === postId && post.bookmarkUserId === user._id
         )
       : false;
@@ -229,29 +229,29 @@ const UserPost = (
             ))}
         </main>
         <span className="post-icon-user-container mg-top-2x">
-          <span className="flex-center">
-            <IconButton
-              aria-label="like the post"
-              onClick={likeHandler}
-              disabled={isLiking}
-            >
-              {isLiked ? (
-                <IoHeart className="t3 post-icon pointer" color="#f14b4b" />
-              ) : (
-                <IoHeartOutline className="t3 post-icon pointer" />
-              )}
-            </IconButton>
-            <p className="t4">{likes.likeCount}</p>
+          <span className="flex-gap">
+            <span className="flex-center">
+              <IconButton
+                aria-label="like the post"
+                onClick={likeHandler}
+                disabled={isLiking}
+              >
+                {isLiked ? (
+                  <IoHeart className="t3 post-icon pointer" color="#f14b4b" />
+                ) : (
+                  <IoHeartOutline className="t3 post-icon pointer" />
+                )}
+              </IconButton>
+              <p className="t4">{likes.likeCount}</p>
+            </span>
+            <span className="flex-center">
+              <IconButton aria-label="add comment" onClick={navigateToPost}>
+                <IoChatboxOutline className="t3 post-icon pointer" />
+              </IconButton>
+              <p className="t4">{comments.length}</p>
+            </span>
           </span>
-          <span className="flex-center">
-            <IconButton aria-label="add comment" onClick={navigateToPost}>
-              <IoChatboxOutline className="t3 post-icon pointer" />
-            </IconButton>
-            <p className="t4">{comments.length}</p>
-          </span>
-          <IconButton aria-label="share the post">
-            <IoShareSocialOutline className="t3 post-icon pointer" />
-          </IconButton>
+
           <IconButton
             aria-label="add to bookmark"
             onClick={bookmarkHandler}

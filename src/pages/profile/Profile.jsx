@@ -1,5 +1,5 @@
 import "./Profile.css";
-import React, { useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Avatar, Button, Link, Modal } from "@mui/material";
 import UserPost from "../../components/userpost/UserPost";
 import { useSelector, useDispatch } from "react-redux";
@@ -8,6 +8,7 @@ import { followUserCall } from "../../components/userpost/service/userService";
 import {
   getMoreUserPosts,
   getUser,
+  getUserPosts,
   toggleEditProfileModal,
 } from "../../store/profileSlice";
 import EditModal from "./component/EditModal";
@@ -16,7 +17,9 @@ import { useInfiniteScrolling } from "../../utils/infinteScrolling";
 import { Color } from "../../utils/Color";
 
 const Profile = () => {
+  const [sortedUserPost, setSortedUserPost] = useState([]);
   const { user } = useSelector((state) => state.auth);
+  const { posts } = useSelector((state) => state.post);
   const {
     userProfile: {
       avatar,
@@ -94,6 +97,17 @@ const Profile = () => {
     window.scrollTo(0, 0);
   }, []);
 
+  useEffect(() => {
+    dispatch(getUserPosts(username));
+  }, [posts]);
+
+  useEffect(() => {
+    const sortedPosts = [...userPosts].sort((a, b) => {
+      return new Date(b.createdAt) - new Date(a.createdAt);
+    });
+    setSortedUserPost(sortedPosts);
+  }, [userPosts]);
+
   return (
     <div className="home-wrapper">
       <main className="user-info-section">
@@ -159,8 +173,8 @@ const Profile = () => {
       <section className="user-posts-section pd-1x">
         <p className="t3 section-title mg-left-1x mg-top-2x">Your posts</p>
         <main className="userpost mg-top-2x">
-          {userPosts?.length > 0 ? (
-            userPosts?.map((post) => (
+          {sortedUserPost?.length > 0 ? (
+            sortedUserPost?.map((post) => (
               <UserPost {...post} key={post._id} user={user} />
             ))
           ) : (

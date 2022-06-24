@@ -40,6 +40,8 @@ const Home = () => {
 
   useEffect(() => {
     (() => {
+      console.log("effect");
+      console.log(posts);
       const feed = posts.filter(({ userId }) => {
         if (userId === user._id) return true;
         for (let i = 0; i < user.following.length; i++) {
@@ -48,9 +50,12 @@ const Home = () => {
           }
         }
       });
-      setHomeFeed(feed);
+      const sortedPosts = [...feed].sort((a, b) => {
+        return new Date(b.createdAt) - new Date(a.createdAt);
+      });
+      setHomeFeed(sortedPosts);
     })();
-  }, [posts]);
+  }, []);
 
   useEffect(() => {
     // To scroll window to top
@@ -86,10 +91,16 @@ const Home = () => {
       </div>
 
       <section className="userpost mg-top-1x mg-bottom-5x">
-        {homeFeed &&
+        {homeFeed.length > 0 ? (
           homeFeed?.map((post) => (
             <UserPost {...post} key={post._id} user={user} />
-          ))}
+          ))
+        ) : (
+          <p className="t4">
+            You have not followed or posted any thing, follow more people to see
+            their posts!
+          </p>
+        )}
         <div className="flex-center" ref={lastPostRef}>
           {loadingMore && (
             <BeatLoader color={Color.primary} loading={true} size={20} />
