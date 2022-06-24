@@ -257,8 +257,8 @@ export const posts = [
     lastName: "Goku",
     userId: "goku123",
     avatar: "https://i.pravatar.cc/150?img=54",
-    createdAt: formatDate(),
-    updatedAt: formatDate(),
+    createdAt: "2022-01-21T16:24:10+05:30",
+    updatedAt: "2022-01-21T16:24:10+05:30",
   },
   {
     _id: "post8",
@@ -274,8 +274,8 @@ export const posts = [
     lastName: "Tisso",
     userId: "jowel123",
     avatar: "https://i.pravatar.cc/150?img=60",
-    createdAt: formatDate(),
-    updatedAt: formatDate(),
+    createdAt: "2022-01-18T16:24:10+05:30",
+    updatedAt: "2022-01-18T16:24:10+05:30",
   },
   {
     _id: "post9",
@@ -319,8 +319,8 @@ export const posts = [
     lastName: "Goku",
     userId: "goku123",
     avatar: "https://i.pravatar.cc/150?img=54",
-    createdAt: formatDate(),
-    updatedAt: formatDate(),
+    createdAt: "2022-01-17T16:24:10+05:30",
+    updatedAt: "2022-01-17T16:24:10+05:30",
   },
   {
     _id: "post10",
@@ -365,8 +365,8 @@ export const posts = [
     lastName: "Tisso",
     userId: "jowel123",
     avatar: "https://i.pravatar.cc/150?img=60",
-    createdAt: formatDate(),
-    updatedAt: formatDate(),
+    createdAt: "2022-01-11T16:24:10+05:30",
+    updatedAt: "2022-01-11T16:24:10+05:30",
   },
   {
     _id: "post11",
@@ -506,7 +506,7 @@ export const posts = [
     lastName: "Goku",
     userId: "goku123",
     avatar: "https://i.pravatar.cc/150?img=54",
-    createdAt: formatDate(),
-    updatedAt: formatDate(),
+    createdAt: "2022-02-15T16:24:10+05:30",
+    updatedAt: "2022-02-15T16:24:10+05:30",
   },
 ];

@@ -184,7 +184,7 @@ const UserPost = (
             {postUser?.firstName} {postUser?.lastName}
           </p>
           <p className="post-time">
-            @{postUser?.username} . {month} {date}
+            @{postUser?.username} . {month} {date} {postId}
           </p>
         </div>
 
