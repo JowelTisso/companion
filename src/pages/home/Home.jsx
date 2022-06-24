@@ -14,6 +14,7 @@ import { Color } from "../../utils/Color";
 
 const Home = () => {
   const [homeFeed, setHomeFeed] = useState([]);
+  const [sortType, setSortType] = useState("ascending");
   const { posts, status, loadingMore } = useSelector((state) => state.post);
   const { user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
@@ -24,10 +25,18 @@ const Home = () => {
 
   const sortByDate = () => {
     const sortedPosts = [...posts].sort((a, b) => {
-      return new Date(b.createdAt) - new Date(a.createdAt);
+      if (sortType === "ascending") {
+        return new Date(a.createdAt) - new Date(b.createdAt);
+      } else {
+        return new Date(b.createdAt) - new Date(a.createdAt);
+      }
     });
-    dispatch(updatePosts({ posts: sortedPosts }));
+    setHomeFeed(sortedPosts);
+    // dispatch(updatePosts({ posts: sortedPosts }));
     handleClosePopover();
+    setSortType((state) =>
+      state === "ascending" ? "descending" : "ascending"
+    );
   };
 
   const sortByLikes = () => {
@@ -40,8 +49,6 @@ const Home = () => {
 
   useEffect(() => {
     (() => {
-      console.log("effect");
-      console.log(posts);
       const feed = posts.filter(({ userId }) => {
         if (userId === user._id) return true;
         for (let i = 0; i < user.following.length; i++) {
@@ -55,7 +62,7 @@ const Home = () => {
       });
       setHomeFeed(sortedPosts);
     })();
-  }, []);
+  }, [posts]);
 
   useEffect(() => {
     // To scroll window to top
