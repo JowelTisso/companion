@@ -11,6 +11,7 @@ import { MdModeEdit } from "react-icons/md";
 import { uploadImages } from "./service";
 import { loadPosts } from "../../../store/postSlice";
 import { loadAllUsers } from "../../../store/homeSlice";
+import Spinner from "../../../components/spinner/Spinner";
 
 const EditModal = () => {
   const {
@@ -30,6 +31,7 @@ const EditModal = () => {
 
   const dispatch = useDispatch();
 
+  const [loading, setLoading] = useState(false);
   const [profileData, setProfileData] = useState({
     avatar: avatar || "",
     firstName: "",
@@ -92,8 +94,10 @@ const EditModal = () => {
   };
 
   const uploadHandler = async ({ target }) => {
+    setLoading(true);
     const res = await uploadImages(target.files);
     setProfileData((data) => ({ ...data, avatar: res.secure_url }));
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -193,6 +197,7 @@ const EditModal = () => {
           Save
         </Button>
       </div>
+      {loading && <Spinner loading={loading} />}
     </div>
   );
 };
