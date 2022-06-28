@@ -2,13 +2,15 @@ import "./Signup.css";
 import React, { useState } from "react";
 import logo from "../../../assets/logo.png";
 import { TextField, Button, InputAdornment, IconButton } from "@mui/material";
-import { userSignUp } from "../helper/authHelper";
+import { userLogIn, userSignUp } from "../helper/authHelper";
 import { useNavigate } from "react-router-dom";
 import { callToast } from "../../../components/toast/Toast";
 import { ROUTES } from "../../../utils/Constant";
 import { useDispatch } from "react-redux";
 import { loadAllUsers } from "../../../store/homeSlice";
 import { IoEye, IoEyeOff } from "react-icons/io5";
+import { loadAllBookmarks, loadBookmarks } from "../../../store/bookmarkSlice";
+import { logIn } from "../../../store/authSlice";
 
 const Signup = () => {
   const defaultCredential = {
@@ -71,8 +73,23 @@ const Signup = () => {
               email,
             });
             if (res?.status === 200 || res?.status === 201) {
-              setCredentials(defaultCredential);
               dispatch(loadAllUsers());
+              const res = await userLogIn({
+                username: username,
+                password: password,
+              });
+              if (res?.status === 200 || res?.status === 201) {
+                dispatch(loadAllBookmarks());
+                dispatch(loadBookmarks());
+                dispatch(
+                  logIn({
+                    token: res?.data?.encodedToken,
+                    user: res?.data?.foundUser,
+                  })
+                );
+                navigate("/", { replace: true });
+              }
+              setCredentials(defaultCredential);
             }
           } else {
             callToast("Password doesn't match!", false);

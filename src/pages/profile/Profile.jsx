@@ -142,7 +142,7 @@ const Profile = () => {
         <p className="t4 mg-left-2x mg-top-1x">{bio}</p>
         <span className="mg-left-2x website-link">
           <Link
-            href="https://github.com/JowelTisso"
+            href={website}
             underline="none"
             color="#2196f3"
             fontSize={14}

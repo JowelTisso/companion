@@ -63,6 +63,15 @@ const EditModal = () => {
   const onSubmit = async () => {
     try {
       if (profileData.firstName && profileData.lastName) {
+        if (!profileData.website.includes("http://")) {
+          if (!profileData.website.includes("https://")) {
+            setFormValidation((data) => ({
+              ...data,
+              website: { error: true, msg: "Input a valid website!" },
+            }));
+            return;
+          }
+        }
         if (!profileData.website.includes(".com")) {
           setFormValidation((data) => ({
             ...data,
