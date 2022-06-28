@@ -6,6 +6,7 @@ import { followUserCall } from "../userpost/service/userService";
 import { useDispatch, useSelector } from "react-redux";
 import { getUser, getUserPosts } from "../../store/profileSlice";
 import { useLocation, useNavigate } from "react-router-dom";
+import { loadPosts } from "../../store/postSlice";
 
 const Rightnav = () => {
   const { user: activeUser } = useSelector((state) => state.auth);
@@ -26,6 +27,7 @@ const Rightnav = () => {
       } else {
         followUserCall(API.FOLLOW_USER, userId, dispatch);
       }
+      dispatch(loadPosts());
       if (location.pathname === ROUTES.PROFILE) {
         dispatch(getUser(userProfile._id));
       }

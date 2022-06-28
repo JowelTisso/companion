@@ -50,6 +50,10 @@ const EditModal = () => {
       error: false,
       msg: "",
     },
+    website: {
+      error: false,
+      msg: "",
+    },
   });
 
   const onChange = (type, { target }) => {
@@ -59,10 +63,18 @@ const EditModal = () => {
   const onSubmit = async () => {
     try {
       if (profileData.firstName && profileData.lastName) {
+        if (!profileData.website.includes(".com")) {
+          setFormValidation((data) => ({
+            ...data,
+            website: { error: true, msg: "Input a valid website!" },
+          }));
+          return;
+        }
         setFormValidation((data) => ({
           ...data,
           firstName: { error: false, msg: "" },
           lastName: { error: false, msg: "" },
+          website: { error: false, msg: "" },
         }));
         const res = await POST(API.EDIT_USER, { userData: profileData });
         if (res?.status === 200 || res?.status === 201) {
@@ -179,6 +191,8 @@ const EditModal = () => {
           onChange={(e) => onChange("bio", e)}
         />
         <TextField
+          error={formValidation.website.error}
+          helperText={formValidation.website.msg}
           id="outlined-basic"
           label="Website"
           variant="outlined"

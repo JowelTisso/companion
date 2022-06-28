@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import CreatePost from "../../components/post/CreatePost";
 import UserPost from "../../components/userpost/UserPost";
 import { useDispatch, useSelector } from "react-redux";
-import { updatePosts } from "../../store/postSlice";
 import Spinner from "../../components/spinner/Spinner";
 import { IoOptionsOutline } from "react-icons/io5";
 import { IconButton, ListItemButton } from "@mui/material";
@@ -49,10 +48,9 @@ const Home = () => {
         for (let i = 0; i < user.following.length; i++) {
           if (userId === user.following[i]._id) {
             return true;
-          } else {
-            return false;
           }
         }
+        return false;
       });
       const sortedPosts = [...feed].sort((a, b) => {
         return new Date(b.createdAt) - new Date(a.createdAt);

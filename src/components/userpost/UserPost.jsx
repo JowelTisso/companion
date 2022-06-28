@@ -12,7 +12,12 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { addBookmark, removeBookmark } from "../../store/bookmarkSlice";
 import { usePopover } from "../popmenu/PopMenu";
-import { deletePost, dislikePost, likePost } from "../../store/postSlice";
+import {
+  deletePost,
+  dislikePost,
+  likePost,
+  loadPosts,
+} from "../../store/postSlice";
 import { callToast } from "../toast/Toast";
 import { toggleModal, updateEditPostData } from "../../store/homeSlice";
 import { API, ROUTES } from "../../utils/Constant";
@@ -75,6 +80,11 @@ const UserPost = ({
     location.pathname === "/bookmark"
       ? foundPost?.likes.likeCount
       : likes.likeCount;
+
+  const commentCount =
+    location.pathname === "/bookmark"
+      ? foundPost?.comments.length
+      : comments.length;
 
   const isFollowing = user.following?.some(
     (followedUser) => followedUser._id === userId
@@ -151,6 +161,7 @@ const UserPost = ({
     } else {
       followUserCall(API.FOLLOW_USER, userId, dispatch);
     }
+    dispatch(loadPosts());
     handleClosePopover();
   };
 
@@ -159,8 +170,6 @@ const UserPost = ({
   };
 
   const goToProfile = () => {
-    console.log("username", username);
-    dispatch(getUserPosts(username));
     dispatch(getUser(userId));
     navigate(ROUTES.PROFILE);
   };
@@ -258,7 +267,7 @@ const UserPost = ({
               <IconButton aria-label="add comment" onClick={navigateToPost}>
                 <IoChatboxOutline className="t3 post-icon pointer" />
               </IconButton>
-              <p className="t4">{comments.length}</p>
+              <p className="t4">{commentCount}</p>
             </span>
           </span>
 

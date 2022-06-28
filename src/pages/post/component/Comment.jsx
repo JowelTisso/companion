@@ -6,9 +6,11 @@ import { usePopover } from "../../../components/popmenu/PopMenu";
 import { useDispatch } from "react-redux";
 import {
   deleteComment,
+  loadCommentPost,
   toggleModal,
   updateSelectedComment,
 } from "../../../store/commentSlice";
+import { loadPosts } from "../../../store/postSlice";
 
 const Comment = ({
   firstName,
@@ -33,14 +35,16 @@ const Comment = ({
   const { id, openPopover, PopMenuWrapper, handleClosePopover } = usePopover();
 
   const editCommentHandler = () => {
+    handleClosePopover();
     dispatch(updateSelectedComment({ comment: comment }));
     dispatch(toggleModal());
-    handleClosePopover();
   };
 
   const deleteCommentHandler = () => {
-    dispatch(deleteComment({ postId, _id }));
     handleClosePopover();
+    dispatch(deleteComment({ postId, _id }));
+    dispatch(loadPosts());
+    dispatch(loadCommentPost(postId));
   };
 
   useEffect(() => {

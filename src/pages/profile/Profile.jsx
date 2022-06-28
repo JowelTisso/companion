@@ -91,7 +91,7 @@ const Profile = () => {
 
   useEffect(() => {
     dispatch(getUserPosts(username));
-  }, [posts]);
+  }, [posts, username]);
 
   useEffect(() => {
     const sortedPosts = [...userPosts].sort((a, b) => {
