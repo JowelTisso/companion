@@ -1,15 +1,14 @@
 import "./Home.css";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import CreatePost from "../../components/post/CreatePost";
 import UserPost from "../../components/userpost/UserPost";
 import { useDispatch, useSelector } from "react-redux";
-import { loadMorePosts, updatePosts } from "../../store/postSlice";
+import { updatePosts } from "../../store/postSlice";
 import Spinner from "../../components/spinner/Spinner";
 import { IoOptionsOutline } from "react-icons/io5";
 import { IconButton, ListItemButton } from "@mui/material";
 import { usePopover } from "../../components/popmenu/PopMenu";
 import BeatLoader from "react-spinners/BeatLoader";
-import { useInfiniteScrolling } from "../../utils/infinteScrolling";
 import { Color } from "../../utils/Color";
 
 const Home = () => {
@@ -20,9 +19,6 @@ const Home = () => {
   const dispatch = useDispatch();
   const { id, openPopover, PopMenuWrapper, handleClosePopover } = usePopover();
 
-  const lastPostRef = useRef();
-  useInfiniteScrolling(lastPostRef, loadMorePosts, (state) => state.post);
-
   const sortByDate = () => {
     const sortedPosts = [...posts].sort((a, b) => {
       if (sortType === "ascending") {
@@ -32,7 +28,6 @@ const Home = () => {
       }
     });
     setHomeFeed(sortedPosts);
-    // dispatch(updatePosts({ posts: sortedPosts }));
     handleClosePopover();
     setSortType((state) =>
       state === "ascending" ? "descending" : "ascending"
@@ -41,9 +36,9 @@ const Home = () => {
 
   const sortByLikes = () => {
     const sortedPosts = [...posts].sort((a, b) => {
-      return new Date(b.likes.likeCount) - new Date(a.likes.likeCount);
+      return b.likes.likeCount - a.likes.likeCount;
     });
-    dispatch(updatePosts({ posts: sortedPosts }));
+    setHomeFeed(sortedPosts);
     handleClosePopover();
   };
 
@@ -54,6 +49,8 @@ const Home = () => {
         for (let i = 0; i < user.following.length; i++) {
           if (userId === user.following[i]._id) {
             return true;
+          } else {
+            return false;
           }
         }
       });
@@ -108,7 +105,7 @@ const Home = () => {
             their posts!
           </p>
         )}
-        <div className="flex-center" ref={lastPostRef}>
+        <div className="flex-center">
           {loadingMore && (
             <BeatLoader color={Color.primary} loading={true} size={20} />
           )}

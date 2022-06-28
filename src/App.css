@@ -75,6 +75,6 @@ p {
 }
 
 .container-lightmode {
-  background-color: var(--txt-color-darkmode);
+  background-color: white;
   color: var(--secondary-color-darkmode);
 }

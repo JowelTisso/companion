@@ -6,7 +6,7 @@ import { Color } from "../../utils/Color";
 export const navList = [
   {
     name: "Home",
-    to: ROUTES.HOME,
+    route: ROUTES.HOME,
     icon: (currentRoute) => (
       <TiHomeOutline
         className="t3"
@@ -16,7 +16,7 @@ export const navList = [
   },
   {
     name: "Explore  ",
-    to: ROUTES.EXPLORE,
+    route: ROUTES.EXPLORE,
     icon: (currentRoute) => (
       <IoRocketOutline
         className="t3"
@@ -26,7 +26,7 @@ export const navList = [
   },
   {
     name: "Bookmarks",
-    to: ROUTES.BOOKMARK,
+    route: ROUTES.BOOKMARK,
     icon: (currentRoute) => (
       <IoBookmarkOutline
         className="t3"
@@ -36,7 +36,7 @@ export const navList = [
   },
   {
     name: "Profile",
-    to: ROUTES.PROFILE,
+    route: ROUTES.PROFILE,
     icon: (currentRoute) => (
       <TiUserOutline
         className="t3"

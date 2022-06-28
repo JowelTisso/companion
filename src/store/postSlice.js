@@ -18,7 +18,7 @@ export const loadPosts = createAsyncThunk(
     try {
       const res = await GET(`${API.ALL_POST}?page=1`);
       if (res?.status === 200 || res?.status === 201) {
-        return res?.data.paginatedPosts;
+        return res?.data;
       }
     } catch (err) {
       rejectWithValue(err.message);
@@ -32,7 +32,7 @@ export const loadMorePosts = createAsyncThunk(
     try {
       const res = await GET(`${API.ALL_POST}?page=${pageNumber}`);
       if (res?.status === 200 || res?.status === 201) {
-        return res?.data.paginatedPosts;
+        return res?.data;
       }
     } catch (err) {
       rejectWithValue(err.message);
@@ -126,9 +126,6 @@ const postSlice = createSlice({
     [loadPosts.fulfilled]: (state, action) => {
       state.status = "fullfilled";
       state.posts = action.payload.posts;
-      if (action.payload?.nextPage) {
-        state.hasMore = true;
-      }
     },
     [loadPosts.rejected]: (state, action) => {
       state.status = "rejected";

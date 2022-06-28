@@ -1,19 +1,15 @@
 import "./Explore.css";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import UserPost from "../../components/userpost/UserPost";
-import { loadMorePosts, updatePosts } from "../../store/postSlice";
+import { updatePosts } from "../../store/postSlice";
 import { BeatLoader } from "react-spinners";
-import { useInfiniteScrolling } from "../../utils/infinteScrolling";
 import { Color } from "../../utils/Color";
 
 const Explore = () => {
   const { posts, loadingMore } = useSelector((state) => state.post);
   const { user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
-
-  const lastPostRef = useRef();
-  useInfiniteScrolling(lastPostRef, loadMorePosts, (state) => state.post);
 
   const sortByDate = () => {
     const sortedPosts = [...posts].sort((a, b) => {
@@ -55,7 +51,7 @@ const Explore = () => {
         ) : (
           <p className="t4">There is no content to explore!</p>
         )}
-        <div className="flex-center" ref={lastPostRef}>
+        <div className="flex-center">
           {loadingMore && (
             <BeatLoader color={Color.primary} loading={true} size={20} />
           )}

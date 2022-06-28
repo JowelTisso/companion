@@ -9,6 +9,7 @@ import { logIn } from "../../../store/authSlice";
 import { callToast } from "../../../components/toast/Toast";
 import { ROUTES } from "../../../utils/Constant";
 import { IoEye, IoEyeOff } from "react-icons/io5";
+import { loadAllBookmarks, loadBookmarks } from "../../../store/bookmarkSlice";
 
 const Login = () => {
   const [credentials, setCredentials] = useState({
@@ -45,6 +46,8 @@ const Login = () => {
           password: password,
         });
         if (res?.status === 200 || res?.status === 201) {
+          dispatch(loadAllBookmarks());
+          dispatch(loadBookmarks());
           dispatch(
             logIn({
               token: res?.data?.encodedToken,

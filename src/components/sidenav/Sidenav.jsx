@@ -29,7 +29,7 @@ const Sidenav = () => {
     dispatch(toggleModal());
   };
 
-  const goToProfile = (to) => {
+  const navigateTo = (to) => {
     if (to === ROUTES.PROFILE) {
       dispatch(getUser(user._id));
       dispatch(getUserPosts(user.username));
@@ -45,10 +45,13 @@ const Sidenav = () => {
           src={user.avatar}
           alt="profile avatar"
           className=" pointer"
-          onClick={() => goToProfile(ROUTES.PROFILE)}
+          onClick={() => navigateTo(ROUTES.PROFILE)}
         />
         <div className="nav-user-info pd-left-2x">
-          <p className="t4 username txt-overflow">
+          <p
+            className="t4 username txt-overflow pointer"
+            onClick={() => navigateTo(ROUTES.PROFILE)}
+          >
             {user.firstName} {user.lastName}
           </p>
           <p className="t4 userid txt-overflow">@{user.username}</p>
@@ -56,7 +59,7 @@ const Sidenav = () => {
       </section>
       <nav className="nav-item pd-2x">
         <List className="list">
-          {navList.map(({ name, icon, to }, i) => (
+          {navList.map(({ name, icon, route }, i) => (
             <ListItem
               key={name}
               disablePadding
@@ -68,9 +71,9 @@ const Sidenav = () => {
                 className="list-item"
                 sx={{
                   borderLeft:
-                    currentRoute === to ? "2px solid #048434" : "none",
+                    currentRoute === route ? "2px solid #048434" : "none",
                 }}
-                onClick={() => goToProfile(to)}
+                onClick={() => navigateTo(route)}
               >
                 <ListItemIcon className="nav-icon">
                   {icon(currentRoute)}
@@ -80,7 +83,7 @@ const Sidenav = () => {
                   className="nav-item-name"
                   primaryTypographyProps={{
                     fontSize: 16,
-                    color: currentRoute === to ? Color.primary : "#bcbec1",
+                    color: currentRoute === route ? Color.primary : "#bcbec1",
                   }}
                 />
               </ListItemButton>

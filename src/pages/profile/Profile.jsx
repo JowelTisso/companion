@@ -1,5 +1,5 @@
 import "./Profile.css";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { Avatar, Button, Link, Modal } from "@mui/material";
 import UserPost from "../../components/userpost/UserPost";
 import { useSelector, useDispatch } from "react-redux";
@@ -13,7 +13,6 @@ import {
 } from "../../store/profileSlice";
 import EditModal from "./component/EditModal";
 import { BeatLoader } from "react-spinners";
-import { useInfiniteScrolling } from "../../utils/infinteScrolling";
 import { Color } from "../../utils/Color";
 
 const Profile = () => {
@@ -41,13 +40,6 @@ const Profile = () => {
   const defaultBackgroundImg = "https://picsum.photos/id/10/1000/500";
 
   const dispatch = useDispatch();
-
-  const loadMorePost = (nextPage) =>
-    getMoreUserPosts({ username, pageNumber: nextPage });
-
-  //Infinite scrolling
-  const lastPostRef = useRef();
-  useInfiniteScrolling(lastPostRef, loadMorePost, (state) => state.profile);
 
   const followersCount = followers?.length;
   const followingCount = following?.length;
@@ -180,7 +172,7 @@ const Profile = () => {
           ) : (
             <p className="t4">You have not created any post!</p>
           )}
-          <div className="flex-center" ref={lastPostRef}>
+          <div className="flex-center">
             {loadingMore && (
               <BeatLoader color={Color.primary} loading={true} size={20} />
             )}

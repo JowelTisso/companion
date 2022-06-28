@@ -1,5 +1,5 @@
 import "./UserPost.css";
-import React, { useEffect, useState, forwardRef } from "react";
+import React, { useEffect, useState } from "react";
 import { Avatar, IconButton, ListItemButton } from "@mui/material";
 import {
   IoEllipsisHorizontal,
@@ -18,29 +18,26 @@ import { toggleModal, updateEditPostData } from "../../store/homeSlice";
 import { API, ROUTES } from "../../utils/Constant";
 import { followUserCall } from "./service/userService";
 import { useLocation, useNavigate } from "react-router-dom";
-import { getUserPosts } from "../../store/profileSlice";
+import { getUser, getUserPosts } from "../../store/profileSlice";
 import { loadCommentPost } from "../../store/commentSlice";
 
-const UserPost = (
-  {
-    content,
-    images,
-    _id: postId,
-    createdAt,
-    username,
-    likes,
-    userId,
-    user,
-    comments,
-  },
-  ref
-) => {
+const UserPost = ({
+  content,
+  images,
+  _id: postId,
+  createdAt,
+  username,
+  likes,
+  userId,
+  user,
+  comments,
+}) => {
   const [postUser, setPostUser] = useState({});
 
   const { allBookmarks, bookmarkStatus } = useSelector(
     (state) => state.bookmark
   );
-  const { likeStatus } = useSelector((state) => state.post);
+  const { likeStatus, posts } = useSelector((state) => state.post);
   const { userProfile } = useSelector((state) => state.profile);
   const { allUsers } = useSelector((state) => state.home);
 
@@ -63,9 +60,21 @@ const UserPost = (
         )
       : false;
 
-  const isLiked = likes.likedBy?.some(
-    (likedUser) => likedUser.username === user.username
-  );
+  const foundPost = posts?.find((post) => post._id === postId);
+
+  const isLiked =
+    location.pathname === "/bookmark"
+      ? foundPost?.likes.likedBy?.some(
+          (likedUser) => likedUser.username === user.username
+        )
+      : likes.likedBy?.some(
+          (likedUser) => likedUser.username === user.username
+        );
+
+  const likeCount =
+    location.pathname === "/bookmark"
+      ? foundPost?.likes.likeCount
+      : likes.likeCount;
 
   const isFollowing = user.following?.some(
     (followedUser) => followedUser._id === userId
@@ -84,26 +93,22 @@ const UserPost = (
       dispatch(deletePost(postId));
       if (isBookmarked) {
         dispatch(removeBookmark(postId));
-        dispatch(addBookmark({ postId, bookmarkUserId: user._id }));
       }
       if (
         location.pathname === ROUTES.PROFILE &&
         userProfile._id === user._id
       ) {
         dispatch(getUserPosts(userProfile.username));
-        handleClosePopover();
       }
     } else {
       callToast("You are not authorized to delete this post!", false);
     }
+    handleClosePopover();
   };
 
   const editPostHandler = () => {
     if (username === user.username) {
       dispatch(toggleModal());
-      dispatch(
-        updateEditPostData({ isEditModal: true, content, postId: postId })
-      );
       if (isBookmarked) {
         dispatch(
           updateEditPostData({
@@ -123,10 +128,10 @@ const UserPost = (
           })
         );
       }
-      handleClosePopover();
     } else {
       callToast("You are not authorized to edit this post!", false);
     }
+    handleClosePopover();
   };
 
   const likeHandler = async () => {
@@ -134,10 +139,6 @@ const UserPost = (
       dispatch(dislikePost(postId));
     } else {
       dispatch(likePost(postId));
-    }
-    if (isBookmarked) {
-      dispatch(removeBookmark(postId));
-      dispatch(addBookmark({ postId, bookmarkUserId: user._id }));
     }
     if (location.pathname.includes("/post")) {
       dispatch(loadCommentPost(postId));
@@ -157,6 +158,13 @@ const UserPost = (
     navigate(`${ROUTES.POST}/${postId}`);
   };
 
+  const goToProfile = () => {
+    console.log("username", username);
+    dispatch(getUserPosts(username));
+    dispatch(getUser(userId));
+    navigate(ROUTES.PROFILE);
+  };
+
   useEffect(() => {
     // To get post user data
     (() => {
@@ -172,15 +180,17 @@ const UserPost = (
   }, []);
 
   return (
-    <div className="post-card-user pd-2x" ref={ref}>
+    <div className="post-card-user pd-2x">
       <section className="item-user">
         <Avatar
           sx={{ width: 50, height: 50 }}
           src={postUser?.avatar}
           alt="profile avatar"
+          className="pointer"
+          onClick={goToProfile}
         />
         <div className="pd-left-2x">
-          <p className="t4 username">
+          <p className="t4 username pointer" onClick={goToProfile}>
             {postUser?.firstName} {postUser?.lastName}
           </p>
           <p className="post-time">
@@ -242,7 +252,7 @@ const UserPost = (
                   <IoHeartOutline className="t3 post-icon pointer" />
                 )}
               </IconButton>
-              <p className="t4">{likes.likeCount}</p>
+              <p className="t4">{likeCount || 0}</p>
             </span>
             <span className="flex-center">
               <IconButton aria-label="add comment" onClick={navigateToPost}>
@@ -269,4 +279,4 @@ const UserPost = (
   );
 };
 
-export default forwardRef(UserPost);
+export default UserPost;

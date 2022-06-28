@@ -31,9 +31,9 @@ export const getUserPosts = createAsyncThunk(
   "profile/getUserPosts",
   async (username, { rejectWithValue }) => {
     try {
-      const res = await GET(`${API.USER_POST}/${username}?page=1`);
+      const res = await GET(`${API.USER_POST}/${username}`);
       if (res?.status === 200 || res?.status === 201) {
-        return res?.data.paginatedPosts;
+        return res?.data;
       }
     } catch (err) {
       rejectWithValue(err.message);
@@ -47,7 +47,7 @@ export const getMoreUserPosts = createAsyncThunk(
     try {
       const res = await GET(`${API.USER_POST}/${username}?page=${pageNumber}`);
       if (res?.status === 200 || res?.status === 201) {
-        return res?.data.paginatedPosts;
+        return res?.data;
       }
     } catch (err) {
       rejectWithValue(err.message);

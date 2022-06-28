@@ -48,7 +48,10 @@ const Rightnav = () => {
             onClick={goToProfile}
           />
           <div className="user-info-container pd-left-2x">
-            <p className="t4 username txt-overflow">
+            <p
+              className="t4 username txt-overflow pointer"
+              onClick={goToProfile}
+            >
               {firstName} {lastName}
             </p>
             <p className="t4 userid txt-overflow">@{username}</p>

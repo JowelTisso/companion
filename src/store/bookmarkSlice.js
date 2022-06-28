@@ -32,7 +32,7 @@ export const loadBookmarks = createAsyncThunk(
     try {
       const res = await GET(`${API.BOOKMARK}?page=1}`, true);
       if (res?.status === 200 || res?.status === 201) {
-        return res?.data.paginatedBookmarks;
+        return res?.data;
       }
     } catch (err) {
       rejectWithValue(err.message);
@@ -46,7 +46,7 @@ export const loadMoreBookmarks = createAsyncThunk(
     try {
       const res = await GET(`${API.BOOKMARK}?page=${pageNumber}}`, true);
       if (res?.status === 200 || res?.status === 201) {
-        return res?.data.paginatedBookmarks;
+        return res?.data;
       }
     } catch (err) {
       rejectWithValue(err.message);
@@ -113,9 +113,6 @@ const bookmarkSlice = createSlice({
     [loadBookmarks.fulfilled]: (state, action) => {
       state.bookmarkStatus = "fullfilled";
       state.bookmarks = action.payload.bookmarks;
-      if (action.payload?.nextPage) {
-        state.hasMore = true;
-      }
     },
     [loadBookmarks.rejected]: (state, action) => {
       state.bookmarkStatus = "rejected";
@@ -157,13 +154,7 @@ const bookmarkSlice = createSlice({
     [loadMoreBookmarks.fulfilled]: (state, action) => {
       state.status = "fullfilled";
       state.loadingMore = false;
-      action.payload.bookmarks.map((post) => state.bookmarks.push(post));
-      state.currentPageNumber += 1;
-      if (action.payload?.nextPage) {
-        state.hasMore = true;
-      } else {
-        state.hasMore = false;
-      }
+      state.bookmarks = action.payload.bookmarks;
     },
     [loadMoreBookmarks.rejected]: (state, action) => {
       state.status = "rejected";

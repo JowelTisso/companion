@@ -47,7 +47,7 @@ const NewComment = ({ edit = false, selectedComment = {} }) => {
   return (
     <div
       className={`new-comment-card mg-top-2x pd-2x ${
-        mode === "dark" && "container-darkmode"
+        mode === "dark" ? "container-darkmode" : "container-lightmode"
       }`}
     >
       <Avatar

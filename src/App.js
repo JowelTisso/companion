@@ -21,8 +21,6 @@ function App() {
   useEffect(() => {
     if (status === "idle") {
       dispatch(loadPosts());
-      dispatch(loadAllBookmarks());
-      dispatch(loadBookmarks());
     }
   }, [dispatch, status]);
 

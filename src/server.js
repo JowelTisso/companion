@@ -12,14 +12,13 @@ import {
   editPostHandler,
   likePostHandler,
   dislikePostHandler,
-  getPaginatedPostHandler,
-  getPaginatedUserPostsHandler,
+  getAllpostsHandler,
+  getAllUserPostsHandler,
 } from "./backend/controllers/PostController";
 import {
   followUserHandler,
   getAllUsersHandler,
   getUserHandler,
-  getPaginatedBookmarkHandler,
   bookmarkPostHandler,
   removePostFromBookmarkHandler,
   unfollowUserHandler,
@@ -67,12 +66,9 @@ export function makeServer({ environment = "development" } = {}) {
       this.post("/auth/login", loginHandler.bind(this));
 
       // post routes (public)
-      this.get("/posts", getPaginatedPostHandler.bind(this));
+      this.get("/posts", getAllpostsHandler.bind(this));
       this.get("/posts/:postId", getPostHandler.bind(this));
-      this.get(
-        "/posts/user/:username",
-        getPaginatedUserPostsHandler.bind(this)
-      );
+      this.get("/posts/user/:username", getAllUserPostsHandler.bind(this));
 
       // post routes (private)
       this.post("/posts", createPostHandler.bind(this));
@@ -88,7 +84,7 @@ export function makeServer({ environment = "development" } = {}) {
       // user routes (private)
       this.post("users/edit", editUserHandler.bind(this));
       this.get("/users/allbookmark", getBookmarkPostsHandler.bind(this));
-      this.get("/users/bookmark", getPaginatedBookmarkHandler.bind(this));
+      this.get("/users/bookmark", getBookmarkPostsHandler.bind(this));
       this.post("/users/bookmark/:postId/", bookmarkPostHandler.bind(this));
       this.post(
         "/users/remove-bookmark/:postId/",

@@ -51,6 +51,7 @@ const CreatePost = ({ dispatch }) => {
       } else {
         dispatch(createPost(postData));
         dispatch(toggleModal({ isOpen: false }));
+        setPostData((state) => ({ ...state, content: "" }));
       }
 
       if (
