@@ -16,6 +16,7 @@ import {
   deletePost,
   dislikePost,
   likePost,
+  loadMoreExplorePostsUpto,
   loadPosts,
 } from "../../store/postSlice";
 import { callToast } from "../toast/Toast";
@@ -42,7 +43,9 @@ const UserPost = ({
   const { allBookmarks, bookmarkStatus } = useSelector(
     (state) => state.bookmark
   );
-  const { likeStatus, posts } = useSelector((state) => state.post);
+  const { likeStatus, posts, currentPageNumber } = useSelector(
+    (state) => state.post
+  );
   const { userProfile } = useSelector((state) => state.profile);
   const { allUsers } = useSelector((state) => state.home);
 
@@ -68,7 +71,7 @@ const UserPost = ({
   const foundPost = posts?.find((post) => post._id === postId);
 
   const isLiked =
-    location.pathname === "/bookmark"
+    location.pathname === "/bookmark" || "/explore"
       ? foundPost?.likes.likedBy?.some(
           (likedUser) => likedUser.username === user.username
         )
@@ -77,12 +80,12 @@ const UserPost = ({
         );
 
   const likeCount =
-    location.pathname === "/bookmark"
+    location.pathname === "/bookmark" || "/explore"
       ? foundPost?.likes.likeCount
       : likes.likeCount;
 
   const commentCount =
-    location.pathname === "/bookmark"
+    location.pathname === "/bookmark" || "/explore"
       ? foundPost?.comments.length
       : comments.length;
 
@@ -109,6 +112,9 @@ const UserPost = ({
         userProfile._id === user._id
       ) {
         dispatch(getUserPosts(userProfile.username));
+      }
+      if (location.pathname === ROUTES.EXPLORE) {
+        dispatch(loadMoreExplorePostsUpto(currentPageNumber));
       }
     } else {
       callToast("You are not authorized to delete this post!", false);

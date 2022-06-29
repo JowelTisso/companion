@@ -14,6 +14,8 @@ import {
   dislikePostHandler,
   getAllpostsHandler,
   getAllUserPostsHandler,
+  getPaginatedExplorePostHandler,
+  getExplorePostUptoHandler,
 } from "./backend/controllers/PostController";
 import {
   followUserHandler,
@@ -69,6 +71,8 @@ export function makeServer({ environment = "development" } = {}) {
       this.get("/posts", getAllpostsHandler.bind(this));
       this.get("/posts/:postId", getPostHandler.bind(this));
       this.get("/posts/user/:username", getAllUserPostsHandler.bind(this));
+      this.get("/posts/explore", getPaginatedExplorePostHandler.bind(this));
+      this.get("/posts/explore/upto", getExplorePostUptoHandler.bind(this));
 
       // post routes (private)
       this.post("/posts", createPostHandler.bind(this));

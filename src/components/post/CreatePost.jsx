@@ -1,7 +1,11 @@
 import "./CreatePost.css";
 import React, { useState } from "react";
 import { Avatar, Button } from "@mui/material";
-import { createPost, editPost } from "../../store/postSlice";
+import {
+  createPost,
+  editPost,
+  loadMoreExplorePostsUpto,
+} from "../../store/postSlice";
 import { callToast } from "../toast/Toast";
 import { useSelector } from "react-redux";
 import { toggleModal, updateEditPostData } from "../../store/homeSlice";
@@ -18,6 +22,7 @@ const CreatePost = ({ dispatch }) => {
   const { user } = useSelector((state) => state.auth);
   const { userProfile } = useSelector((state) => state.profile);
   const { mode } = useSelector((state) => state.theme);
+  const { currentPageNumber } = useSelector((state) => state.post);
 
   const [postData, setPostData] = useState({
     content: isEditModal ? content : "",
@@ -48,6 +53,9 @@ const CreatePost = ({ dispatch }) => {
             isBookmarked: false,
           })
         );
+        if (location.pathname === ROUTES.EXPLORE) {
+          dispatch(loadMoreExplorePostsUpto(currentPageNumber));
+        }
       } else {
         dispatch(createPost(postData));
         dispatch(toggleModal({ isOpen: false }));
