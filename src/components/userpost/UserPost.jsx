@@ -1,6 +1,6 @@
 import "./UserPost.css";
 import React, { useEffect, useState } from "react";
-import { Avatar, IconButton, ListItemButton } from "@mui/material";
+import { Avatar, IconButton, ListItemButton, Skeleton } from "@mui/material";
 import {
   IoEllipsisHorizontal,
   IoHeart,
@@ -44,7 +44,7 @@ const UserPost = ({
   const { allBookmarks, bookmarkStatus } = useSelector(
     (state) => state.bookmark
   );
-  const { likeStatus, posts, currentPageNumber } = useSelector(
+  const { likeStatus, posts, currentPageNumber, status } = useSelector(
     (state) => state.post
   );
   const { userProfile } = useSelector((state) => state.profile);
@@ -203,20 +203,37 @@ const UserPost = ({
   return (
     <div className="post-card-user pd-2x">
       <section className="item-user">
-        <Avatar
-          sx={{ width: 50, height: 50 }}
-          src={postUser?.avatar}
-          alt="profile avatar"
-          className="pointer"
-          onClick={goToProfile}
-        />
+        {status === "loading" ? (
+          <Skeleton
+            animation="wave"
+            variant="circular"
+            width={50}
+            height={50}
+          />
+        ) : (
+          <Avatar
+            sx={{ width: 50, height: 50 }}
+            src={postUser?.avatar}
+            alt="profile avatar"
+            className="pointer"
+            onClick={goToProfile}
+          />
+        )}
         <div className="pd-left-2x">
-          <p className="t4 username pointer" onClick={goToProfile}>
-            {postUser?.firstName} {postUser?.lastName}
-          </p>
-          <p className="post-time">
-            @{postUser?.username} . {month} {date}
-          </p>
+          {status === "loading" ? (
+            <Skeleton animation="wave" variant="text" height={20} width={100} />
+          ) : (
+            <p className="t4 username pointer" onClick={goToProfile}>
+              {postUser?.firstName} {postUser?.lastName}
+            </p>
+          )}
+          {status === "loading" ? (
+            <Skeleton animation="wave" variant="text" height={20} width={100} />
+          ) : (
+            <p className="post-time">
+              @{postUser?.username} . {month} {date}
+            </p>
+          )}
         </div>
 
         {!location.pathname.includes("/post") && (
@@ -252,12 +269,29 @@ const UserPost = ({
         )}
       </section>
       <section className="post-content mg-top-2x">
-        <p className="t4 post-txt">{postContent}</p>
+        {status === "loading" ? (
+          <Skeleton
+            animation="wave"
+            variant="rectangular"
+            sx={{ height: 120 }}
+          />
+        ) : (
+          <p className="t4 post-txt">{postContent}</p>
+        )}
         <main className="post-img-container mg-top-2x">
           {images &&
-            images?.map((img, id) => (
-              <img key={id} src={img} alt="post" className="post-img" />
-            ))}
+            images?.map((img, id) =>
+              status === "loading" ? (
+                <Skeleton
+                  key={id}
+                  animation="wave"
+                  variant="rectangular"
+                  sx={{ height: 250 }}
+                />
+              ) : (
+                <img key={id} src={img} alt="post" className="post-img" />
+              )
+            )}
         </main>
         <span className="post-icon-user-container mg-top-2x">
           <span className="flex-gap">

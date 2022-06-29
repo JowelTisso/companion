@@ -9,7 +9,6 @@ import {
   toggleModal,
 } from "../../store/commentSlice";
 import NewComment from "./component/NewComment";
-import Spinner from "../../components/spinner/Spinner";
 import Comment from "./component/Comment";
 import { Modal } from "@mui/material";
 
@@ -31,10 +30,6 @@ const SinglePost = () => {
     dispatch(loadCommentPost(postId));
     dispatch(loadComments(postId));
   }, []);
-
-  if (status === "loading") {
-    return <Spinner loading={true} />;
-  }
 
   return (
     <div className="home-wrapper">

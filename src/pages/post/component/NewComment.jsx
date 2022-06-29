@@ -44,6 +44,7 @@ const NewComment = ({ edit = false, selectedComment = {} }) => {
       } else {
         dispatch(addComment({ postId, commentData: { content: commentData } }));
       }
+      setCommentData("");
       dispatch(loadCommentPost(postId));
       dispatch(loadPosts());
     }

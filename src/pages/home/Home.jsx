@@ -2,7 +2,7 @@ import "./Home.css";
 import React, { useEffect, useState } from "react";
 import CreatePost from "../../components/post/CreatePost";
 import UserPost from "../../components/userpost/UserPost";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import Spinner from "../../components/spinner/Spinner";
 import { IoOptionsOutline } from "react-icons/io5";
 import { IconButton, ListItemButton } from "@mui/material";
@@ -67,10 +67,6 @@ const Home = () => {
     window.addEventListener("scroll", handleClosePopover);
     return () => window.removeEventListener("scroll", handleClosePopover);
   }, []);
-
-  if (status === "loading") {
-    return <Spinner loading={true} />;
-  }
 
   return (
     <div className="home-wrapper">
