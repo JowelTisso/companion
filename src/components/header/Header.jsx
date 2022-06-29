@@ -9,6 +9,8 @@ import { getUser, getUserPosts } from "../../store/profileSlice";
 import { ROUTES } from "../../utils/Constant";
 import { toggleTheme } from "../../store/themeSlice";
 import { IoMoon, IoSunny } from "react-icons/io5";
+import SearchInput from "./component/SearchInput";
+import { debounce } from "../../utils/debounce";
 
 const Header = () => {
   const { user } = useSelector((state) => state.auth);
@@ -45,6 +47,7 @@ const Header = () => {
         </span>
       </div>
       <div className="right-header-section">
+        <SearchInput />
         <Button
           variant="outlined"
           size={"large"}

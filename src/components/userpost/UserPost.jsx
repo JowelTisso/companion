@@ -70,6 +70,9 @@ const UserPost = ({
 
   const foundPost = posts?.find((post) => post._id === postId);
 
+  const postContent =
+    location.pathname === "/bookmark" ? foundPost?.content : content;
+
   const isLiked =
     location.pathname === "/bookmark" || "/explore"
       ? foundPost?.likes.likedBy?.some(
@@ -246,7 +249,7 @@ const UserPost = ({
         )}
       </section>
       <section className="post-content mg-top-2x">
-        <p className="t4 post-txt">{content}</p>
+        <p className="t4 post-txt">{postContent}</p>
         <main className="post-img-container mg-top-2x">
           {images &&
             images?.map((img, id) => (

@@ -15,7 +15,7 @@ import { useLocation } from "react-router-dom";
 import { getUserPosts } from "../../store/profileSlice";
 
 const CreatePost = ({ dispatch }) => {
-  const { isEditModal, content, postId, isBookmarked } = useSelector(
+  const { isEditModal, content, postId } = useSelector(
     (state) => state.home.editPostData
   );
 
@@ -41,10 +41,6 @@ const CreatePost = ({ dispatch }) => {
     if (postData.content) {
       if (isEditModal) {
         dispatch(editPost({ postId, postData }));
-        if (isBookmarked) {
-          dispatch(removeBookmark(postId));
-          dispatch(addBookmark({ postId, bookmarkUserId: user._id }));
-        }
         dispatch(toggleModal());
         dispatch(
           updateEditPostData({
