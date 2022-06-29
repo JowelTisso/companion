@@ -55,7 +55,7 @@ const ContentRoutes = ({ children }) => {
               mode === "dark" && "container-darkmode"
             }`}
           >
-            <CreatePost dispatch={dispatch} />
+            <CreatePost />
           </main>
         </Modal>
       </>

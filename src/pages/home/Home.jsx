@@ -15,7 +15,7 @@ const Home = () => {
   const [sortType, setSortType] = useState("ascending");
   const { posts, status, loadingMore } = useSelector((state) => state.post);
   const { user } = useSelector((state) => state.auth);
-  const dispatch = useDispatch();
+  const { isModal } = useSelector((state) => state.home);
   const { id, openPopover, PopMenuWrapper, handleClosePopover } = usePopover();
 
   const sortByDate = () => {
@@ -74,7 +74,7 @@ const Home = () => {
 
   return (
     <div className="home-wrapper">
-      <CreatePost dispatch={dispatch} />
+      {!isModal && <CreatePost />}
 
       <div className="filter-container mg-top-3x">
         <IconButton aria-describedby={id} onClick={openPopover}>

@@ -26,6 +26,7 @@ import { followUserCall } from "./service/userService";
 import { useLocation, useNavigate } from "react-router-dom";
 import { getUser, getUserPosts } from "../../store/profileSlice";
 import { loadCommentPost } from "../../store/commentSlice";
+import { Color } from "../../utils/Color";
 
 const UserPost = ({
   content,
@@ -133,6 +134,7 @@ const UserPost = ({
           updateEditPostData({
             isEditModal: true,
             content,
+            images,
             postId: postId,
             isBookmarked: true,
           })
@@ -142,6 +144,7 @@ const UserPost = ({
           updateEditPostData({
             isEditModal: true,
             content,
+            images,
             postId: postId,
             isBookmarked: false,
           })
@@ -265,7 +268,10 @@ const UserPost = ({
                 disabled={isLiking}
               >
                 {isLiked ? (
-                  <IoHeart className="t3 post-icon pointer" color="#f14b4b" />
+                  <IoHeart
+                    className="t3 post-icon pointer"
+                    color={Color.danger}
+                  />
                 ) : (
                   <IoHeartOutline className="t3 post-icon pointer" />
                 )}

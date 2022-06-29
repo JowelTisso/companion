@@ -122,8 +122,8 @@ const Profile = () => {
           <Button
             variant="outlined"
             sx={{
-              border: "2px solid #424b54",
-              color: "#424b54",
+              border: `2px solid ${Color.border}`,
+              color: Color.border,
               borderRadius: 5,
             }}
             onClick={profileBtnHandler}
@@ -144,7 +144,7 @@ const Profile = () => {
           <Link
             href={website}
             underline="none"
-            color="#2196f3"
+            color={Color.secondary}
             fontSize={14}
             target="_blank"
           >

@@ -160,6 +160,9 @@ const postSlice = createSlice({
     updateExplorePosts: (state, action) => {
       state.explorePosts = action.payload.explorePosts;
     },
+    setLoading: (state, action) => {
+      state.status = "loading";
+    },
   },
   extraReducers: {
     //   load posts
@@ -316,5 +319,5 @@ const postSlice = createSlice({
   },
 });
 
-export const { updateExplorePosts } = postSlice.actions;
+export const { updateExplorePosts, setLoading } = postSlice.actions;
 export default postSlice.reducer;

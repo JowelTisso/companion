@@ -71,7 +71,9 @@ const Sidenav = () => {
                 className="list-item"
                 sx={{
                   borderLeft:
-                    currentRoute === route ? "2px solid #048434" : "none",
+                    currentRoute === route
+                      ? `2px solid ${Color.primary}`
+                      : "none",
                 }}
                 onClick={() => navigateTo(route)}
               >
@@ -83,7 +85,10 @@ const Sidenav = () => {
                   className="nav-item-name"
                   primaryTypographyProps={{
                     fontSize: 16,
-                    color: currentRoute === route ? Color.primary : "#bcbec1",
+                    color:
+                      currentRoute === route
+                        ? Color.primary
+                        : Color.borderLight,
                   }}
                 />
               </ListItemButton>

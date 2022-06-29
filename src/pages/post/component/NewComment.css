@@ -10,5 +10,5 @@
 
 .new-comment-card .post-actions-container {
   text-align: end;
-  justify-content: end;
+  justify-content: space-between;
 }

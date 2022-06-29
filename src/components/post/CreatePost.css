@@ -28,7 +28,7 @@
 
 .post-actions-container {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
 }
 
 .post-icon-container {
@@ -38,4 +38,17 @@
 
 .post-icon {
   color: var(--txt-color);
+}
+
+.emoji-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.new-post-img {
+  height: 20rem;
+  width: 20rem;
+  object-fit: contain;
 }
