@@ -70,7 +70,7 @@ const Login = () => {
 
   return (
     <div className="login-wrapper flex-center">
-      <section className="logo-section">
+      <section className="logo-section flex-center">
         <img className="img" src={logo} alt="logo" />
       </section>
       <section className="login-section">

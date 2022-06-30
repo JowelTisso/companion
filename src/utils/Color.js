@@ -4,4 +4,5 @@ export const Color = Object.freeze({
   border: "#424b54",
   borderLight: "#bcbec1",
   secondary: "#2196f3",
+  background: "#203239",
 });

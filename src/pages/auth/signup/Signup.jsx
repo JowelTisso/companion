@@ -111,8 +111,8 @@ const Signup = () => {
 
   return (
     <div className="login-wrapper flex-center">
-      <section className="logo-section">
-        <img src={logo} alt="logo" />
+      <section className="logo-section logo-section-signup">
+        <img src={logo} alt="logo" className="img" />
       </section>
       <section className="login-section signup-section">
         <p className="login-heading t2 text-center">Become a companion</p>

@@ -67,6 +67,7 @@ const CreatePost = () => {
   const uploadHandler = async () => {
     try {
       if (postImg.files) {
+        dispatch(setLoading());
         const res = await uploadImages(postImg.files);
         return res?.url;
       }
@@ -79,7 +80,6 @@ const CreatePost = () => {
   const postHandler = async () => {
     if (postData.content) {
       if (isEditModal) {
-        setLoading();
         const imgUrl = await uploadHandler();
         dispatch(
           editPost({
@@ -100,13 +100,12 @@ const CreatePost = () => {
           dispatch(loadMoreExplorePostsUpto(currentPageNumber));
         }
       } else {
-        setLoading();
         const imgUrl = await uploadHandler();
         dispatch(createPost({ ...postData, images: imgUrl ? [imgUrl] : null }));
         dispatch(toggleModal({ isOpen: false }));
         setPostData((state) => ({ ...state, content: "", images: null }));
       }
-
+      clearImg();
       if (
         location.pathname === ROUTES.PROFILE &&
         userProfile._id === user._id
@@ -169,7 +168,11 @@ const CreatePost = () => {
               />
             }
           >
-            <img src={postImg.img} alt="post" className="new-post-img" />
+            <img
+              src={postImg.img}
+              alt="post"
+              className="new-post-img mg-bottom-2x"
+            />
           </Badge>
         )}
 
@@ -189,7 +192,7 @@ const CreatePost = () => {
                 onChange={pickImg}
               />
             </span>
-            <AiOutlineFileGif className="t3 post-icon pointer" />
+            {/* <AiOutlineFileGif className="t3 post-icon pointer" /> */}
             <MdOutlineEmojiEmotions
               className="t3 post-icon pointer"
               onClick={toggleEmojiModal}

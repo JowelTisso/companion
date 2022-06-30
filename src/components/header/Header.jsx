@@ -1,5 +1,5 @@
 import "./Header.css";
-import React from "react";
+import React, { useState } from "react";
 import { Avatar, Button } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { userLogout } from "../../pages/auth/helper/authHelper";
@@ -8,10 +8,11 @@ import { Link, useNavigate } from "react-router-dom";
 import { getUser, getUserPosts } from "../../store/profileSlice";
 import { ROUTES } from "../../utils/Constant";
 import { toggleTheme } from "../../store/themeSlice";
-import { IoMoon, IoSunny } from "react-icons/io5";
+import { IoMoon, IoSunny, IoSearchOutline } from "react-icons/io5";
 import SearchInput from "./component/SearchInput";
 
 const Header = () => {
+  const [showSearch, setShowSearch] = useState(false);
   const { user } = useSelector((state) => state.auth);
   const { mode } = useSelector((state) => state.theme);
   const dispatch = useDispatch();
@@ -27,9 +28,13 @@ const Header = () => {
     navigate(ROUTES.PROFILE);
   };
 
+  const toggleSearch = () => {
+    setShowSearch((isVisible) => !isVisible);
+  };
+
   return (
     <header className="header-container pd-1x pd-right-2x pd-left-2x">
-      <div className="logo-container">
+      <section className="logo-container">
         <img className="logo" src={logo} alt="logo" />
         <Link to={"/"} className=" mg-left-1x pointer logo-title no-deco">
           Companion
@@ -44,9 +49,13 @@ const Header = () => {
             <IoSunny className="t3" color="whitesmoke" />
           )}
         </span>
-      </div>
-      <div className="right-header-section">
-        <SearchInput />
+      </section>
+      <section className="right-header-section">
+        <IoSearchOutline
+          className="search-icon-mobile"
+          onClick={toggleSearch}
+        />
+        <SearchInput showSearch={showSearch} />
         <Button
           variant="outlined"
           size={"large"}
@@ -64,7 +73,7 @@ const Header = () => {
           className=" pointer"
           onClick={goToProfile}
         />
-      </div>
+      </section>
     </header>
   );
 };

@@ -38,7 +38,24 @@
 
 @media screen and (max-width: 640px) {
   .logo-section {
-    display: none;
+    height: 20vh;
+    width: 100%;
+    text-align: center;
+  }
+
+  .logo-section .img {
+    width: 80%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .login-wrapper {
+    flex-direction: column;
+    background-color: var(--secondary-color);
+  }
+
+  .login-section {
+    width: 100%;
   }
 }
 

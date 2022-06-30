@@ -5,8 +5,9 @@ import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { getUser, getUserPosts } from "../../../store/profileSlice";
 import { ROUTES } from "../../../utils/Constant";
+import { Color } from "../../../utils/Color";
 
-const SearchInput = () => {
+const SearchInput = ({ showSearch }) => {
   const { allUsers } = useSelector((state) => state.home);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -16,33 +17,35 @@ const SearchInput = () => {
     navigate(ROUTES.PROFILE);
   };
 
-  const ItemOption = ({ props, option }) => (
-    <li {...props} key={option._id} className="nav-item item-user pd-2x">
-      <Avatar
-        sx={{ width: 50, height: 50 }}
-        src={option.avatar}
-        alt="profile avatar"
-        className=" pointer"
-        onClick={() => navigateTo(option)}
-      />
-      <div className="nav-user-info pd-left-2x">
-        <p
-          className="t4 username txt-overflow pointer"
+  const ItemOption = ({ props, option }) => {
+    return (
+      <li {...props} key={option._id} className="item-user pd-2x ">
+        <Avatar
+          sx={{ width: 50, height: 50 }}
+          src={option.avatar}
+          alt="profile avatar"
+          className=" pointer"
           onClick={() => navigateTo(option)}
-        >
-          {option.firstName} {option.lastName}
-        </p>
-        <p className="t4 userid txt-overflow">@{option.username}</p>
-      </div>
-    </li>
-  );
+        />
+        <div className="pd-left-2x">
+          <p
+            className="t4 username txt-overflow pointer"
+            onClick={() => navigateTo(option)}
+          >
+            {option.firstName} {option.lastName}
+          </p>
+          <p className="t4 userid txt-overflow">@{option.username}</p>
+        </div>
+      </li>
+    );
+  };
 
   const ItemInput = ({ params }) => (
     <div ref={params.InputProps.ref}>
       <input
         type="text"
         {...params.inputProps}
-        className="input-simple"
+        className={`input-simple ${showSearch ? "show-search" : "hide-search"}`}
         placeholder="Search"
       />
     </div>

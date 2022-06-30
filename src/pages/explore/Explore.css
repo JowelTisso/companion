@@ -19,6 +19,6 @@
   color: var(--txt-color);
 }
 
-.tabs .list-item:hover {
+.tabs .list-item:active {
   background-color: var(--border-color);
 }
