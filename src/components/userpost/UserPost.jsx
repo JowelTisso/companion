@@ -1,36 +1,39 @@
 import "./UserPost.css";
 import React, { useEffect, useState } from "react";
-import { Avatar, IconButton, ListItemButton } from "@mui/material";
+import { Avatar, IconButton, ListItemButton, Skeleton } from "@mui/material";
 import {
   IoEllipsisHorizontal,
   IoHeart,
   IoHeartOutline,
   IoChatboxOutline,
-  IoShareSocialOutline,
   IoBookmarkOutline,
   IoBookmark,
 } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
 import { addBookmark, removeBookmark } from "../../store/bookmarkSlice";
 import { usePopover } from "../popmenu/PopMenu";
-import { deletePost, dislikePost, likePost } from "../../store/postSlice";
+import {
+  deletePost,
+  dislikePost,
+  likePost,
+  loadMoreExplorePostsUpto,
+  loadPosts,
+} from "../../store/postSlice";
 import { callToast } from "../toast/Toast";
 import { toggleModal, updateEditPostData } from "../../store/homeSlice";
 import { API, ROUTES } from "../../utils/Constant";
 import { followUserCall } from "./service/userService";
 import { useLocation, useNavigate } from "react-router-dom";
-import { getUserPosts } from "../../store/profileSlice";
+import { getUser, getUserPosts } from "../../store/profileSlice";
 import { loadCommentPost } from "../../store/commentSlice";
+import { Color } from "../../utils/Color";
 
 const UserPost = ({
-  avatar,
   content,
   images,
   _id: postId,
   createdAt,
   username,
-  firstName,
-  lastName,
   likes,
   userId,
   user,
@@ -38,8 +41,12 @@ const UserPost = ({
 }) => {
   const [postUser, setPostUser] = useState({});
 
-  const { bookmarks, bookmarkStatus } = useSelector((state) => state.bookmark);
-  const { likeStatus } = useSelector((state) => state.post);
+  const { allBookmarks, bookmarkStatus } = useSelector(
+    (state) => state.bookmark
+  );
+  const { likeStatus, posts, currentPageNumber, status } = useSelector(
+    (state) => state.post
+  );
   const { userProfile } = useSelector((state) => state.profile);
   const { allUsers } = useSelector((state) => state.home);
 
@@ -55,17 +62,36 @@ const UserPost = ({
 
   const isBookmarking = bookmarkStatus === "loading";
   const isLiking = likeStatus === "loading";
-
   const isBookmarked =
-    bookmarks?.length > 0
-      ? bookmarks?.some(
+    allBookmarks?.length > 0
+      ? allBookmarks?.some(
           (post) => post._id === postId && post.bookmarkUserId === user._id
         )
       : false;
 
-  const isLiked = likes.likedBy?.some(
-    (likedUser) => likedUser.username === user.username
-  );
+  const foundPost = posts?.find((post) => post._id === postId);
+
+  const postContent =
+    location.pathname === "/bookmark" ? foundPost?.content : content;
+
+  const isLiked =
+    location.pathname === "/bookmark" || "/explore"
+      ? foundPost?.likes.likedBy?.some(
+          (likedUser) => likedUser.username === user.username
+        )
+      : likes.likedBy?.some(
+          (likedUser) => likedUser.username === user.username
+        );
+
+  const likeCount =
+    location.pathname === "/bookmark" || "/explore"
+      ? foundPost?.likes.likeCount
+      : likes.likeCount;
+
+  const commentCount =
+    location.pathname === "/bookmark" || "/explore"
+      ? foundPost?.comments.length
+      : comments.length;
 
   const isFollowing = user.following?.some(
     (followedUser) => followedUser._id === userId
@@ -84,31 +110,31 @@ const UserPost = ({
       dispatch(deletePost(postId));
       if (isBookmarked) {
         dispatch(removeBookmark(postId));
-        dispatch(addBookmark({ postId, bookmarkUserId: user._id }));
       }
       if (
         location.pathname === ROUTES.PROFILE &&
         userProfile._id === user._id
       ) {
         dispatch(getUserPosts(userProfile.username));
-        handleClosePopover();
+      }
+      if (location.pathname === ROUTES.EXPLORE) {
+        dispatch(loadMoreExplorePostsUpto(currentPageNumber));
       }
     } else {
       callToast("You are not authorized to delete this post!", false);
     }
+    handleClosePopover();
   };
 
   const editPostHandler = () => {
     if (username === user.username) {
       dispatch(toggleModal());
-      dispatch(
-        updateEditPostData({ isEditModal: true, content, postId: postId })
-      );
       if (isBookmarked) {
         dispatch(
           updateEditPostData({
             isEditModal: true,
             content,
+            images,
             postId: postId,
             isBookmarked: true,
           })
@@ -118,15 +144,16 @@ const UserPost = ({
           updateEditPostData({
             isEditModal: true,
             content,
+            images,
             postId: postId,
             isBookmarked: false,
           })
         );
       }
-      handleClosePopover();
     } else {
       callToast("You are not authorized to edit this post!", false);
     }
+    handleClosePopover();
   };
 
   const likeHandler = async () => {
@@ -134,10 +161,6 @@ const UserPost = ({
       dispatch(dislikePost(postId));
     } else {
       dispatch(likePost(postId));
-    }
-    if (isBookmarked) {
-      dispatch(removeBookmark(postId));
-      dispatch(addBookmark({ postId, bookmarkUserId: user._id }));
     }
     if (location.pathname.includes("/post")) {
       dispatch(loadCommentPost(postId));
@@ -150,11 +173,17 @@ const UserPost = ({
     } else {
       followUserCall(API.FOLLOW_USER, userId, dispatch);
     }
+    dispatch(loadPosts());
     handleClosePopover();
   };
 
   const navigateToPost = () => {
     navigate(`${ROUTES.POST}/${postId}`);
+  };
+
+  const goToProfile = () => {
+    dispatch(getUser(userId));
+    navigate(ROUTES.PROFILE);
   };
 
   useEffect(() => {
@@ -163,7 +192,7 @@ const UserPost = ({
       const user = allUsers.find((user) => user._id === userId);
       setPostUser(user);
     })();
-  }, [allUsers]);
+  }, [allUsers, userId]);
 
   useEffect(() => {
     // To close the popup menu on scroll
@@ -174,18 +203,37 @@ const UserPost = ({
   return (
     <div className="post-card-user pd-2x">
       <section className="item-user">
-        <Avatar
-          sx={{ width: 50, height: 50 }}
-          src={postUser?.avatar}
-          alt="profile avatar"
-        />
+        {status === "loading" ? (
+          <Skeleton
+            animation="wave"
+            variant="circular"
+            width={50}
+            height={50}
+          />
+        ) : (
+          <Avatar
+            sx={{ width: 50, height: 50 }}
+            src={postUser?.avatar}
+            alt="profile avatar"
+            className="pointer"
+            onClick={goToProfile}
+          />
+        )}
         <div className="pd-left-2x">
-          <p className="t4 username">
-            {postUser?.firstName} {postUser?.lastName}
-          </p>
-          <p className="post-time">
-            @{postUser?.username} . {month} {date}
-          </p>
+          {status === "loading" ? (
+            <Skeleton animation="wave" variant="text" height={20} width={100} />
+          ) : (
+            <p className="t4 username pointer" onClick={goToProfile}>
+              {postUser?.firstName} {postUser?.lastName}
+            </p>
+          )}
+          {status === "loading" ? (
+            <Skeleton animation="wave" variant="text" height={20} width={100} />
+          ) : (
+            <p className="post-time">
+              @{postUser?.username} . {month} {date}
+            </p>
+          )}
         </div>
 
         {!location.pathname.includes("/post") && (
@@ -199,57 +247,79 @@ const UserPost = ({
             </IconButton>
             <PopMenuWrapper>
               {user.username === username ? (
-                <>
+                <ul className="popup-item">
                   <ListItemButton onClick={editPostHandler}>
                     <p className="post-menu-option">EDIT</p>
                   </ListItemButton>
                   <ListItemButton onClick={deletePostHandler}>
                     <p className="post-menu-option">DELETE</p>
                   </ListItemButton>
-                </>
+                </ul>
               ) : (
-                <ListItemButton onClick={followHandler}>
-                  <p className="post-menu-option">
-                    {isFollowing ? "Unfollow" : "Follow"}
-                  </p>
-                </ListItemButton>
+                <ul className="popup-item">
+                  <ListItemButton onClick={followHandler}>
+                    <p className="post-menu-option">
+                      {isFollowing ? "Unfollow" : "Follow"}
+                    </p>
+                  </ListItemButton>
+                </ul>
               )}
             </PopMenuWrapper>
           </span>
         )}
       </section>
       <section className="post-content mg-top-2x">
-        <p className="t4 post-txt">{content}</p>
+        {status === "loading" ? (
+          <Skeleton
+            animation="wave"
+            variant="rectangular"
+            sx={{ height: 120 }}
+          />
+        ) : (
+          <p className="t4 post-txt">{postContent}</p>
+        )}
         <main className="post-img-container mg-top-2x">
           {images &&
-            images?.map((img, id) => (
-              <img key={id} src={img} alt="post image" className="post-img" />
-            ))}
+            images?.map((img, id) =>
+              status === "loading" ? (
+                <Skeleton
+                  key={id}
+                  animation="wave"
+                  variant="rectangular"
+                  sx={{ height: 250 }}
+                />
+              ) : (
+                <img key={id} src={img} alt="post" className="post-img" />
+              )
+            )}
         </main>
         <span className="post-icon-user-container mg-top-2x">
-          <span className="flex-center">
-            <IconButton
-              aria-label="like the post"
-              onClick={likeHandler}
-              disabled={isLiking}
-            >
-              {isLiked ? (
-                <IoHeart className="t3 post-icon pointer" color="#f14b4b" />
-              ) : (
-                <IoHeartOutline className="t3 post-icon pointer" />
-              )}
-            </IconButton>
-            <p className="t4">{likes.likeCount}</p>
+          <span className="flex-gap">
+            <span className="flex-center">
+              <IconButton
+                aria-label="like the post"
+                onClick={likeHandler}
+                disabled={isLiking}
+              >
+                {isLiked ? (
+                  <IoHeart
+                    className="t3 post-icon pointer"
+                    color={Color.danger}
+                  />
+                ) : (
+                  <IoHeartOutline className="t3 post-icon pointer" />
+                )}
+              </IconButton>
+              <p className="t4">{likeCount || 0}</p>
+            </span>
+            <span className="flex-center">
+              <IconButton aria-label="add comment" onClick={navigateToPost}>
+                <IoChatboxOutline className="t3 post-icon pointer" />
+              </IconButton>
+              <p className="t4">{commentCount}</p>
+            </span>
           </span>
-          <span className="flex-center">
-            <IconButton aria-label="add comment" onClick={navigateToPost}>
-              <IoChatboxOutline className="t3 post-icon pointer" />
-            </IconButton>
-            <p className="t4">{comments.length}</p>
-          </span>
-          <IconButton aria-label="share the post">
-            <IoShareSocialOutline className="t3 post-icon pointer" />
-          </IconButton>
+
           <IconButton
             aria-label="add to bookmark"
             onClick={bookmarkHandler}

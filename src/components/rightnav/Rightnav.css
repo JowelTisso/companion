@@ -10,6 +10,7 @@
   gap: 1rem;
   overflow: scroll;
 }
+
 .rightnav::-webkit-scrollbar {
   display: none;
 }
@@ -19,7 +20,7 @@
 }
 
 .suggestions {
-  height: 40rem;
+  max-height: 90%;
   overflow-y: scroll;
 }
 
@@ -29,6 +30,11 @@
 
 .suggestions .item-user {
   box-shadow: none;
+  flex-wrap: wrap;
+}
+
+.suggestions .item-user-info {
+  display: flex;
 }
 
 .follow-btn-container {
@@ -37,7 +43,7 @@
 
 .txt-overflow {
   height: 2.1rem;
-  width: 14rem;
+  max-width: 14rem;
   overflow: hidden;
 }
 
@@ -51,6 +57,49 @@
   width: 1px;
 }
 
-.notification-content {
-  background-color: lightblue;
+/* @media only screen and (min-width: 768px) {...} */
+/* Large devices (laptops/desktops, 992px and up) */
+/* @media only screen and (min-width: 992px) {...} */
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (max-width: 1080px) {
+  .follow-btn-container {
+    margin-top: 1rem;
+    width: 100%;
+  }
+
+  .follow-btn-container Button {
+    width: 100%;
+  }
+
+  .suggestions .item-user {
+    margin-bottom: 2rem;
+  }
+
+  .rightnav {
+    padding-left: 0;
+  }
+}
+
+@media only screen and (max-width: 790px) {
+  .rightnav {
+    padding-left: 0;
+  }
+}
+
+@media only screen and (max-width: 740px) {
+  .rightnav {
+    width: 28%;
+  }
+}
+
+@media only screen and (max-width: 680px) {
+  .rightnav {
+    width: 30%;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .rightnav {
+    display: none;
+  }
 }

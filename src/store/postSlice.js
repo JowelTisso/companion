@@ -7,15 +7,75 @@ const initialState = {
   status: "idle",
   error: null,
   likeStatus: "idle",
+  currentPageNumber: 1,
+  hasMore: false,
+  loadingMore: false,
+  explorePosts: [],
 };
 
 export const loadPosts = createAsyncThunk(
   "post/loadPosts",
   async (_, { rejectWithValue }) => {
     try {
-      const res = await GET(API.ALL_POST);
+      const res = await GET(`${API.ALL_POST}?page=1`);
       if (res?.status === 200 || res?.status === 201) {
-        return res?.data.posts;
+        return res?.data;
+      }
+    } catch (err) {
+      rejectWithValue(err.message);
+    }
+  }
+);
+
+export const loadMorePosts = createAsyncThunk(
+  "post/loadMorePosts",
+  async (pageNumber, { rejectWithValue }) => {
+    try {
+      const res = await GET(`${API.ALL_POST}?page=${pageNumber}`);
+      if (res?.status === 200 || res?.status === 201) {
+        return res?.data;
+      }
+    } catch (err) {
+      rejectWithValue(err.message);
+    }
+  }
+);
+
+export const loadExplorePosts = createAsyncThunk(
+  "post/loadExplorePosts",
+  async (_, { rejectWithValue }) => {
+    try {
+      const res = await GET(`${API.EXPLORE_POST}?page=1`);
+      if (res?.status === 200 || res?.status === 201) {
+        return res?.data.paginatedPosts;
+      }
+    } catch (err) {
+      rejectWithValue(err.message);
+    }
+  }
+);
+
+export const loadMoreExplorePosts = createAsyncThunk(
+  "post/loadMoreExplorePosts",
+  async (pageNumber, { rejectWithValue }) => {
+    try {
+      const res = await GET(`${API.EXPLORE_POST}?page=${pageNumber}`);
+      if (res?.status === 200 || res?.status === 201) {
+        return res?.data.paginatedPosts;
+      }
+    } catch (err) {
+      rejectWithValue(err.message);
+    }
+  }
+);
+
+export const loadMoreExplorePostsUpto = createAsyncThunk(
+  "post/loadMoreExplorePostsUpto",
+  async (pageNumber, { rejectWithValue }) => {
+    try {
+      const res = await GET(`${API.EXPLORE_POST_UPTO}?page=${pageNumber}`);
+      if (res?.status === 200 || res?.status === 201) {
+        return res?.data.paginatedPosts;
       }
     } catch (err) {
       rejectWithValue(err.message);
@@ -46,7 +106,6 @@ export const editPost = createAsyncThunk(
         return res?.data.posts;
       }
     } catch (err) {
-      console.log(err);
       rejectWithValue(err.message);
     }
   }
@@ -98,8 +157,11 @@ const postSlice = createSlice({
   name: "post",
   initialState,
   reducers: {
-    updatePosts: (state, action) => {
-      state.posts = action.payload.posts;
+    updateExplorePosts: (state, action) => {
+      state.explorePosts = action.payload.explorePosts;
+    },
+    setLoading: (state, action) => {
+      state.status = "loading";
     },
   },
   extraReducers: {
@@ -109,9 +171,62 @@ const postSlice = createSlice({
     },
     [loadPosts.fulfilled]: (state, action) => {
       state.status = "fullfilled";
-      state.posts = action.payload;
+      state.posts = action.payload.posts;
     },
     [loadPosts.rejected]: (state, action) => {
+      state.status = "rejected";
+      state.error = action.payload;
+    },
+
+    //   load explore posts
+    [loadExplorePosts.pending]: (state) => {
+      state.status = "loading";
+    },
+    [loadExplorePosts.fulfilled]: (state, action) => {
+      state.status = "fullfilled";
+      state.explorePosts = action.payload.posts;
+      if (action.payload?.nextPage) {
+        state.hasMore = true;
+      } else {
+        state.hasMore = false;
+      }
+    },
+    [loadExplorePosts.rejected]: (state, action) => {
+      state.status = "rejected";
+      state.error = action.payload;
+    },
+
+    //   load more explore posts
+    [loadMoreExplorePosts.pending]: (state) => {
+      state.status = "loading";
+      state.loadingMore = true;
+    },
+    [loadMoreExplorePosts.fulfilled]: (state, action) => {
+      state.status = "fullfilled";
+      action.payload.posts.map((post) => state.explorePosts.push(post));
+      state.loadingMore = false;
+      state.currentPageNumber += 1;
+      if (action.payload?.nextPage) {
+        state.hasMore = true;
+      } else {
+        state.hasMore = false;
+      }
+    },
+    [loadMoreExplorePosts.rejected]: (state, action) => {
+      state.status = "rejected";
+      state.error = action.payload;
+      state.loadingMore = false;
+    },
+
+    //   load more explore posts upto
+    [loadMoreExplorePostsUpto.pending]: (state) => {
+      state.status = "loading";
+    },
+    [loadMoreExplorePostsUpto.fulfilled]: (state, action) => {
+      state.status = "fullfilled";
+      state.explorePosts = action.payload.posts;
+    },
+    [loadMoreExplorePostsUpto.rejected]: (state, action) => {
       state.status = "rejected";
       state.error = action.payload;
     },
@@ -180,8 +295,29 @@ const postSlice = createSlice({
       state.likeStatus = "rejected";
       state.error = action.payload;
     },
+
+    //   load more posts
+    [loadMorePosts.pending]: (state) => {
+      state.loadingMore = true;
+    },
+    [loadMorePosts.fulfilled]: (state, action) => {
+      state.status = "fullfilled";
+      state.loadingMore = false;
+      action.payload.posts.map((post) => state.posts.push(post));
+      state.currentPageNumber += 1;
+      if (action.payload?.nextPage) {
+        state.hasMore = true;
+      } else {
+        state.hasMore = false;
+      }
+    },
+    [loadMorePosts.rejected]: (state, action) => {
+      state.status = "rejected";
+      state.loadingMore = false;
+      state.error = action.payload;
+    },
   },
 });
 
-export const { updatePosts } = postSlice.actions;
+export const { updateExplorePosts, setLoading } = postSlice.actions;
 export default postSlice.reducer;

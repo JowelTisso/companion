@@ -1,22 +1,13 @@
 import "./Spinner.css";
 import React from "react";
-import { css } from "@emotion/react";
 import BeatLoader from "react-spinners/BeatLoader";
+import { Color } from "../../utils/Color";
 
 const Spinner = ({ loading }) => {
-  const override = css`
-    display: block;
-    margin: 0 auto;
-  `;
-  const spinnerColor = "#048434";
+  const spinnerColor = Color.primary;
   return (
     <div className="loader flex-center">
-      <BeatLoader
-        color={spinnerColor}
-        loading={loading}
-        css={override}
-        size={30}
-      />
+      <BeatLoader color={spinnerColor} loading={loading} size={30} />
     </div>
   );
 };

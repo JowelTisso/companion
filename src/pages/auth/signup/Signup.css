@@ -11,3 +11,15 @@
   height: 90vh;
   gap: 2rem;
 }
+
+.form-section {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+@media screen and (max-width: 640px) {
+  .logo-section-signup {
+    display: none;
+  }
+}

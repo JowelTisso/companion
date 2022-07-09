@@ -9,7 +9,6 @@ import {
   toggleModal,
 } from "../../store/commentSlice";
 import NewComment from "./component/NewComment";
-import Spinner from "../../components/spinner/Spinner";
 import Comment from "./component/Comment";
 import { Modal } from "@mui/material";
 
@@ -19,6 +18,7 @@ const SinglePost = () => {
   const { commentPost, comments, status, isModalOpen, selectedComment } =
     useSelector((state) => state.comment);
   const { allUsers } = useSelector((state) => state.home);
+  const { mode } = useSelector((state) => state.theme);
 
   const dispatch = useDispatch();
 
@@ -30,10 +30,6 @@ const SinglePost = () => {
     dispatch(loadCommentPost(postId));
     dispatch(loadComments(postId));
   }, []);
-
-  if (status === "loading") {
-    return <Spinner loading={true} />;
-  }
 
   return (
     <div className="home-wrapper">
@@ -50,7 +46,11 @@ const SinglePost = () => {
         />
       ))}
       <Modal open={isModalOpen} onClose={closeHandler}>
-        <main className="modal-content flex-center">
+        <main
+          className={`modal-content flex-center ${
+            mode === "dark" && "container-darkmode"
+          }`}
+        >
           <NewComment edit={true} selectedComment={selectedComment} />
         </main>
       </Modal>

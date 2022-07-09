@@ -1,5 +1,6 @@
 .comment-card {
   background-color: var(--secondary-color);
+  border-radius: 15px;
 }
 
 .comment-card .item-user {
@@ -8,4 +9,8 @@
 
 .comment-card .post-content {
   margin-left: 6.5rem;
+}
+
+.comment-card .post-txt {
+  word-break: break-all;
 }

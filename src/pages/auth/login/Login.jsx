@@ -1,19 +1,22 @@
 import "./Login.css";
 import React, { useState } from "react";
 import logo from "../../../assets/logo.png";
-import { TextField, Button } from "@mui/material";
+import { TextField, Button, InputAdornment, IconButton } from "@mui/material";
 import { userLogIn } from "../helper/authHelper";
 import { useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { logIn } from "../../../store/authSlice";
 import { callToast } from "../../../components/toast/Toast";
 import { ROUTES } from "../../../utils/Constant";
+import { IoEye, IoEyeOff } from "react-icons/io5";
+import { loadAllBookmarks, loadBookmarks } from "../../../store/bookmarkSlice";
 
 const Login = () => {
   const [credentials, setCredentials] = useState({
     username: "",
     password: "",
   });
+  const [showPassword, setShowPassword] = useState(false);
 
   const { username, password } = credentials;
 
@@ -28,7 +31,6 @@ const Login = () => {
   const passwordChangeHandler = ({ target }) => {
     setCredentials((state) => ({ ...state, password: target.value }));
   };
-
   const fillTestCredentials = () => {
     setCredentials((state) => ({
       ...state,
@@ -36,7 +38,6 @@ const Login = () => {
       password: "test123",
     }));
   };
-
   const loginHandler = async () => {
     try {
       if (username && password) {
@@ -45,6 +46,8 @@ const Login = () => {
           password: password,
         });
         if (res?.status === 200 || res?.status === 201) {
+          dispatch(loadAllBookmarks());
+          dispatch(loadBookmarks());
           dispatch(
             logIn({
               token: res?.data?.encodedToken,
@@ -61,10 +64,14 @@ const Login = () => {
     }
   };
 
+  const toggleShowPassword = () => {
+    setShowPassword((isVisible) => !isVisible);
+  };
+
   return (
     <div className="login-wrapper flex-center">
-      <section className="logo-section">
-        <img src={logo} alt="logo" />
+      <section className="logo-section flex-center">
+        <img className="img" src={logo} alt="logo" />
       </section>
       <section className="login-section">
         <p className="login-heading t2 text-center">Welcome</p>
@@ -78,8 +85,21 @@ const Login = () => {
           label="Password"
           variant="outlined"
           value={password}
-          type="password"
+          type={showPassword ? "text" : "password"}
           onChange={passwordChangeHandler}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={toggleShowPassword}
+                  edge="end"
+                >
+                  {showPassword ? <IoEyeOff /> : <IoEye />}
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
         />
         <Button
           variant="contained"
@@ -94,11 +114,7 @@ const Login = () => {
             className="t5 text-center pointer txt-secondary"
             onClick={fillTestCredentials}
           >
-            Test credential
-          </p>
-          <span className="txt-separator text-center">|</span>
-          <p className="t5 text-center pointer txt-secondary">
-            Forgot password?
+            Fill test credential
           </p>
         </div>
         <p className="t4 text-center">OR</p>

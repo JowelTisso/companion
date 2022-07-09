@@ -1,29 +1,31 @@
 import { Server, Model, RestSerializer } from "miragejs";
 import { posts } from "./backend/db/posts";
-import { users } from "./backend/db/users";
+import { jowel_following, users } from "./backend/db/users";
 import {
   loginHandler,
   signupHandler,
 } from "./backend/controllers/AuthController";
 import {
   createPostHandler,
-  getAllpostsHandler,
   getPostHandler,
   deletePostHandler,
   editPostHandler,
   likePostHandler,
   dislikePostHandler,
+  getAllpostsHandler,
   getAllUserPostsHandler,
+  getPaginatedExplorePostHandler,
+  getExplorePostUptoHandler,
 } from "./backend/controllers/PostController";
 import {
   followUserHandler,
   getAllUsersHandler,
   getUserHandler,
-  getBookmarkPostsHandler,
   bookmarkPostHandler,
   removePostFromBookmarkHandler,
   unfollowUserHandler,
   editUserHandler,
+  getBookmarkPostsHandler,
 } from "./backend/controllers/UserController";
 import {
   addPostCommentHandler,
@@ -31,6 +33,7 @@ import {
   editPostCommentHandler,
   getPostCommentsHandler,
 } from "./backend/controllers/CommentsControlller";
+import { bookmarks } from "./backend/db/bookmarks";
 
 export function makeServer({ environment = "development" } = {}) {
   return new Server({
@@ -51,8 +54,8 @@ export function makeServer({ environment = "development" } = {}) {
         server.create("user", {
           ...item,
           followers: [],
-          following: [],
-          bookmarks: [],
+          following: item._id === "jowel123" ? [...jowel_following] : [],
+          bookmarks: item._id === "jowel123" ? [...bookmarks] : [],
         })
       );
       posts.forEach((item) => server.create("post", { ...item, comments: [] }));
@@ -68,6 +71,8 @@ export function makeServer({ environment = "development" } = {}) {
       this.get("/posts", getAllpostsHandler.bind(this));
       this.get("/posts/:postId", getPostHandler.bind(this));
       this.get("/posts/user/:username", getAllUserPostsHandler.bind(this));
+      this.get("/posts/explore", getPaginatedExplorePostHandler.bind(this));
+      this.get("/posts/explore/upto", getExplorePostUptoHandler.bind(this));
 
       // post routes (private)
       this.post("/posts", createPostHandler.bind(this));
@@ -82,6 +87,7 @@ export function makeServer({ environment = "development" } = {}) {
 
       // user routes (private)
       this.post("users/edit", editUserHandler.bind(this));
+      this.get("/users/allbookmark", getBookmarkPostsHandler.bind(this));
       this.get("/users/bookmark", getBookmarkPostsHandler.bind(this));
       this.post("/users/bookmark/:postId/", bookmarkPostHandler.bind(this));
       this.post(

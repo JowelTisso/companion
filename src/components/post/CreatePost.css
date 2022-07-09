@@ -1,10 +1,12 @@
 .post-card {
-  background-color: var(--secondary-color);
   border-radius: 1.5rem;
-  box-shadow: 0px 0px 1px 0px var(--border-color);
   width: 100%;
   display: flex;
   gap: 1rem;
+}
+
+.post-card-light {
+  background-color: var(--secondary-color);
 }
 
 .post-details {
@@ -36,4 +38,17 @@
 
 .post-icon {
   color: var(--txt-color);
+}
+
+.emoji-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.new-post-img {
+  height: 20rem;
+  width: 20rem;
+  object-fit: contain;
 }

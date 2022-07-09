@@ -1,6 +1,7 @@
 .login-wrapper {
   height: 100vh;
   width: 100%;
+  background-color: var(--bg-color-light);
 }
 
 .login-section {
@@ -14,6 +15,7 @@
   display: flex;
   flex-direction: column;
   gap: 3rem;
+  background-color: var(--secondary-color);
 }
 
 .login-heading {
@@ -32,4 +34,34 @@
 .txt-separator {
   margin-left: 1rem;
   margin-right: 1rem;
+}
+
+@media screen and (max-width: 640px) {
+  .logo-section {
+    height: 20vh;
+    width: 100%;
+    text-align: center;
+  }
+
+  .logo-section .img {
+    width: 80%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .login-wrapper {
+    flex-direction: column;
+    background-color: var(--secondary-color);
+  }
+
+  .login-section {
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .login-section {
+    margin: 0;
+    box-shadow: none;
+  }
 }

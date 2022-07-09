@@ -1,15 +1,24 @@
 import "./Profile.css";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Avatar, Button, Link, Modal } from "@mui/material";
 import UserPost from "../../components/userpost/UserPost";
 import { useSelector, useDispatch } from "react-redux";
 import { API } from "../../utils/Constant";
 import { followUserCall } from "../../components/userpost/service/userService";
-import { getUser, toggleEditProfileModal } from "../../store/profileSlice";
+import {
+  getMoreUserPosts,
+  getUser,
+  getUserPosts,
+  toggleEditProfileModal,
+} from "../../store/profileSlice";
 import EditModal from "./component/EditModal";
+import { BeatLoader } from "react-spinners";
+import { Color } from "../../utils/Color";
 
 const Profile = () => {
+  const [sortedUserPost, setSortedUserPost] = useState([]);
   const { user } = useSelector((state) => state.auth);
+  const { posts } = useSelector((state) => state.post);
   const {
     userProfile: {
       avatar,
@@ -24,8 +33,8 @@ const Profile = () => {
       _id: userProfileId,
     },
     userPosts,
-    status,
     isModalOpen,
+    loadingMore,
   } = useSelector((state) => state.profile);
 
   const defaultBackgroundImg = "https://picsum.photos/id/10/1000/500";
@@ -75,6 +84,22 @@ const Profile = () => {
     dispatch(toggleEditProfileModal());
   };
 
+  useEffect(() => {
+    // To scroll window to top
+    window.scrollTo(0, 0);
+  }, []);
+
+  useEffect(() => {
+    dispatch(getUserPosts(username));
+  }, [posts, username]);
+
+  useEffect(() => {
+    const sortedPosts = [...userPosts].sort((a, b) => {
+      return new Date(b.createdAt) - new Date(a.createdAt);
+    });
+    setSortedUserPost(sortedPosts);
+  }, [userPosts]);
+
   return (
     <div className="home-wrapper">
       <main className="user-info-section">
@@ -97,8 +122,8 @@ const Profile = () => {
           <Button
             variant="outlined"
             sx={{
-              border: "2px solid #424b54",
-              color: "#424b54",
+              border: `2px solid ${Color.border}`,
+              color: Color.border,
               borderRadius: 5,
             }}
             onClick={profileBtnHandler}
@@ -117,9 +142,9 @@ const Profile = () => {
         <p className="t4 mg-left-2x mg-top-1x">{bio}</p>
         <span className="mg-left-2x website-link">
           <Link
-            href="https://github.com/JowelTisso"
+            href={website}
             underline="none"
-            color="#2196f3"
+            color={Color.secondary}
             fontSize={14}
             target="_blank"
           >
@@ -140,18 +165,23 @@ const Profile = () => {
       <section className="user-posts-section pd-1x">
         <p className="t3 section-title mg-left-1x mg-top-2x">Your posts</p>
         <main className="userpost mg-top-2x">
-          {userPosts?.length > 0 ? (
-            userPosts?.map((post) => (
+          {sortedUserPost?.length > 0 ? (
+            sortedUserPost?.map((post) => (
               <UserPost {...post} key={post._id} user={user} />
             ))
           ) : (
             <p className="t4">You have not created any post!</p>
           )}
+          <div className="flex-center">
+            {loadingMore && (
+              <BeatLoader color={Color.primary} loading={true} size={20} />
+            )}
+          </div>
         </main>
       </section>
 
       <Modal open={isModalOpen} onClose={handleClose}>
-        <main className="profile-modal-content flex-center">
+        <main className={`profile-modal-content flex-center`}>
           <EditModal />
         </main>
       </Modal>

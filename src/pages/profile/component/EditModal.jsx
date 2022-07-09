@@ -11,6 +11,7 @@ import { MdModeEdit } from "react-icons/md";
 import { uploadImages } from "./service";
 import { loadPosts } from "../../../store/postSlice";
 import { loadAllUsers } from "../../../store/homeSlice";
+import Spinner from "../../../components/spinner/Spinner";
 
 const EditModal = () => {
   const {
@@ -18,23 +19,23 @@ const EditModal = () => {
       avatar,
       firstName,
       lastName,
-      username,
       bio,
       website,
       backgroundImg,
       _id: userProfileId,
     },
   } = useSelector((state) => state.profile);
+  const { mode } = useSelector((state) => state.theme);
 
   const defaultBackgroundImg = "https://picsum.photos/id/10/1000/500";
 
   const dispatch = useDispatch();
 
+  const [loading, setLoading] = useState(false);
   const [profileData, setProfileData] = useState({
     avatar: avatar || "",
     firstName: "",
     lastName: "",
-    username: "",
     bio: "",
     website: "",
     backgroundImg: "",
@@ -49,7 +50,7 @@ const EditModal = () => {
       error: false,
       msg: "",
     },
-    username: {
+    website: {
       error: false,
       msg: "",
     },
@@ -61,16 +62,28 @@ const EditModal = () => {
 
   const onSubmit = async () => {
     try {
-      if (
-        profileData.firstName &&
-        profileData.lastName &&
-        profileData.username
-      ) {
+      if (profileData.firstName && profileData.lastName) {
+        if (!profileData.website.includes("http://")) {
+          if (!profileData.website.includes("https://")) {
+            setFormValidation((data) => ({
+              ...data,
+              website: { error: true, msg: "Input a valid website!" },
+            }));
+            return;
+          }
+        }
+        if (!profileData.website.includes(".com")) {
+          setFormValidation((data) => ({
+            ...data,
+            website: { error: true, msg: "Input a valid website!" },
+          }));
+          return;
+        }
         setFormValidation((data) => ({
           ...data,
           firstName: { error: false, msg: "" },
           lastName: { error: false, msg: "" },
-          username: { error: false, msg: "" },
+          website: { error: false, msg: "" },
         }));
         const res = await POST(API.EDIT_USER, { userData: profileData });
         if (res?.status === 200 || res?.status === 201) {
@@ -96,20 +109,16 @@ const EditModal = () => {
           lastName: { error: true, msg: "This is required!" },
         }));
       }
-      if (!profileData.username) {
-        setFormValidation((data) => ({
-          ...data,
-          username: { error: true, msg: "This is required!" },
-        }));
-      }
     } catch (err) {
       console.log(err);
     }
   };
 
   const uploadHandler = async ({ target }) => {
+    setLoading(true);
     const res = await uploadImages(target.files);
     setProfileData((data) => ({ ...data, avatar: res.secure_url }));
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -117,7 +126,6 @@ const EditModal = () => {
       avatar,
       firstName,
       lastName,
-      username,
       bio,
       website,
       backgroundImg,
@@ -125,7 +133,11 @@ const EditModal = () => {
   }, []);
 
   return (
-    <div className="edit-profile-container">
+    <div
+      className={`edit-profile-container ${
+        mode === "dark" && "container-darkmode"
+      }`}
+    >
       <div
         className="profile-banner"
         style={{
@@ -162,7 +174,7 @@ const EditModal = () => {
             id="outlined-basic"
             label="First name"
             variant="outlined"
-            className="name-field"
+            className="txt-field"
             value={profileData.firstName}
             onChange={(e) => onChange("firstName", e)}
           />
@@ -172,20 +184,11 @@ const EditModal = () => {
             id="outlined-basic"
             label="Last name"
             variant="outlined"
-            className="name-field"
+            className="txt-field"
             value={profileData.lastName}
             onChange={(e) => onChange("lastName", e)}
           />
         </div>
-        <TextField
-          error={formValidation.username.error}
-          helperText={formValidation.username.msg}
-          id="outlined-basic"
-          label="Username"
-          variant="outlined"
-          value={profileData.username}
-          onChange={(e) => onChange("username", e)}
-        />
         <TextField
           id="filled-multiline-flexible"
           label="Bio"
@@ -197,6 +200,8 @@ const EditModal = () => {
           onChange={(e) => onChange("bio", e)}
         />
         <TextField
+          error={formValidation.website.error}
+          helperText={formValidation.website.msg}
           id="outlined-basic"
           label="Website"
           variant="outlined"
@@ -215,6 +220,7 @@ const EditModal = () => {
           Save
         </Button>
       </div>
+      {loading && <Spinner loading={loading} />}
     </div>
   );
 };

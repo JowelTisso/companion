@@ -12,6 +12,7 @@ const usePopover = () => {
 
   const handleClosePopover = () => {
     setAnchorEl(null);
+    setPopoverContainer(null);
   };
 
   const open = Boolean(anchorEl);

@@ -1,14 +1,16 @@
 import "./Comment.css";
 import React, { useEffect, useState } from "react";
-import { Avatar, IconButton, ListItemButton } from "@mui/material";
+import { Avatar, IconButton, ListItemButton, Skeleton } from "@mui/material";
 import { IoEllipsisHorizontal } from "react-icons/io5";
 import { usePopover } from "../../../components/popmenu/PopMenu";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   deleteComment,
+  loadCommentPost,
   toggleModal,
   updateSelectedComment,
 } from "../../../store/commentSlice";
+import { loadPosts } from "../../../store/postSlice";
 
 const Comment = ({
   firstName,
@@ -29,18 +31,22 @@ const Comment = ({
     month: "long",
   });
 
+  const { status } = useSelector((state) => state.comment);
+
   const dispatch = useDispatch();
   const { id, openPopover, PopMenuWrapper, handleClosePopover } = usePopover();
 
   const editCommentHandler = () => {
+    handleClosePopover();
     dispatch(updateSelectedComment({ comment: comment }));
     dispatch(toggleModal());
-    handleClosePopover();
   };
 
   const deleteCommentHandler = () => {
-    dispatch(deleteComment({ postId, _id }));
     handleClosePopover();
+    dispatch(deleteComment({ postId, _id }));
+    dispatch(loadPosts());
+    dispatch(loadCommentPost(postId));
   };
 
   useEffect(() => {
@@ -54,18 +60,35 @@ const Comment = ({
   return (
     <div className="comment-card mg-top-2x pd-2x">
       <section className="item-user">
-        <Avatar
-          sx={{ width: 50, height: 50 }}
-          src={commentUser?.avatar}
-          alt="profile avatar"
-        />
+        {status === "loading" ? (
+          <Skeleton
+            animation="wave"
+            variant="circular"
+            width={50}
+            height={50}
+          />
+        ) : (
+          <Avatar
+            sx={{ width: 50, height: 50 }}
+            src={commentUser?.avatar}
+            alt="profile avatar"
+          />
+        )}
         <div className="pd-left-2x">
-          <p className="t4 username">
-            {commentUser?.firstName} {commentUser?.lastName}
-          </p>
-          <p className="post-time">
-            @{commentUser?.username} . {month} {date}
-          </p>
+          {status === "loading" ? (
+            <Skeleton animation="wave" variant="text" height={20} width={100} />
+          ) : (
+            <p className="t4 username">
+              {commentUser?.firstName} {commentUser?.lastName}
+            </p>
+          )}
+          {status === "loading" ? (
+            <Skeleton animation="wave" variant="text" height={20} width={100} />
+          ) : (
+            <p className="post-time">
+              @{commentUser?.username} . {month} {date}
+            </p>
+          )}
         </div>
         {user.username === username && (
           <span className="post-menu">
@@ -77,20 +100,28 @@ const Comment = ({
               <IoEllipsisHorizontal className="t3" />
             </IconButton>
             <PopMenuWrapper>
-              <>
+              <ul className="popup-item">
                 <ListItemButton onClick={editCommentHandler}>
                   <p className="post-menu-option">EDIT</p>
                 </ListItemButton>
                 <ListItemButton onClick={deleteCommentHandler}>
                   <p className="post-menu-option">DELETE</p>
                 </ListItemButton>
-              </>
+              </ul>
             </PopMenuWrapper>
           </span>
         )}
       </section>
       <section className="post-content">
-        <p className="t4 post-txt">{content}</p>
+        {status === "loading" ? (
+          <Skeleton
+            animation="wave"
+            variant="rectangular"
+            sx={{ height: 50 }}
+          />
+        ) : (
+          <p className="t4 post-txt">{content}</p>
+        )}
       </section>
     </div>
   );

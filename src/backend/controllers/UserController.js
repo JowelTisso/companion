@@ -100,6 +100,7 @@ export const getBookmarkPostsHandler = function (schema, request) {
     );
   }
 };
+
 /**
  * This handler handles adding a post to user's bookmarks in the db.
  * send POST Request at /api/users/bookmark/:postId/

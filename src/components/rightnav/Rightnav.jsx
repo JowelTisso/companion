@@ -1,12 +1,12 @@
 import "./Rightnav.css";
 import React from "react";
 import { Avatar, Button } from "@mui/material";
-import { BsDot } from "react-icons/bs";
 import { API, ROUTES } from "../../utils/Constant";
 import { followUserCall } from "../userpost/service/userService";
 import { useDispatch, useSelector } from "react-redux";
 import { getUser, getUserPosts } from "../../store/profileSlice";
 import { useLocation, useNavigate } from "react-router-dom";
+import { loadPosts } from "../../store/postSlice";
 
 const Rightnav = () => {
   const { user: activeUser } = useSelector((state) => state.auth);
@@ -15,8 +15,6 @@ const Rightnav = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
-
-  const notificationNames = ["Goku", "vegeta", "kakashi", "yu zhong"];
 
   const UserItem = ({ firstName, lastName, username, avatar, _id: userId }) => {
     const isFollowing = activeUser?.following.some(
@@ -29,6 +27,7 @@ const Rightnav = () => {
       } else {
         followUserCall(API.FOLLOW_USER, userId, dispatch);
       }
+      dispatch(loadPosts());
       if (location.pathname === ROUTES.PROFILE) {
         dispatch(getUser(userProfile._id));
       }
@@ -42,19 +41,24 @@ const Rightnav = () => {
 
     return (
       <main className="item-user pd-2x">
-        <Avatar
-          sx={{ width: 45, height: 45 }}
-          src={avatar}
-          alt="profile avatar"
-          className=" pointer"
-          onClick={goToProfile}
-        />
-        <div className="pd-left-2x">
-          <p className="t4 username txt-overflow">
-            {firstName} {lastName}
-          </p>
-          <p className="t4 userid txt-overflow">@{username}</p>
-        </div>
+        <section className="item-user-info">
+          <Avatar
+            sx={{ width: 45, height: 45 }}
+            src={avatar}
+            alt="profile avatar"
+            className=" pointer"
+            onClick={goToProfile}
+          />
+          <div className="user-info-container pd-left-2x">
+            <p
+              className="t4 username txt-overflow pointer"
+              onClick={goToProfile}
+            >
+              {firstName} {lastName}
+            </p>
+            <p className="t4 userid txt-overflow">@{username}</p>
+          </div>
+        </section>
         <div className="follow-btn-container flex-center">
           <Button
             variant="contained"
@@ -81,14 +85,6 @@ const Rightnav = () => {
           (user) =>
             activeUser._id !== user._id && <UserItem {...user} key={user._id} />
         )}
-      </section>
-      <p className="t4 section-title"> Notifications</p>
-      <section className="notification-container">
-        {notificationNames.map((user) => (
-          <p className="t4 notification-content nav-item pd-2x" key={user}>
-            <BsDot /> {user} started following you
-          </p>
-        ))}
       </section>
     </aside>
   );

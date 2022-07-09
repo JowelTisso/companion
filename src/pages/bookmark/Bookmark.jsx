@@ -1,31 +1,32 @@
 import "./Bookmark.css";
 import React, { useEffect, useState } from "react";
 import UserPost from "../../components/userpost/UserPost";
-import { useDispatch, useSelector } from "react-redux";
-import { loadBookmarks } from "../../store/bookmarkSlice";
+import { useSelector } from "react-redux";
+import { callToast } from "../../components/toast/Toast";
 
 const Bookmark = () => {
   const [userBookmarks, setUserBookmarks] = useState([]);
-  const { bookmarks, bookmarkStatus } = useSelector((state) => state.bookmark);
+  const { bookmarks } = useSelector((state) => state.bookmark);
   const { user } = useSelector((state) => state.auth);
-  const dispatch = useDispatch();
 
   useEffect(() => {
-    if (bookmarkStatus === "idle") {
-      dispatch(loadBookmarks());
+    try {
       const filteredBookmarks = bookmarks?.filter(
-        (bookmark) => bookmark.username === user.username
+        (bookmark) => bookmark.bookmarkUserId === user._id
       );
-      setUserBookmarks(filteredBookmarks);
+      const sortedPosts = [...filteredBookmarks].sort((a, b) => {
+        return new Date(b.createdAt) - new Date(a.createdAt);
+      });
+      setUserBookmarks(sortedPosts);
+    } catch (err) {
+      callToast(`Unable to fetch bookmark! : Reason : ${err.message}`);
     }
-  }, [dispatch, bookmarkStatus]);
+  }, [bookmarks]);
 
   useEffect(() => {
-    const filteredBookmarks = bookmarks?.filter(
-      (bookmark) => bookmark.bookmarkUserId === user._id
-    );
-    setUserBookmarks(filteredBookmarks);
-  }, [bookmarks]);
+    // To scroll window to top
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <div className="home-wrapper">

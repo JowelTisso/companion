@@ -12,7 +12,6 @@
 .nav-item {
   background-color: var(--secondary-color);
   border-radius: 1.5rem;
-  box-shadow: 0px 0px 1px 0px var(--border-color);
   width: 100%;
 }
 
@@ -20,7 +19,6 @@
   width: 100%;
   height: 8rem;
   border-radius: 1.5rem;
-  box-shadow: 0px 0px 1px 0px var(--border-color);
   display: flex;
 }
 
@@ -42,10 +40,134 @@
   background-color: var(--secondary-color);
 }
 
-.nav-icon {
-  color: var(--txt-color-light);
-}
-
 .item-name {
   font-weight: 500;
+}
+
+.create-post-icon {
+  display: none;
+}
+
+.sidenav .nav-item .list {
+  display: block;
+}
+
+@media only screen and (max-width: 1080px) {
+  .nav-item .nav-icon {
+    min-width: 4rem;
+  }
+}
+
+@media only screen and (max-width: 1040px) {
+  .sidenav {
+    width: 15%;
+  }
+
+  .nav-user-info {
+    display: none;
+  }
+
+  .sidenav .item-user {
+    min-width: 10rem;
+    justify-content: center;
+  }
+
+  .sidenav .nav-item {
+    width: min-content;
+  }
+
+  .nav-item .nav-icon .t3 {
+    font-size: 2.5rem;
+    margin: 5px;
+  }
+  .nav-item-name {
+    display: none;
+  }
+}
+
+@media only screen and (max-width: 940px) {
+  .sidenav .item-user {
+    min-width: 9rem;
+  }
+
+  .sidenav .nav-item {
+    width: 10rem;
+  }
+
+  .nav-item .nav-icon .t3 {
+    margin: 5px;
+  }
+
+  .create-post-txt {
+    display: none;
+  }
+
+  .create-post-icon {
+    display: block;
+  }
+}
+
+@media only screen and (max-width: 790px) {
+  .sidenav {
+    margin-left: 1.5rem;
+  }
+}
+
+@media only screen and (max-width: 680px) {
+  .sidenav {
+    top: auto;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    z-index: 5;
+    flex-direction: row;
+    margin-left: 0;
+  }
+
+  .sidenav .item-user {
+    display: none;
+  }
+
+  .sidenav .sidenav-btn {
+    display: block;
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%);
+    border-radius: 50%;
+    width: 6rem;
+    height: 6rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .sidenav .nav-item {
+    width: 100%;
+    height: 6.5rem;
+  }
+
+  .sidenav .nav-item .list {
+    display: flex;
+    padding: 0px;
+  }
+
+  .list-item-mg-right {
+    margin-right: 4rem;
+  }
+
+  .list-item-mg-left {
+    margin-left: 4rem;
+  }
+
+  .sidenav .nav-item .list .list-item {
+    padding: 0px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .sidenav .nav-item .list .pd-top-1x {
+    padding: 0;
+  }
 }

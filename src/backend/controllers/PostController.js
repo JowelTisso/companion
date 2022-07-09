@@ -11,8 +11,71 @@ import { v4 as uuid } from "uuid";
  * send GET Request at /api/posts
  * */
 
-export const getAllpostsHandler = function () {
+export const getAllpostsHandler = function (schema, request) {
   return new Response(200, {}, { posts: this.db.posts });
+};
+
+/**
+ * This handler handles gets paginated posts from the db.
+ * send GET Request at /api/posts/explore?page=1
+ * */
+
+export const getPaginatedExplorePostHandler = function (schema, request) {
+  try {
+    const posts = this.db.posts;
+    const page = parseInt(request.queryParams.page);
+    const limit = 5;
+    const totalPages = Math.ceil(posts.length / limit);
+    const startIndex = (page - 1) * limit;
+    const endIndex = page * limit;
+    const results = {};
+    endIndex < posts.length && (results.nextPage = page + 1);
+    if (page <= totalPages) {
+      results.posts = posts.slice(startIndex, endIndex);
+    } else {
+      results.posts = [];
+    }
+    return new Response(200, {}, { paginatedPosts: results });
+  } catch (error) {
+    return new Response(
+      500,
+      {},
+      {
+        error,
+      }
+    );
+  }
+};
+
+/**
+ * This handler handles gets explore posts from the db upto a given page.
+ * send GET Request at /api/posts/explore/upto?page=1
+ * */
+export const getExplorePostUptoHandler = function (schema, request) {
+  try {
+    const posts = this.db.posts;
+    const page = parseInt(request.queryParams.page);
+    const limit = 5;
+    const totalPages = Math.ceil(posts.length / limit);
+    const startIndex = 0;
+    const endIndex = page * limit;
+    const results = {};
+    endIndex < posts.length && (results.nextPage = page + 1);
+    if (page <= totalPages) {
+      results.posts = posts.slice(startIndex, endIndex);
+    } else {
+      results.posts = [];
+    }
+    return new Response(200, {}, { paginatedPosts: results });
+  } catch (error) {
+    return new Response(
+      500,
+      {},
+      {
+        error,
+      }
+    );
+  }
 };
 
 /**

@@ -7,6 +7,7 @@ const initialState = {
   editPostData: {
     isEditModal: false,
     content: "",
+    images: null,
     postId: "",
     isBookmarked: false,
   },
@@ -39,6 +40,7 @@ const homeSlice = createSlice({
     updateEditPostData: (state, action) => {
       state.editPostData.isEditModal = action.payload.isEditModal;
       state.editPostData.content = action.payload.content;
+      state.editPostData.images = action.payload.images;
       state.editPostData.postId = action.payload.postId;
       state.editPostData.isBookmarked = action.payload.isBookmarked;
     },

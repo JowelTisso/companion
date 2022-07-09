@@ -1,13 +1,32 @@
+/* Light */
 :root {
   --primary-color: #048434;
   --primary-color-light: #c7fcde;
   --primary-color-dark: #046328;
   --secondary-color: #fff;
+  --secondary-color-light: #f5f7f8;
   --txt-color: #424b54;
   --txt-color-light: #a1a5aa;
   --border-color: #d0d4d9;
   --border-color-light: #f5f7f8;
   --bg-color-light: #f7f7f7;
+  --danger-color: #f14b4b;
+  --secondary-color-darkmode: #203239;
+  --txt-color-darkmode: #e3e7e0;
+}
+
+/* Dark */
+[data-theme="dark"] {
+  --primary-color: #048434;
+  --primary-color-light: #c7fcde;
+  --primary-color-dark: #046328;
+  --secondary-color: #203239;
+  --secondary-color-light: #22363e;
+  --txt-color: #e3e7e0;
+  --txt-color-light: #bcbec1;
+  --border-color: #d0d4d9;
+  --border-color-light: #f5f7f8;
+  --bg-color-light: #141e27;
   --danger-color: #f14b4b;
 }
 
@@ -48,4 +67,14 @@ p {
 
 .danger-color {
   color: var(--danger-color);
+}
+
+.container-darkmode {
+  background-color: var(--secondary-color-darkmode);
+  color: var(--txt-color-darkmode);
+}
+
+.container-lightmode {
+  background-color: white;
+  color: var(--secondary-color-darkmode);
 }

@@ -18,6 +18,8 @@ const ContentRoutes = ({ children }) => {
   const { isModal } = useSelector((state) => state.home);
   const dispatch = useDispatch();
 
+  const { mode } = useSelector((state) => state.theme);
+
   const handleClose = () => {
     dispatch(toggleModal());
     dispatch(updateEditPostData({ isEditModal: false, content: "" }));
@@ -48,8 +50,12 @@ const ContentRoutes = ({ children }) => {
         </section>
 
         <Modal open={isModal} onClose={handleClose}>
-          <main className="modal-content flex-center">
-            <CreatePost dispatch={dispatch} />
+          <main
+            className={`modal-content flex-center ${
+              mode === "dark" && "container-darkmode"
+            }`}
+          >
+            <CreatePost />
           </main>
         </Modal>
       </>
