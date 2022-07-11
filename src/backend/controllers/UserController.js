@@ -226,6 +226,9 @@ export const followUserHandler = function (schema, request) {
       return new Response(400, {}, { errors: ["User Already following"] });
     }
 
+    delete user.password;
+    delete followUser.password;
+
     const updatedUser = {
       ...user,
       following: [...user.following, { ...followUser }],
